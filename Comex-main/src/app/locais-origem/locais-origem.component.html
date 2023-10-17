@@ -1,0 +1,37 @@
+<body>
+  <ul>
+    <div>
+      <button mat-button (click)="openDialog(items, urlConsulta, query)">
+        <span class="material-icons">note_add</span> Add new contract
+      </button>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Place</th>
+          <th>e-mail</th>
+          <th>Address</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of items">
+        <tr [ngClass]="{ 'black-row': $even, 'grafiti-row': $odd }">
+          <td>{{ item.local }}</td>
+          <td>{{ item.contato }}</td>
+          <td>{{ item.endereco }}</td>
+          <td> <!-- adicionando os botões de ação -->
+            <button mat-icon-button color="primary" aria-label="Editar" (click)="editDialog(item, urlConsulta, query)">
+              <a>edit</a>
+            </button>
+            <span style="margin-left: 10px; margin-right: 10px;"> </span> <!-- espaço entre os botões -->
+            <button mat-icon-button color="warn" aria-label="Excluir" (click)="deleteItem(item.ID, urlConsulta, query)">
+              <a>delete</a>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ul>
+</body>
+
+

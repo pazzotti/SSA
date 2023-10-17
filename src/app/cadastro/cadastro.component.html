@@ -1,0 +1,87 @@
+<div class="container">
+    <nav class="navbar navbar-light">
+        <div class="brand-title">Cadastro</div>
+        <div class="contact">
+            <!-- <label class="align-right" for="reason">Contact: <abbr style="color: #3b82f6;">SSBUIF</abbr> Phone: 55
+                11 3190-3611 | Mobile: +55 11 98550-7468</label> -->
+            <label class="align-right" for="reason">Contact: <abbr style="color: #3b82f6;">SSBUIF</abbr></label>
+        </div>
+    </nav>
+
+    <br>
+    <form [formGroup]="form">
+        <table class="table">
+            <div class="camposLabels">
+                <label for="nome">Nome*</label>
+                <input class="largeInput" id="nome" name="nome" type="text" formControlName="nome">
+                <div *ngIf="form?.get('nome')?.invalid && form?.get('nome')?.touched">
+                    <small class="text-danger" *ngIf="form?.get('nome')?.hasError('required')">Required</small>
+                </div>
+            </div>
+            <!-- <div *ngIf="usuarioLogado?.role == '0'"  class="camposLabels"> -->
+            <div class="camposLabels">
+                <label for="ID">Email*</label>
+                <input class="largeInput" id="ID" name="ID" type="email" formControlName="ID">
+                <div *ngIf="form?.get('ID')?.invalid && form?.get('ID')?.touched">
+                    <small class="text-danger" *ngIf="form?.get('ID')?.hasError('required')">Required</small>
+                    <small class="text-danger" *ngIf="form?.get('ID')?.hasError('email')">Email inválido</small>
+                </div>
+            </div>
+            <div class="camposLabels">
+                <label for="senha">Senha*</label>
+                <input class="largeInput" id="senha" name="senha" type="password" formControlName="senha">
+                <div *ngIf="form?.get('senha')?.invalid && form?.get('senha')?.touched">
+                    <small class="text-danger" *ngIf="form?.get('senha')?.hasError('required')">Required</small>
+                    <small class="text-danger" *ngIf="form?.get('senha')?.hasError('minlength')">Minimo 4
+                        caracters</small>
+                </div>
+            </div>
+            <div class="camposLabels">
+                <label for="confirmacaoSenha">Confirmação de senha*</label>
+                <input class="largeInput" id="confirmacaoSenha" name="confirmacaoSenha" type="password"
+                    formControlName="confirmacaoSenha">
+                <div *ngIf="form?.get('confirmacaoSenha')?.invalid && form?.get('confirmacaoSenha')?.touched">
+                    <small class="text-danger"
+                        *ngIf="form?.get('confirmacaoSenha')?.hasError('required')">Required</small>
+                    <small class="text-danger"
+                        *ngIf="form?.get('confirmacaoSenha')?.hasError('confirmacaoSenha')">Senhas diferentes</small>
+                </div>
+            </div>
+            <br>
+            <!-- <div class="camposLabels">
+                <label for="role">Role*</label>
+                <input class="largeInput" id="role" name="role" type="password"
+                    formControlName="role">
+                <div *ngIf="form?.get('role')?.invalid && form?.get('role')?.touched">
+                    <small class="text-danger"
+                        *ngIf="form?.get('role')?.hasError('required')">Required</small>
+                </div>
+            </div> -->
+            <div *ngIf="usuarioLogado?.role == '0'" class="camposLabels selectStatus">
+                <label for="role">Role</label>
+                <select class="selectVehicle" [value]="selectedRole" name="role" formControlName="role" appendTo="body">
+                    <option *ngFor="let type of roles" [value]="type.value" [selected]="type.selected">{{ type.name }}
+                    </option>
+                </select>
+            </div>
+            <div class="camposLabels">
+                <label for="company">Company</label>
+                <input class="largeInput" id="company" name="company" type="text" formControlName="company">
+                <div *ngIf="form?.get('company')?.invalid && form?.get('company')?.touched">
+                    <small class="text-danger" *ngIf="form?.get('company')?.hasError('required')">Required</small>
+                </div>
+            </div>
+            <div *ngIf="usuarioLogado?.role == '0'" class="camposLabels">
+                <label for="flowsAccess">Flows Access</label>
+                <input class="largeInput" id="flowsAccess" name="flowsAccess" type="text" formControlName="flowsAccess">
+                <div *ngIf="form?.get('flowsAccess')?.invalid && form?.get('flowsAccess')?.touched">
+                    <small class="text-danger" *ngIf="form?.get('flowsAccess')?.hasError('required')">Required</small>
+                </div>
+            </div>
+            <div class="conteudoBotoes">
+                <button class="btn btn-primary" type="button" (click)="salvar()">Save</button>
+                <button class="btn btn-primary" type="button" (click)="cancel()">Cancel</button>
+            </div>
+        </table>
+    </form>
+</div>

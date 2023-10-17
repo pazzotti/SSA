@@ -1,0 +1,135 @@
+<div class="container">
+  <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+    <div class="brand-title">Add / Change Carrier Contracts</div>
+  </nav>
+  <form [formGroup]="formGroup">
+    <table class="table table-dark">
+      <tr>
+        <td><label>Carrier Name</label></td>
+        <td><label>Flow</label></td>
+        <td><label>Vehicle type</label></td>
+      </tr>
+      <tr>
+        <td>
+          <select formControlName="carrier" class="select-input">
+            <option value="">Select Carrier</option>
+            <option *ngFor="let placeCarrier of placesCarriers" [value]="placeCarrier">{{ placeCarrier }}</option>
+          </select>
+        </td>
+        <td>
+          <select formControlName="flow" class="select-input">
+            <option value="Import">Import</option>
+            <option value="Export">Export</option>
+            <option value="Empty Return">Empty Return</option>
+            <option value="MR Great SP">MR Great SP</option>
+            <option value="MR Sul">MR Sul</option>
+            <option value="Interplant">Interplant</option>
+            <option value="Latinet">Latinet</option>
+          </select>
+        </td>
+        <td>
+          <select formControlName="vehicleType" class="select-input">
+            <option *ngFor="let type of typesVehicles" [value]="type">{{ type }}</option>
+          </select>
+        </td>
+      </tr>
+    </table>
+    <div class="custosFixo"
+      *ngIf="formGroup?.get('Flow')?.value != 'Export' || formGroup?.get('Flow')?.value != 'Import'">
+      <table>
+        <div>
+          <tr>
+            <td class="fixed-width"><label>Code</label></td>
+            <!-- <td class="fixed-width"><label>Carrier</label></td> -->
+            <!-- <td class="fixed-width"><label>Vehicle type</label></td> -->
+            <td class="fixed-width"><label>Region</label></td>
+            <td class="fixed-width"><label>Modality</label></td>
+          </tr>
+          <tr>
+            <td class="fixed-width">
+              <input type="number" name="code" formControlName="code">
+              <div *ngIf="formGroup?.get('code')?.invalid && formGroup?.get('code')?.touched">
+                <small class="text-danger" *ngIf="formGroup?.get('code')?.hasError('required')">Required</small>
+              </div>
+            </td>
+            <!-- <td class="fixed-width">
+              <input type="text" name="carrier" formControlName="carrier">
+              <div *ngIf="formGroup?.get('carrier')?.invalid && formGroup?.get('carrier')?.touched">
+                <small class="text-danger" *ngIf="formGroup?.get('carrier')?.hasError('required')">Required</small>
+              </div>
+            </td> -->
+            <!-- <td class="fixed-width">
+              <input type="number" name="vehicleType" formControlName="vehicleType">
+              <div *ngIf="formGroup?.get('vehicleType')?.invalid && formGroup?.get('vehicleType')?.touched">
+                <small class="text-danger" *ngIf="formGroup?.get('vehicleType')?.hasError('required')">Required</small>
+              </div>
+            </td> -->
+            <td class="fixed-width">
+              <input type="text" name="region" formControlName="region">
+              <div *ngIf="formGroup?.get('region')?.invalid && formGroup?.get('region')?.touched">
+                <small class="text-danger" *ngIf="formGroup?.get('region')?.hasError('required')">Required</small>
+              </div>
+            </td>
+            <td class="fixed-width">
+              <select formControlName="modality" class="select-input">
+                <option value="FTL1">FTL 1</option>
+                <option value="FTL2">FTL 2</option>
+                <option value="LTL">LTL</option>
+                <div *ngIf="formGroup?.get('modality')?.invalid && formGroup?.get('modality')?.touched">
+                  <small class="text-danger" *ngIf="formGroup?.get('modality')?.hasError('required')">Required</small>
+                </div>
+              </select>
+            </td>
+          </tr>
+        </div>
+      </table>
+    </div>
+
+    <div class="custosVariaveis"
+      *ngIf="formGroup?.get('Flow')?.value != 'Export' || formGroup?.get('Flow')?.value != 'Import'">
+      <tr>
+        <td class="fixed-width"><label>Fixed Cost</label>
+          <!-- <div class="currency-input"> -->
+          <!-- <span class="currency-symbol">R$</span> -->
+          <input type="number" name="fixedCost" formControlName="fixedCost">
+          <!-- </div> -->
+          <div *ngIf="formGroup?.get('fixedCost')?.invalid && formGroup?.get('fixedCost')?.touched">
+            <small class="text-danger" *ngIf="formGroup?.get('fixedCost')?.hasError('required')">Required</small>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="fixed-width"><label>Variable Cost</label>
+          <!-- <div class="currency-input"> -->
+          <!-- <span class="currency-symbol">R$</span> -->
+          <input type="number" name="variableCost" formControlName="variableCost">
+          <!-- </div> -->
+          <div *ngIf="formGroup?.get('variableCost')?.invalid && formGroup?.get('variableCost')?.touched">
+            <small class="text-danger" *ngIf="formGroup?.get('variableCost')?.hasError('required')">Required</small>
+          </div>
+        </td>
+      </tr>
+    </div>
+
+
+    <table>
+      <div>
+      </div>
+      <tr>
+        <div class="brand-title">Validity</div>
+      </tr>
+      <tr>
+        <td class="fixed-width">
+          <input type="date" name="validity" formControlName="validity">
+          <div *ngIf="formGroup?.get('validity')?.invalid && formGroup?.get('validity')?.touched">
+            <small class="text-danger" *ngIf="formGroup?.get('validity')?.hasError('required')">Required</small>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <div>
+      <button class="btn btn-primary" type="button" (click)="salvar()">Save</button>
+      <button class="btn btn-primary" type="button" (click)="cancel()">Cancel</button>
+    </div>
+  </form>
+</div>

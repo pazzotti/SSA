@@ -1,0 +1,48 @@
+<nav>
+  <a href="dashboard" routerLink="/dashboard">Portal</a>
+  <div id="navbarNav">
+    <a href="userScreenTransport" routerLink="/userScreenTransport">Transport</a>
+    <a href="#" routerLink="/userScreen">FUP Operation</a>
+    <a mat-button [matMenuTriggerFor]="menu">Config</a>
+    <mat-menu #menu="matMenu" class="mat-menu-content">
+      <nav>
+        <a href="atualiza" routerLink="/atualiza">Update</a>
+      </nav>
+      <nav>
+        <a href="contratos" routerLink="/contratos">Liners Contract</a>
+      </nav>
+      <nav>
+        <a href="contrato_terminal" routerLink="/contrato_terminal">Harbor Contract</a>
+      </nav>
+      <nav>
+        <a href="contrato_EADI" routerLink="/contrato_EADI">EADI Contract</a>
+      </nav>
+      <nav>
+        <a href="contrato_Transportadora" routerLink="/contrato_Transportadora">Transport Contract</a>
+      </nav>
+      <nav>
+        <a href="contrato_Redex" routerLink="/contrato_Redex">Redex Contract</a>
+      </nav>
+      <nav>
+        <a href="locais_origem" routerLink="/locais_origem">Origin Places</a>
+      </nav>
+      <nav>
+        <a href="locais_destino" routerLink="/locais_destino">Destiny Places</a>
+      </nav>
+      <nav>
+        <a href="carrier" routerLink="/carrier">Carriers</a>
+      </nav>
+
+
+    </mat-menu>
+
+
+
+
+
+
+
+
+  </div>
+
+</nav>

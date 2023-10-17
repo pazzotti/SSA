@@ -1,0 +1,41 @@
+<div class="container">
+  <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+    <div class="brand-title">Container {{ formGroup.get('Container')?.value }} Return</div>
+
+
+  </nav>
+  <form [formGroup]="formGroup">
+    <table class="table table-dark">
+
+      <tr>
+        <td><label>Carrier</label></td>
+        <td><label>Return Place</label></td>
+        <td><label>Damaged?</label></td>
+      </tr>
+      <tr>
+        <td>
+          <select formControlName="Carrier" class="select-input">
+            <option value="">Carrier</option>
+            <option *ngFor="let carrier of carriers" [value]="carrier">{{ carrier }}</option>
+          </select>
+        </td>
+        <td>
+          <select formControlName="SelectedPlace" class="select-input">
+            <option value="">Select one place</option>
+            <option *ngFor="let place of places" [value]="place">{{ place }}</option>
+          </select>
+        </td>
+        <input type="checkbox" formControlName="Checkbox" class="checkbox-input">
+
+
+
+
+      </tr>
+
+    </table>
+    <div>
+      <button class="btn btn-primary" type="button" (click)="salvar()">Save</button>
+      <button class="btn btn-primary" type="button" (click)="cancel()">Cancel</button>
+    </div>
+  </form>
+</div>

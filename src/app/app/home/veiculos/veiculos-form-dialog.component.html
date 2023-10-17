@@ -1,0 +1,32 @@
+<div class="container d-flex justify-content-center align-items-center absolute-container">
+  <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+    <div class="brand-title">Add / Change Contract</div>
+  </nav>
+  <form class="inputs">
+    <table class="table table-dark">
+      <div>
+        <tr>
+          <td><label>Modelo</label></td>
+          <td><label>Placa</label></td>
+          <td><label>Chassis</label></td>
+          <td><label>Vincode</label></td>
+          <td><label>Ano Fabricação</label></td>
+
+
+        </tr>
+        <tr>
+          <td><input type="string" name="modelo" [(ngModel)]="data.itemsData.modelo"></td>
+          <td><input type="string" name="placa" [(ngModel)]="data.itemsData.placa"></td>
+          <td><input type="string" name="chassis" [(ngModel)]="data.itemsData.chassis"></td>
+          <td><input type="string" name="vincode" [(ngModel)]="data.itemsData.vincode"></td>
+          <td><input type="string" name="fabricacao" [(ngModel)]="data.itemsData.fabricacao"></td>
+        </tr>
+      </div>
+
+    </table>
+    <div>
+      <button class="btn btn-primary" type="button" (click)="salvar()">Save</button>
+      <button class="btn btn-primary" type="button" (click)="cancel()">Cancel</button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,505 @@
+<body>
+  <div class="align-left search">
+    <input type="text" [(ngModel)]="searchString" (keyup)="aplicarFiltro()" placeholder="Filter">
+  </div>
+      <div class="align-right">
+        <button mat-button (click)=" editDialog(items)">
+          <span class="material-icons">note_add</span> Solicitar Frete Extra
+        </button>
+      </div>
+<div class="table">
+  <div class="header-row">
+    <div class="header-cell">ID</div>
+    <div class="header-cell">Pickup Date</div>
+    <div class="header-cell">Origin</div>
+    <div class="header-cell">Address</div>
+    <div class="header-cell">Destination</div>
+    <div class="header-cell">Delivery Date</div>
+    <div class="header-cell">Request By</div>
+    <div class="header-cell">Carrier</div>
+    <div class="header-cell">Vehicle Carrier</div>
+    <div class="header-cell">Vehicle Requested</div>
+    <div class="header-cell">License Plate</div>
+    <div class="header-cell">Status</div>
+    <div class="header-cell">Actions</div>
+    <!-- Adicione mais divs para mais colunas -->
+  </div>
+
+
+  <div class="data-row" *ngFor="let item of items" [class]="getStatusClass(item.status)">
+    <div class="data-cell">{{ item.ID }}</div>
+    <div class="data-cell">{{ item.datePickup | date:'dd-MM-yy' + " " + item.timePickup }}</div>
+    <div class="data-cell">{{ item.locationPickup }}</div>
+    <div class="data-cell">{{ item.addressPickup }}</div>
+    <div class="data-cell">{{ item.locationDelivery + " - " + (item.areaDelivery ? item.areaDelivery : "")}}</div>
+    <div class="data-cell">{{ item.dateDelivery | date:'dd-MM-yy' + " " + item.timeDelivery }}</div>
+    <div class="data-cell">{{ item.reqName + " - " + item.reqId}}</div>
+    <div class="data-cell">{{ item.carrier}}</div>
+    <div class="data-cell">{{ item.vehicleType}}</div>
+    <div class="data-cell">{{ item.reqVehicle}}</div>
+    <div class="data-cell">{{ item.licensePlate}}</div>
+    <div class="data-cell">{{ item.status}}</div>
+    <div class="action-buttons">
+      <button mat-icon-button color="primary" aria-label="Editar" (click)="editDialog(item)">
+        <span class="material-icons">edit</span>
+      </button>
+      <button [disabled]="usuarioLogado.role != '0' && usuarioLogado.role != '2'" mat-icon-button color="warn"
+        aria-label="Excluir" (click)="deleteItem(item.ID, urlConsulta, query)">
+        <span class="material-icons">delete</span>
+      </button>
+    </div>
+    <!-- Adicione mais divs para mais colunas -->
+  </div>
+</div>
+
+
+
+
+  <form class="inputs">
+    <!-- <table class="table"> -->
+      <div class="headerContratos">
+        <!--<div class="align-left">
+      <input type="text" [(ngModel)]="filtroDelivery" (keyup)="aplicarFiltro()" placeholder="Search Destination">
+    </div> -->
+      
+        <!-- <div class="align-right">
+      <button mat-button (click)="openDialog(items, urlConsulta, query)">
+          <span class="material-icons">note_add</span> Request Extra Freight
+      </button>
+        </div> -->
+        <div class="align-right">
+          <button mat-button (click)=" editDialog(items)">
+            <span class="material-icons">note_add</span> Solicitar Frete Extra
+          </button>
+
+        </div>
+      </div>
+      <!-- <ul>
+    <table> -->
+    <table class="table">
+        <div class="conteudo-table">
+
+        <div class="header-div">
+          <div><label>ID</label></div>
+          <div><label>Pickup Date</label></div>
+          <div><label>Origin</label></div>
+          <div><label>Address</label></div>
+          <div><label>Destination</label></div>
+          <div><label>Delivery Date</label></div>
+          <div><label>Request By</label></div>
+          <div><label>Carrier</label></div>
+          <div><label>Vehicle Carrier</label></div>
+          <div><label>Vehicle Requested</label></div>
+          <div><label>License Plate</label></div>
+          <div><label>Status</label></div>
+          <div><label>Actions</label></div>
+        </div>
+        <div *ngFor="let item of items" [class]="getStatusClass(item.status)">
+          <div class="camposLabels">{{ item.ID }}</div>
+          <div class="camposLabels">{{ item.datePickup | date:'dd-MM-yy' + " " + item.timePickup }}</div>
+          <div class="camposLabels">{{ item.locationPickup }}</div>
+          <div class="camposLabels">{{ item.addressPickup }}</div>
+          <div class="camposLabels">{{ item.locationDelivery + " - " + (item.areaDelivery ? item.areaDelivery : "")}}</div>
+          <div class="camposLabels">{{ item.dateDelivery | date:'dd-MM-yy' + " " + item.timeDelivery }}</div>
+          <div class="camposLabels">{{ item.reqName + " - " + item.reqId}}</div>
+          <div class="camposLabels">{{ item.carrier}}</div>
+          <div class="camposLabels">{{ item.vehicleType}}</div>
+          <div class="camposLabels">{{ item.reqVehicle}}</div>
+          <div class="camposLabels">{{ item.licensePlate}}</div>
+          <div class="camposLabels">{{ item.status}}</div>
+          <div class="action-buttons">
+            <button mat-icon-button color="primary" aria-label="Editar" (click)="editDialog(item)">
+              <span class="material-icons">edit</span>
+            </button>
+            <button [disabled]="usuarioLogado.role != '0' && usuarioLogado.role != '2'" mat-icon-button color="warn"
+              aria-label="Excluir" (click)="deleteItem(item.ID, urlConsulta, query)">
+              <span class="material-icons">delete</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- </table>
+  </ul> -->
+      <!-- </body> -->
+
+
+      <clr-modal [(clrModalOpen)]="dialogOpen" class="dialog-container">
+        <div class="modal-body">
+
+          <!-- <form class="inputs">
+  <table class="table"> -->
+          <div class="conteudoTable">
+
+            <h3 class="modal-title">Solicitação de Frete Extra</h3>
+          </div>
+
+          <div class="conteudoTable">
+
+
+
+            <label class="modal-label">Motivo da solicitação</label>
+
+
+            <input type="text" name="motive" [(ngModel)]="item.motive" [required]="true">
+          </div>
+
+          <div class="conteudoTable">
+
+
+            <div class="camposLabels">
+
+
+              <label class="modal-label">Numero da NF</label>
+
+
+              <input type="text" name="nf" [(ngModel)]="item.nf" class="modal-input1">
+            </div>
+            <div class="camposLabels">
+
+
+              <label class="modal-label">Valor total da NF</label>
+
+
+              <input type="text" name="nfTotal" [(ngModel)]="item.nfTotal" class="modal-input1">
+            </div>
+            <div class="camposLabels">
+
+
+              <label class="modal-label">Peso (Kg)</label>
+
+
+              <input type="text" name="weight" [(ngModel)]="item.weight" class="modal-input1">
+            </div>
+            <div class="camposLabels">
+
+
+              <label class="modal-label">Quantidade</label>
+
+
+              <input type="text" name="quantity" [(ngModel)]="item.quantity" class="modal-input1">
+            </div>
+          </div>
+
+          <div class="conteudoTable">
+
+            <div class="camposLabels">
+
+
+
+
+              <label class="modal-label">Transport.</label>
+
+
+              <input [disabled]="!isCarrierEnabled" type="text" name="carrier" [(ngModel)]="item.carrier"
+                class="modal-input1">
+            </div>
+            <div class="camposLabels">
+
+
+              <label class="modal-label">Veículo Solicitado*</label>
+
+
+              <select id="reqVehicle" name="reqVehicle" [(ngModel)]="item.reqVehicle" class="modal-select"
+                (blur)="onFieldTouched()">
+                <option *ngFor="let vehicle of typesVehicles" [value]="vehicle">{{ vehicle }}</option>
+              </select>
+              <div
+                *ngIf="campoTocado && (item.reqVehicle == null || item.reqVehicle == undefined || item.reqVehicle == '')">
+                <small class="text-danger">Required</small>
+              </div>
+            </div>
+
+            <div class="camposLabels">
+
+              <label class="modal-label">Veículo Disponível</label>
+
+
+              <select disabled id="vehicleType" name="vehicleType" [(ngModel)]="item.vehicleType" class="modal-select">
+                <option *ngFor="let vehicle of typesVehicles" [value]="vehicle">{{ vehicle }}</option>
+              </select>
+
+
+
+            </div>
+          </div>
+
+
+
+          <div class="conteudoTable">
+
+
+
+            <label class="modal-label">Descrição do Material</label>
+
+
+            <input type="text" name="description" [(ngModel)]="item.description" class="modal-input0">
+
+          </div>
+
+
+          <div class="conteudoTable">
+            <div class="camposLabels">
+
+
+
+              <label class="modal-label">Nome do requisitante*</label>
+
+
+              <input type="text" name="reqName" (blur)="onFieldTouched()" [(ngModel)]="item.reqName"
+                class="modal-input0">
+              <div *ngIf="campoTocado && (item.reqName == null || item.reqName == undefined || item.reqName == '')">
+                <small class="text-danger">Required</small>
+              </div>
+            </div>
+
+            <div class="camposLabels">
+
+              <label class="modal-label">Usuário*</label>
+
+
+              <input type="text" name="reqId" [(ngModel)]="item.reqId" class="modal-input1" (blur)="onFieldTouched()">
+              <div *ngIf="campoTocado && (item.reqId == null || item.reqId == undefined || item.reqId == '')">
+                <small class="text-danger">Required {{ item.reqId }}</small>
+              </div>
+
+            </div>
+
+
+            <div class="camposLabels">
+
+
+
+              <label class="modal-label">E-mail*</label>
+
+
+              <input type="text" name="reqEmail" [(ngModel)]="item.reqEmail" class="modal-input0"
+                (blur)="onFieldTouched()">
+              <div *ngIf="campoTocado && (item.reqEmail == null || item.reqEmail == undefined || item.reqEmail == '')">
+                <small class="text-danger">Required</small>
+              </div>
+            </div>
+
+            <div class="camposLabels">
+
+              <label class="modal-label">Contato*</label>
+
+
+              <input type="text" name="reqPhone" [(ngModel)]="item.reqPhone" class="modal-input1"
+                (blur)="onFieldTouched()">
+              <div *ngIf="campoTocado && (item.reqPhone == null || item.reqPhone == undefined || item.reqPhone == '')">
+                <small class="text-danger">Required</small>
+              </div>
+
+
+            </div>
+          </div>
+
+
+          <div class="conteudoTable">
+            <div class="camposLabels">
+
+
+              <label class="modal-label">E-mail do Gestor</label>
+
+
+              <input type="text" name="supEmail" [(ngModel)]="item.supEmail" class="modal-input1">
+            </div>
+
+            <div class="camposLabels">
+
+
+              <label class="modal-label">Centro de Custo*</label>
+
+
+              <input type="text" name="costCenter" [(ngModel)]="item.costCenter" class="modal-input1"
+                (blur)="onFieldTouched()">
+              <div
+                *ngIf="campoTocado && (item.costCenter == null || item.costCenter == undefined || item.costCenter == '')">
+                <small class="text-danger">Required</small>
+              </div>
+            </div>
+
+            <div class="camposLabels">
+
+
+              <label class="modal-label">Numero do Projeto</label>
+
+
+              <input type="text" name="projectNumber" [(ngModel)]="item.projectNumber" class="modal-input1">
+            </div>
+
+            <div class="camposLabels">
+
+
+              <label class="modal-label">Numero da OS</label>
+
+
+              <input type="text" name="orderNumber" [(ngModel)]="item.orderNumber" class="modal-input1">
+            </div>
+          </div>
+
+
+          <h3 class="modal-title">Informações de coleta</h3>
+
+          <div class="conteudoTable">
+            <div class="camposLabels">
+
+              <label class="modal-label">Local de coleta*</label>
+
+
+              <!-- <input type="text" name="locationPickup" [(ngModel)]="item.locationPickup" class="modal-input1"> -->
+              <select class="selectVehicle" name="locationPickup" [(ngModel)]="item.locationPickup" appendTo="body"
+                (blur)="onFieldTouched()">
+                <option value="-" disabled selected>-</option>
+                <option *ngFor="let type of this.placesOrigin" [value]="type">{{ type }}</option>
+                <option value="other">Other</option>
+              </select>
+              <div
+                *ngIf="campoTocado && (item.locationPickup == null || item.locationPickup == undefined || item.locationPickup == '')">
+                <small class="text-danger">Required</small>
+              </div>
+            </div>
+
+            <div class="camposLabels">
+
+              <label class="modal-label">Data da Coleta*</label>
+
+
+              <input type="date" name="datePickup" [(ngModel)]="item.datePickup" class="modal-input1"
+                (blur)="onFieldTouched()">
+              <div
+                *ngIf="campoTocado && (item.datePickup == null || item.datePickup == undefined || item.datePickup == '')">
+                <small class="text-danger">Required</small>
+              </div>
+            </div>
+
+            <div class="camposLabels">
+
+              <label class="modal-label">Horário de Coleta*</label>
+
+
+              <input type="time" name="timePickup" [(ngModel)]="item.timePickup" class="modal-input1"
+                (blur)="onFieldTouched()">
+              <div
+                *ngIf="campoTocado && (item.timePickup == null || item.timePickup == undefined || item.timePickup == '')">
+                <small class="text-danger">Required</small>
+              </div>
+
+
+            </div>
+          </div>
+
+
+
+
+
+
+
+
+          <h3 class="modal-title">Informações de entrega</h3>
+
+          <div class="conteudoTable">
+
+            <div class="camposLabels">
+
+
+              <label class="modal-label">Local de entrega*</label>
+
+
+              <!-- <input type="text" name="locationDelivery" [(ngModel)]="item.locationDelivery" class="modal-input1"> -->
+              <select class="selectVehicle" name="locationPickup" [(ngModel)]="item.locationDelivery" appendTo="body"
+                (blur)="onFieldTouched()">
+                <option value="-" disabled selected>-</option>
+                <option *ngFor="let type of this.placesOrigin" [value]="type">{{ type }}</option>
+                <option value="other">Other</option>
+              </select>
+              <div
+                *ngIf="campoTocado && (item.locationDelivery == null || item.locationDelivery == undefined || item.locationDelivery == '')">
+                <small class="text-danger">Required</small>
+              </div>
+            </div>
+
+            <div *ngIf="item.areaDelivery == 'SCANIA SBC' || item.areaDelivery == 'Scania SLA'">
+              <label class="modal-label">Área</label>
+
+              *ngIf="item.areaDelivery == 'SCANIA SBC' || item.areaDelivery == 'Scania SLA'"
+              <input type="text" name="areaDelivery" placeholder="Ex.: P27-05" [(ngModel)]="item.areaDelivery"
+                class="modal-input1">
+            </div>
+
+            <div class="camposLabels">
+
+              <label class="modal-label">Data de entrega*</label>
+
+
+              <input type="date" name="dateDelivery" [(ngModel)]="item.dateDelivery" class="modal-input1"
+                (blur)="onFieldTouched()">
+              <div
+                *ngIf="campoTocado && (item.dateDelivery == null || item.dateDelivery == undefined || item.dateDelivery == '')">
+                <small class="text-danger">Required</small>
+              </div>
+            </div>
+
+            <div class="camposLabels">
+
+              <label class="modal-label">Horário de Entrega*</label>
+
+
+              <input type="time" name="timeDelivery" [(ngModel)]="item.timeDelivery" class="modal-input1"
+                (blur)="onFieldTouched()">
+              <div
+                *ngIf="campoTocado && (item.timeDelivery == null || item.timeDelivery == undefined || item.timeDelivery == '')">
+                <small class="text-danger">Required</small>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="conteudoTable">
+
+
+
+            <label class="modal-label">Observações</label>
+
+
+            <input type="text" name="notes" [(ngModel)]="item.notes" class="modal-input2">
+          </div>
+
+          <div class="conteudoTable">
+
+
+            <label class="modal-label">Item Crítico?</label>
+
+
+            <input type="checkbox" id="critical">
+          </div>
+
+          <div class="conteudoTable">
+
+
+            <label class="modal-label">Produto Perigoso?</label>
+
+
+            <input type="checkbox" id="dangerousProduct">
+          </div>
+
+          <div class="conteudoTable">
+
+
+
+            <!-- <div class="modal-div"> -->
+            <button class="modal-button" type="button" (click)="salvar()">Save</button>
+          </div>
+          <div class="conteudoTable">
+
+            <button class="modal-button" type="button" (click)="cancel()">Cancel</button>
+          </div>
+
+
+  </div>
+  </clr-modal>
+    </table>
+
+  </form>
+
+</body>

@@ -1,0 +1,79 @@
+<body>
+  <ul>
+    <div>
+      <div *ngIf="dataLoaded">
+
+        <p>Total lines {{ items.length }}</p>
+        <table>
+          <thead>
+            <tr>
+              <th>
+                <button (click)="sortBy('Process')">Process</button>
+              </th>
+              <th>
+                <button (click)="sortBy2('Invoice')">Invoice</button>
+              </th>
+              <th>
+                <button (click)="sortBy('Container')">Container</button>
+              </th>
+              <th>
+                <button (click)="sortBy('Step')">Status</button>
+              </th>
+              <th>
+                <button (click)="sortBy('Liner')">Liner</button>
+              </th>
+              <th>
+                <button (click)="sortBy('Channel')">Channel</button>
+              </th>
+              <th>
+                <button (click)="sortByDate('ATA')">ATA</button>
+              </th>
+              <th>
+                <button (click)="sortBy2('Dias')">Harbor Days</button>
+              </th>
+              <th>
+                <button (click)="sortBy2('FreeTime')">Freetime</button>
+              </th>
+              <th>
+                <button (click)="sortBy2('TripCost')">Trip Cost</button>
+              </th>
+              <th>
+                <button (click)="sortBy2('Handling')">Handling</button>
+              </th>
+              <th>
+                <button (click)="sortBy2('Demurrage')">Demurrage</button>
+              </th>
+              <th>Reused</th>
+              <th>Empty Return</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of items">
+              <td>{{ item.Process }}</td>
+              <td>{{ item.Invoice }}</td>
+              <td>{{ item.Container }}</td>
+              <td>{{ item.Step }}</td>
+              <td>{{ item.Liner }}</td>
+              <td [ngClass]="{ 'verde-value': item.Channel == 'VERDE','negative-value': item.Channel == 'VERMELHO'}">{{
+                item.Channel }}</td>
+              <td>{{ item.ATA }}</td>
+              <td>{{ item.Dias }}</td>
+              <td
+                [ngClass]="{ 'negative-value': item.FreeTime < 0 , 'danger-value': item.FreeTime < 2 && item.FreeTime >= 0 }">
+                {{ item.FreeTime }}</td>
+              <td>{{ item.TripCost | currency:'USD':'symbol':'1.2-2' }}</td>
+              <td>{{ item.Handling | currency:'BRL':'symbol':'1.2-2' }}</td>
+              <td>{{ item.Demurrage | currency:'USD':'symbol':'1.2-2' }}</td>
+              <td>
+                <button (click)="reutilizar(item, urlConsulta, query)">Reuse</button>
+              </td>
+              <td>
+                <button (click)="devolverVazio(item, urlConsulta, query)">Empty Return</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </ul>
+</body>

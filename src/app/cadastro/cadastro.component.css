@@ -1,0 +1,227 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;900&display=swap');
+
+.app-pagina-publica {
+    app-input-publico {
+        display: block;
+        margin-bottom: 24px;
+
+        &:last-of-type {
+            margin-bottom: 0;
+        }
+
+        &:first-of-type {
+            margin-top: 40px;
+        }
+    }
+}
+
+.navbar {
+    margin-bottom: 30px;
+    background-color: #e3f2fd;
+}
+
+.table {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+}
+
+body {
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #ecf0f3;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    place-items: center;
+    overflow: hidden;
+    font-family: poppins;
+}
+
+.brand-logo {
+    height: 100px;
+    width: 100px;
+    background: url("https://img.icons8.com/color/100/000000/twitter--v2.png");
+    margin: auto;
+    border-radius: 50%;
+    box-sizing: border-box;
+    box-shadow: 7px 7px 10px #cbced1, -7px -7px 10px white;
+}
+
+.brand-title,
+.brand-subtitle {
+    margin-top: 10px;
+    font-weight: 900;
+    font-size: 42px;
+    color: #1DA1F2;
+    letter-spacing: 1px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+label {
+    padding: 0;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+    font-size: 20px;
+    margin-bottom: 4px;
+}
+
+input[type=text],
+[type=date],
+[type=password],
+[type=email],
+.selectVehicle,
+.select-input,
+.fixed-width,
+.fixed-width-menor,
+.currency-input {
+    padding: 0;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+    background: #ecf0f3;
+    padding: 10px;
+    padding-left: 20px;
+    height: 50px;
+    font-size: 14px;
+    border-radius: 50px;
+    box-shadow: inset 6px 6px 6px #cbced1, inset -6px -6px 6px white;
+    caret-color: red;
+}
+
+label:nth-of-type(2) {
+    margin-top: 12px;
+}
+
+input::placeholder {
+    color: gray;
+}
+
+button {
+    color: white;
+    margin-top: 20px;
+    background: #1DA1F2;
+    height: 40px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 900;
+    box-shadow: 6px 6px 6px #cbced1, -6px -6px 6px white;
+    transition: 0.5s;
+}
+
+button:hover {
+    box-shadow: none;
+}
+
+.text-danger {
+    color: darkred;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+a {
+    position: absolute;
+    font-size: 8px;
+    bottom: 4px;
+    right: 4px;
+    text-decoration: none;
+    color: black;
+    background: yellow;
+    border-radius: 10px;
+    padding: 2px;
+}
+
+h1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.custosVariaveis {
+    display: flex;
+}
+
+.align-right {
+    margin-right: 10px;
+    text-align: right;
+}
+
+.larger {
+    margin: 10px;
+    width: 100%;
+
+    .largeInput {
+        width: 100%;
+    }
+}
+
+.contact {
+    display: grid;
+}
+
+.conteudoBotoes {
+    display: contents;
+
+    .btn {
+        font-size: 25px;
+        width: 100%;
+    }
+}
+
+.conteudoRadio {
+    display: contents;
+    font-size: 30px;
+}
+
+.outer-div {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+    background: #ecf0f3;
+}
+
+.container {
+    margin: auto;
+    margin-top: 30px;
+    width: 70%;
+    border-radius: 20px;
+    padding: 40px;
+    box-sizing: border-box;
+    background: #ecf0f3;
+}
+
+.inner-divs {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.conteudoTable {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+
+    &.selectButton {
+        align-items: center;
+    }
+}
+
+.camposLabels {
+    display: flex;
+    flex-direction: column;
+
+    bottom {
+        width: 30px;
+    }
+}
+
+.selectStatus {
+    flex: 1;
+}

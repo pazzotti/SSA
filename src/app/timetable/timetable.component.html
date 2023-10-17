@@ -1,0 +1,314 @@
+<body>
+  <div>
+
+    <table class="table2">
+      <thead>
+        <th class="corlinha" >
+          Criar Time Table
+        </th>
+      </thead>
+    </table>
+
+    <div class="table2">
+
+      <label for="startDate" class="meu-label">Data da Programação:</label>
+      <input type="date" id="startDate" [(ngModel)]="startDate" name="startDate" class="button-spacing">
+      <button (click)="salvar()" class="button-spacing">Gerar Programação</button>
+
+
+      <button (click)="editDialog('')" class="button-spacing"><i-feather name="plus-circle"></i-feather></button>
+      <div *ngIf="showProgressBar">
+        <progressbar [value]="progressValue" [max]="maxValue">{{ progressValue }} Saved lines</progressbar>
+      </div>
+      <a #downloadLink style="display: none;"></a>
+      <div class="table2">
+        <table>
+
+          <thead>
+            <tr>
+              <th class="auto-width">
+                Transportadora
+              </th>
+              <th class="auto-width">
+                Placa
+              </th>
+              <th class="auto-width">
+                Janela 1
+              </th>
+              <th class="auto-width">
+                Janela 2
+              </th>
+              <th class="auto-width">
+                Janela 3
+              </th>
+              <th class="auto-width">
+                Janela 4
+              </th>
+              <th class="auto-width">
+                Janela 5
+              </th>
+              <th class="auto-width">
+                Janela 6
+              </th>
+              <th class="auto-width">
+                Editar
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <ng-container *ngFor="let item of programacao">
+              <tr>
+                <td>{{ item.Transportadora }}</td>
+                <td>{{ item.Plate }}</td>
+                <td [ngClass]="{
+                  'R26': item['Local 1'] === 'R26',
+                  'R27': item['Local 1'] === 'R27',
+                  'R54': item['Local 1'] === 'R54',
+                  'R16': item['Local 1'] === 'R16',
+                  'R19': item['Local 1'] === 'R19',
+                  'R56': item['Local 1'] === 'R56',
+                  'E37': item['Local 1'] === 'E37',
+                  'PRU': item['Local 1'] === 'PRU',
+                  'E56': item['Local 1'] === 'E56',
+                  'R4': item['Local 1'] === 'R4',
+                  'VAZIO': item['Local 1'] === undefined
+                }">
+                  <h3  class="my-heading">{{ item['Local 1'] }}</h3>
+                  <h4 class="my-subheading">{{ item['Janela 1'] | date: 'HH:mm' }}</h4>
+                </td>
+                <td [ngClass]="{
+                  'R26': item['Local 2'] === 'R26',
+                  'R27': item['Local 2'] === 'R27',
+                  'R54': item['Local 2'] === 'R54',
+                  'R16': item['Local 2'] === 'R16',
+                  'R19': item['Local 2'] === 'R19',
+                  'R56': item['Local 2'] === 'R56',
+                  'E37': item['Local 2'] === 'E37',
+                  'PRU': item['Local 2'] === 'PRU',
+                  'E56': item['Local 2'] === 'E56',
+                  'R4': item['Local 2'] === 'R4',
+                  'VAZIO': item['Local 2'] === undefined,
+                }">
+                  <h3  class="my-heading">{{ item['Local 2'] }}</h3>
+                  <h4 class="my-subheading">{{ item['Janela 2'] | date: 'HH:mm' }}</h4>
+                </td>
+
+                <td [ngClass]="{
+                  'R26': item['Local 3'] === 'R26',
+                  'R27': item['Local 3'] === 'R27',
+                  'R54': item['Local 3'] === 'R54',
+                  'R16': item['Local 3'] === 'R16',
+                  'R19': item['Local 3'] === 'R19',
+                  'R56': item['Local 3'] === 'R56',
+                  'E37': item['Local 3'] === 'E37',
+                  'PRU': item['Local 3'] === 'PRU',
+                  'E56': item['Local 3'] === 'E56',
+                  'R4': item['Local 3'] === 'R4',
+                  'VAZIO': item['Local 3'] === undefined
+                }">
+                  <h3  class="my-heading">{{ item['Local 3'] }}</h3>
+                  <h4 class="my-subheading">{{ item['Janela 3'] | date: 'HH:mm' }}</h4>
+                </td>
+
+                <td [ngClass]="{
+                  'R26': item['Local 4'] === 'R26',
+                  'R27': item['Local 4'] === 'R27',
+                  'R54': item['Local 4'] === 'R54',
+                  'R16': item['Local 4'] === 'R16',
+                  'R19': item['Local 4'] === 'R19',
+                  'R56': item['Local 4'] === 'R56',
+                  'E37': item['Local 4'] === 'E37',
+                  'PRU': item['Local 4'] === 'PRU',
+                  'E56': item['Local 4'] === 'E56',
+                  'R4': item['Local 4'] === 'R4',
+                  'VAZIO': item['Local 4'] === undefined
+                }">
+                  <h3  class="my-heading">{{ item['Local 4'] }}</h3>
+                  <h4 class="my-subheading">{{ item['Janela 4'] | date: 'HH:mm' }}</h4>
+                </td>
+
+                <td [ngClass]="{
+                  'R26': item['Local 5'] === 'R26',
+                  'R27': item['Local 5'] === 'R27',
+                  'R54': item['Local 5'] === 'R54',
+                  'R16': item['Local 5'] === 'R16',
+                  'R19': item['Local 5'] === 'R19',
+                  'R56': item['Local 5'] === 'R56',
+                  'E37': item['Local 5'] === 'E37',
+                  'PRU': item['Local 5'] === 'PRU',
+                  'E56': item['Local 5'] === 'E56',
+                  'R4': item['Local 5'] === 'R4',
+                  'VAZIO': item['Local 5'] === undefined
+                }">
+                  <h3  class="my-heading">{{ item['Local 5'] }}</h3>
+                  <h4 class="my-subheading">{{ item['Janela 5'] | date: 'HH:mm' }}</h4>
+                </td>
+                <td [ngClass]="{
+                  'R26': item['Local 6'] === 'R26',
+                  'R27': item['Local 6'] === 'R27',
+                  'R54': item['Local 6'] === 'R54',
+                  'R16': item['Local 6'] === 'R16',
+                  'R19': item['Local 6'] === 'R19',
+                  'R56': item['Local 6'] === 'R56',
+                  'E37': item['Local 6'] === 'E37',
+                  'PRU': item['Local 6'] === 'PRU',
+                  'E56': item['Local 6'] === 'E56',
+                  'R4': item['Local 6'] === 'R4',
+                  'VAZIO': item['Local 6'] === undefined
+                }">
+                  <h3  class="my-heading">{{ item['Local 6'] }}</h3>
+                  <h4 class="my-subheading">{{ item['Janela 6'] | date: 'HH:mm' }}</h4>
+                </td>
+                <td>
+                  <i-feather name="edit" (click)="editDialog(item)"></i-feather>
+                <i-feather name="delete" (click)="deleteItem(item.ID)" class="button-spacing"></i-feather>
+                </td>
+
+
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+<clr-modal [(clrModalOpen)]="dialogOpen" [clrModalSize]="'md'" class="dialog-container">
+
+  <h3 class="modal-title">Ajuste de Programação</h3>
+<div class="modal-body">
+  <form class="inputs">
+    <table class="table2000">
+      <tr>
+        <td style="width: 100px;">
+          <label class="modal-label">Transportadora</label>
+        </td>
+
+        <td style="width: 250px;">
+          <select id="transportadora" name="transportadora" [(ngModel)]="item.Transportadora" class="modal-select">
+            <option *ngFor="let nome of transportadora" [value]="nome">{{ nome }}</option>
+          </select>
+        </td>
+
+
+
+
+        <td style="width: 100px;">
+          <label class="modal-label">Placa</label>
+        </td>
+        <td style="width: 20px;">
+          <input type="string" name="Plate" [(ngModel)]="item.Plate" class="modal-input1">
+        </td>
+      </tr>
+    </table>
+
+    <table class="table2000">
+      <tr>
+        <td style="width: 100px;">
+          <label class="modal-label">Local 1</label>
+        </td>
+
+        <td style="width: 250px;">
+          <select id="local1" name="local1" [(ngModel)]="item['Local 1']" class="modal-select1">
+            <option *ngFor="let local of locais" [value]="local">{{ local }}</option>
+          </select>
+        </td>
+
+
+        <td style="width: 100px;">
+          <label class="modal-label">Local 2</label>
+        </td>
+        <td style="width: 250px;">
+          <select id="local2" name="local2" [(ngModel)]="item['Local 2']" class="modal-select1">
+            <option *ngFor="let local of locais" [value]="local">{{ local }}</option>
+          </select>
+        </td>
+        <td style="width: 100px;">
+          <label class="modal-label">Local 3</label>
+        </td>
+        <td style="width: 250px;">
+          <select id="local3" name="local3" [(ngModel)]="item['Local 3']" class="modal-select1">
+            <option *ngFor="let local of locais" [value]="local">{{ local }}</option>
+          </select>
+        </td>
+        <td style="width: 100px;">
+          <label class="modal-label">Local4</label>
+        </td>
+        <td style="width: 250px;">
+          <select id="local4" name="local4" [(ngModel)]="item['Local 4']" class="modal-select1">
+            <option *ngFor="let local of locais" [value]="local">{{ local }}</option>
+          </select>
+        </td>
+        <td style="width: 100px;">
+          <label class="modal-label">Local 5</label>
+        </td>
+        <td style="width: 250px;">
+          <select id="local5" name="local5" [(ngModel)]="item['Local 5']" class="modal-select1">
+            <option *ngFor="let local of locais" [value]="local">{{ local }}</option>
+          </select>
+        </td>
+        <td style="width: 100px;">
+          <label class="modal-label">Local 6</label>
+        </td>
+        <td style="width: 250px;">
+          <select id="local6" name="local6" [(ngModel)]="item['Local 6']" class="modal-select1">
+            <option *ngFor="let local of locais" [value]="local">{{ local }}</option>
+          </select>
+        </td>
+      </tr>
+    </table>
+
+    <table class="table2000">
+      <tr>
+        <td style="width: 100px;">
+          <label class="modal-label">Janela 1</label>
+        </td>
+        <td style="width: 250px;">
+          <input type="time" id="Janela1" name="Janela1" [(ngModel)]="janela1" placeholder="HH:mm:ss"
+            min="00:00:00" max="23:59:00" required class="modal-input1"/>
+        </td>
+        <td style="width: 100px;">
+          <label class="modal-label">Janela 2</label>
+        </td>
+        <td style="width: 250px;">
+          <input type="time" id="Janela2" name="Janela2" [(ngModel)]="janela2" placeholder="HH:mm:ss"
+            min="00:00:00" max="23:59:00" required class="modal-input1"/>
+        </td>
+        <td style="width: 100px;">
+          <label class="modal-label">Janela 3</label>
+        </td>
+        <td style="width: 250px;">
+          <input type="time" id="Janela3" name="Janela3" [(ngModel)]="janela3" placeholder="HH:mm:ss"
+            min="00:00:00" max="23:59:00" required class="modal-input1"/>
+        </td>
+        <td style="width: 100px;">
+          <label class="modal-label">Janela 4</label>
+        </td>
+        <td style="width: 250px;">
+          <input type="time" id="Janela4" name="Janela4" [(ngModel)]="janela4" placeholder="HH:mm:ss"
+            min="00:00:00" max="23:59:00" required class="modal-input1"/>
+        </td>
+        <td style="width: 100px;">
+          <label class="modal-label">Janela 5</label>
+        </td>
+        <td style="width: 250px;">
+          <input type="time" id="Janela5" name="Janela5" [(ngModel)]="janela5" placeholder="HH:mm:ss"
+            min="00:00:00" max="23:59:00" required class="modal-input1"/>
+        </td>
+        <td style="width: 100px;">
+          <label class="modal-label">Janela 6</label>
+        </td>
+        <td style="width: 250px;">
+          <input type="time" id="Janela6" name="Janela6" [(ngModel)]="janela6" placeholder="HH:mm:ss"
+            min="00:00:00" max="23:59:00" required class="modal-input1"/>
+        </td>
+      </tr>
+    </table>
+    <div class="modal-div">
+      <button class="modal-button" type="button" (click)="salvar2()">Save</button>
+      <button class="modal-button" type="button" (click)="cancel()">Cancel</button>
+    </div>
+  </form>
+</div>
+</clr-modal>

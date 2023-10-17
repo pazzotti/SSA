@@ -1,0 +1,37 @@
+<nav class="main-nav">
+  <a href="#" routerLink="/">SSA</a>
+  <div id="navbarNav">
+    <div class="menu-items">
+
+
+      <div class="dropdown" (mouseenter)="showDropdown = true" (mouseleave)="showDropdown = false">
+        <button class="dropbtn">Menu</button>
+        <div class="dropdown-content" *ngIf="showDropdown">
+          <a href="analise" routerLink="/analise">Análise</a>
+        </div>
+      </div>
+
+
+      <div class="dropdown" (mouseenter)="showDropdown = true" (mouseleave)="showDropdown = false">
+        <button class="dropbtn">Configurações</button>
+        <div class="dropdown-content" *ngIf="showDropdown">
+          <a href="filesupdate" routerLink="/filesupdate">Atualiza Data Base</a>
+        </div>
+      </div>
+
+
+
+
+    </div>
+
+
+
+    <div class="dropdown" (mouseenter)="showDropdown = true" (mouseleave)="showDropdown = false">
+      <button  class="dropbtn" type="button" (click)="logout()">Logout</button>
+    </div>
+
+  </div>
+
+<!-- teste novo branch -->
+
+</nav>

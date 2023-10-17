@@ -1,0 +1,112 @@
+<body>
+  <ul>
+    <div>
+      <div *ngIf="dataLoaded">
+        <form>
+          <label for="filtroDataInicio">Start date:</label>
+          <input type="date" id="filtroDataInicio" name="filtroDataInicio" [(ngModel)]="filtroDataInicio">
+          <label for="filtroDataTermino">End date:</label>
+          <input type="date" id="filtroDataTermino" name="filtroDataTermino" [(ngModel)]="filtroDataTermino">
+          <button type="button" (click)="aplicarFiltroPorData()">Search</button>
+          <input type="text" name="searchText" [(ngModel)]="searchText" (input)="filterItems()" placeholder="Find"
+            class="ultimo-input">
+            <button type="button" (click)="calculateTotalDemurrage()">Calculate</button>
+        </form>
+
+        <table>
+          <tr>
+            <td colspan="12">Total Freight Cost: {{ SomaTrip | currency:'USD':'symbol':'1.2-2' }}</td>
+            <td colspan="12">Total THC Cost: {{ SomaHandling | currency:'BRL':'symbol':'1.2-2' }}</td>
+            <td colspan="12">Total Demurrage Cost: {{ somaDemurrage | currency:'USD':'symbol':'1.2-2' }}</td>
+            <td colspan="12">Total Period Cost: {{ somaDemurrage + SomaTrip |
+              currency:'USD':'symbol':'1.2-2' }} + {{SomaHandling| currency:'BRL':'symbol':'1.2-2'}}</td>
+          </tr>
+        </table>
+
+        <p>Total lines {{ itemsFiltrados.length }}</p>
+
+        <div><button (click)="toggleColumn()">Select</button></div>
+
+        <table>
+          <thead>
+            <tr>
+              <th *ngIf="!hideCheckColumn">
+                <input type="checkbox" (change)="selecionarTodos()"
+                  [checked]="todosSelecionados ? true : false">
+              </th>
+              <th>
+                <button (click)="sortBy('Process')">Process</button>
+              </th>
+              <th>
+                <button (click)="sortBy('Vessel')">Vessel</button>
+              </th>
+              <th>
+                <button (click)="sortBy2('Invoice')">Invoice</button>
+              </th>
+              <th>
+                <button (click)="sortBy('Container')">Container</button>
+              </th>
+              <th>
+                <button (click)="sortBy('Step')">Status</button>
+              </th>
+              <th>
+                <button (click)="sortBy('Liner')">Liner</button>
+              </th>
+              <th>
+                <button (click)="sortBy('ClearancePlace')">Harbor</button>
+              </th>
+              <th>
+                <button (click)="sortBy('Channel')">Channel</button>
+              </th>
+              <th>
+                <button (click)="sortByDate('ATA')">ATA</button>
+              </th>
+              <th>
+                <button (click)="sortBy2('Dias')">Harbor Days</button>
+              </th>
+              <th>
+                <button (click)="sortBy2('FreeTime')">Freetime</button>
+              </th>
+              <th>
+                <button (click)="sortBy2('TripCost')">Trip Cost</button>
+              </th>
+              <th>
+                <button (click)="sortBy2('Handling')">THC</button>
+              </th>
+              <th>
+                <button (click)="sortBy2('Demurrage')">Demurrage</button>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of itemsFiltrados; let f = index" [ngClass]="{ 'verde-row': item.Step === 'Reused' }">
+              <td *ngIf="!hideCheckColumn">
+                <input type="checkbox" [(ngModel)]="item.checked" (change)="toggleCheckedStatus(f, item)">
+              </td>
+              <td>{{ item.Process }}</td>
+              <td>{{ item.Vessel }}</td>
+              <td>{{ item.Invoice }}</td>
+              <td>{{ item.Container }}</td>
+              <td [ngClass]="{
+                'verde-valores': item.Step === 'Reused' || item.Step === 'Empty Return'
+              }">{{ item.Step }}</td>
+              <td>{{ item.Liner }}</td>
+              <td>{{ item.ClearancePlace }}</td>
+              <td [ngClass]="{ 'verde-value': item.Channel === 'VERDE', 'negative-value': item.Channel === 'VERMELHO' }">
+                {{ item.Channel }}
+              </td>
+              <td>{{ item.ATA }}</td>
+              <td>{{ item.Dias }}</td>
+              <td [ngClass]="{ 'negative-value': item.FreeTime < 0, 'danger-value': item.FreeTime < 2 && item.FreeTime >= 0 }">
+                {{ item.FreeTime }}</td>
+              <td>{{ item.TripCost | currency:'USD':'symbol':'1.2-2' }}</td>
+              <td>{{ item.Handling | currency:'BRL':'symbol':'1.2-2' }}</td>
+              <td>{{ item.Demurrage | currency:'USD':'symbol':'1.2-2' }}</td>
+            </tr>
+          </tbody>
+
+        </table>
+      </div>
+    </div>
+  </ul>
+</body>

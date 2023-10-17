@@ -1,0 +1,60 @@
+
+
+<div class="container">
+<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+  <div class="brand-title">Add / Change Contract</div>
+
+
+</nav>
+
+
+
+
+<form>
+  <table class="table table-dark">
+    <tr>
+      <td><label>Liner Name</label></td>
+      <td><label>Freight Cost (US$)</label></td>
+      <td><label>Free time (Days)</label></td>
+
+    </tr>
+    <tr>
+      <td><input type="string" name="liner" [(ngModel)]="data.itemsData.liner"></td>
+      <td><input type="number" name="tripcost" [(ngModel)]="data.itemsData.tripcost"></td>
+      <td><input type="number" name="freetime" [(ngModel)]="data.itemsData.freetime"></td>
+
+    </tr>
+    <tr>
+      <td><label>THC</label></td>
+      <td><label>Daily Cost</label></td>
+      <td><label>Term of Contract</label></td>
+
+    </tr>
+    <tr>
+      <td><input type="number" name="fsperiod" [(ngModel)]="data.itemsData.fsperiod"></td>
+      <td><input type="number" name="scperiod" [(ngModel)]="data.itemsData.scperiod"></td>
+      <td><input type="date" name="tdperiod" [(ngModel)]="data.itemsData.tdperiod"></td>
+
+    </tr>
+
+
+  </table>
+
+  <div>
+    <label>Notes</label>
+    <input type="string" name="comentario" [(ngModel)]="data.itemsData.comentario">
+  </div>
+
+  <div>
+    <button class="btn btn-primary" type="button" (click)="salvar()">Save</button>
+
+    <button class="btn btn-primary" type="button" (click)="cancel()">Cancel</button>
+
+  </div>
+
+
+
+
+</form>
+</div>
+

@@ -1,0 +1,83 @@
+<div class="table-container">
+  <ul>
+    <div>
+
+      <button mat-button (click)="editDialog('')">
+
+        <span class="material-icons">note_add</span> Adicionar Fornecedor
+      </button>
+    </div>
+    <clr-modal [(clrModalOpen)]="dialogOpen" [clrModalSize]="'md'" class="dialog-container">
+      <h2 class="modal-title">Adicionar Fornecedor</h2>
+      <div class="modal-body">
+        <form class="inputs">
+          <div>
+            <label class="modal-label">Fornecedor</label>
+            <input type="string" name="fornecedor" [(ngModel)]="item.local" class="modal-input1">
+          </div>
+          <div>
+            <label class="modal-label">e-mail</label>
+            <input type="string" name="email" [(ngModel)]="item.contato" class="modal-input2">
+          </div>
+          <div>
+            <label class="modal-label">Endereço</label>
+            <input type="string" name="endereco" [(ngModel)]="item.endereco" class="modal-input3">
+          </div>
+          <div>
+            <label class="modal-label">Latitude</label>
+            <input type="string" name="latitude" [(ngModel)]="item.latitude" class="modal-input4">
+            <label class="modal-label">Longitude</label>
+            <input type="string" name="logitude" [(ngModel)]="item.longitude" class="modal-input4">
+          </div>
+
+          <div>
+            <label class="modal-label">Local de Descarga?</label>
+            <input type="checkbox" id="descarga" name="descarga" [(ngModel)]="item.descarga">
+          </div>
+
+          <div class="modal-div">
+            <button class="modal-button" type="button" (click)="salvar()">Save</button>
+            <button class="modal-button" type="button" (click)="cancel()">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </clr-modal>
+
+    <div class="table2">
+      <table>
+        <thead>
+          <tr>
+            <th>Place</th>
+            <th>e-mail</th>
+            <th>Address</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+            <th>Local de Descarga?</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let item of items">
+          <tr [ngClass]="{ 'black-row': $even, 'grafiti-row': $odd }">
+            <td>{{ item.local }}</td>
+            <td>{{ item.contato }}</td>
+            <td>{{ item.endereco }}</td>
+            <td>{{ item.latitude }}</td>
+            <td>{{ item.longitude }}</td>
+            <td>{{ item.descarga }}</td>
+            <td>
+
+              <i-feather name="edit" (click)="editDialog(item)"></i-feather>
+              <span style="margin-left: 10px; margin-right: 10px;"></span>
+              <i-feather name="delete" (click)="deleteItem(item.ID, urlConsulta, query)"
+                class="button-spacing"></i-feather>
+
+
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </ul>
+
+</div>

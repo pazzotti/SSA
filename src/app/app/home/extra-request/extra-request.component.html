@@ -1,0 +1,337 @@
+<div class="container">
+    <nav class="navbar navbar-light">
+        <div class="brand-title">Freight Spot Request</div>
+        <div class="contact">
+            <label class="align-right" for="reason">Contact: <abbr style="color: #3b82f6;">SSBVAD</abbr> Phone: 55
+                11
+                4344-8947 | Mobile: +55 11
+                97488-2943</label>
+        </div>
+    </nav>
+
+    <br>
+    <form [formGroup]="formGroup">
+        <table class="table">
+            <div class="conteudoTable selectButton">
+
+                <div class="camposLabels selectStatus">
+                    <H2>{{ formGroup.get('status')?.value }}</H2>
+                </div>
+                <div class="camposLabels selectStatus" *ngIf="formGroup.get('status')?.value == 'Requested'  && (usuarioLogado.role == '3' || usuarioLogado.role ==  '0' || usuarioLogado.role ==  '2')" >
+                    <button type="button" label="Accept" (click)="formGroup.get('status')?.setValue('Planned')">ACCEPT</button>
+                </div>
+                <div class="camposLabels selectStatus" *ngIf="formGroup.get('status')?.value == 'Requested'  && (usuarioLogado.role == '3' || usuarioLogado.role ==  '0' || usuarioLogado.role ==  '2')">
+                    <button type="button" label="reject"
+                        (click)="formGroup.get('status')?.setValue('Reject')">REJECT</button>
+                </div>
+                <div class="camposLabels selectStatus" *ngIf="(usuarioLogado.role ==  '0' || usuarioLogado.role ==  '2')">
+                    <button type="button" label="cancel"
+                        (click)="formGroup.get('status')?.setValue('Canceled')">CANCEL</button>
+                </div>
+                <div class="camposLabels selectStatus"
+                    *ngIf="(formGroup.get('status')?.value == 'Planned' && (usuarioLogado.role == '3' || usuarioLogado.role ==  '0' || usuarioLogado.role ==  '2'))">
+                    <button type="button" label="executing"
+                        (click)="formGroup.get('status')?.setValue('Executing')">EXECUTING</button>
+                </div>
+                <div class="camposLabels selectStatus"
+                    *ngIf="formGroup.get('status')?.value == 'Executing' && (usuarioLogado.role == '3' || usuarioLogado.role ==  '0' || usuarioLogado.role ==  '2')">
+                    <button type="button" label="completed"
+                        (click)="formGroup.get('status')?.setValue('Completed')">COMPLETED</button>
+                </div>
+            </div>
+            <div class="camposLabels">
+                <label for="motive">Motive for Request*</label>
+                <input class="largeInput" id="motive" name="motive" type="text" formControlName="motive">
+                <div *ngIf="formGroup?.get('motive')?.invalid && formGroup?.get('motive')?.touched">
+                    <small class="text-danger" *ngIf="formGroup?.get('motive')?.hasError('required')">Required</small>
+                </div>
+            </div>
+            <br>
+            <div class="conteudoTable">
+                <div class="camposLabels">
+                    <label for="nf">NF</label>
+                    <input id="nf" type="text" name="nf" formControlName="nf">
+                </div>
+                <div class="camposLabels">
+                    <label for="nfTotal">NF Total Value</label>
+                    <input id="nfTotal" type="text" name="nfTotal" formControlName="nfTotal">
+                </div>
+                <div class="camposLabels">
+                    <label for="weight">Weight (kg)</label>
+                    <input id="weight" type="text" name="weight" formControlName="weight">
+                </div>
+                <div class="camposLabels">
+                    <label for="quantity">Quantity</label>
+                    <input id="quantity" type="text" name="quantity" formControlName="quantity">
+                </div>
+                <div class="camposLabels">
+                    <label for="carrier">Carrier</label>
+                    <input formControlName="carrier" id="carrier" type="text" name="carrier">
+                </div>
+                <div class="camposLabels">
+                    <label for="vehicleType">Vehicle provided by the carrier*</label>
+                    <!-- <input id="vehicleType" type="text" name="vehicleType" formControlName="vehicleType"> -->
+                    <select class="selectVehicle" name="vehicleType" formControlName="vehicleType" appendTo="body">
+                        <option value="-" disabled selected>-</option>
+                        <option *ngFor="let type of typesVehicles" [value]="type">{{ type }}</option>
+                    </select>
+                    <div *ngIf="formGroup?.get('vehicleType')?.invalid && formGroup?.get('vehicleType')?.touched">
+                        <small class="text-danger"
+                            *ngIf="formGroup?.get('vehicleType')?.hasError('required')">Required</small>
+                    </div>
+                </div>
+                <div class="camposLabels">
+                    <label for="reqVehicle">Vehicle requested by user*</label>
+                    <!-- <input id="reqVehicle" type="text" name="reqVehicle" formControlName="reqVehicle"> -->
+                    <select class="selectVehicle" name="reqVehicle" formControlName="reqVehicle" appendTo="body">
+                        <option value="-" disabled selected>-</option>
+                        <option *ngFor="let type of typesVehicles" [value]="type">{{ type }}</option>
+                    </select>
+                    <div *ngIf="formGroup?.get('reqVehicle')?.invalid && formGroup?.get('reqVehicle')?.touched">
+                        <small class="text-danger"
+                            *ngIf="formGroup?.get('reqVehicle')?.hasError('required')">Required</small>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="camposLabels">
+                <label for="description">Material Description</label>
+                <input class="largeInput" id="description" type="text" name="description" formControlName="description">
+            </div>
+            <br>
+            <div class="conteudoTable">
+                <div class="camposLabels">
+                    <label for="reqName">Requester Name*</label>
+                    <input id="reqName" type="text" name="reqName" formControlName="reqName">
+                    <div *ngIf="formGroup?.get('reqName')?.invalid && formGroup?.get('reqName')?.touched">
+                        <small class="text-danger"
+                            *ngIf="formGroup?.get('reqName')?.hasError('required')">Required</small>
+                    </div>
+                </div>
+                <div class="camposLabels">
+                    <label for="reqId">Requester Id(Ex.: SSBXXX)*</label>
+                    <input id="reqId" type="text" name="reqId" formControlName="reqId">
+                    <div *ngIf="formGroup?.get('reqId')?.invalid && formGroup?.get('reqId')?.touched">
+                        <small class="text-danger"
+                            *ngIf="formGroup?.get('reqId')?.hasError('required')">Required</small>
+                    </div>
+                </div>
+                <div class="camposLabels">
+                    <label for="reqEmail">Requester Email*</label>
+                    <input id="reqEmail" type="text" name="reqEmail" formControlName="reqEmail">
+                    <div *ngIf="formGroup?.get('reqEmail')?.invalid && formGroup?.get('reqEmail')?.touched">
+                        <small class="text-danger"
+                            *ngIf="formGroup?.get('reqEmail')?.hasError('required')">Required</small>
+                    </div>
+                </div>
+                <div class="camposLabels">
+                    <label for="reqPhone">Requester Phone*</label>
+                    <input id="reqPhone" type="text" name="reqPhone" formControlName="reqPhone">
+                    <div *ngIf="formGroup?.get('reqPhone')?.invalid && formGroup?.get('reqPhone')?.touched">
+                        <small class="text-danger"
+                            *ngIf="formGroup?.get('reqPhone')?.hasError('required')">Required</small>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="conteudoTable">
+                <div class="camposLabels">
+                    <label for="supEmail">Superior Email*</label>
+                    <input id="supEmail" type="text" name="supEmail" formControlName="supEmail">
+                    <div *ngIf="formGroup?.get('supEmail')?.invalid && formGroup?.get('supEmail')?.touched">
+                        <small class="text-danger"
+                            *ngIf="formGroup?.get('supEmail')?.hasError('required')">Required</small>
+                    </div>
+                </div>
+                <div class="camposLabels">
+                    <label for="costCenter">Cost Center*</label>
+                    <input id="costCenter" type="text" name="costCenter" formControlName="costCenter">
+                    <div *ngIf="formGroup?.get('costCenter')?.invalid && formGroup?.get('costCenter')?.touched">
+                        <small class="text-danger"
+                            *ngIf="formGroup?.get('costCenter')?.hasError('required')">Required</small>
+                    </div>
+                </div>
+                <div class="camposLabels">
+                    <label for="projectNumber">Project Number</label>
+                    <input id="projectNumber" type="text" name="projectNumber" formControlName="projectNumber">
+                </div>
+                <div class="camposLabels">
+                    <label for="orderNumber">Order Number</label>
+                    <input id="orderNumber" type="text" name="orderNumber" formControlName="orderNumber">
+                </div>
+            </div>
+            <div>
+                <br><br>
+                <div class="brand-subtitle">Pick-Up Information</div>
+                <br><br>
+            </div>
+            <div class="conteudoTable">
+                <div class="camposLabels">
+                    <label for="locationPickup">Location*</label>
+                    <!-- <input id="locationPickup" type="text" name="locationPickup" formControlName="locationPickup"> -->
+                    <select class="selectVehicle" name="locationPickup" formControlName="locationPickup"
+                        appendTo="body">
+                        <option value="-" disabled selected>-</option>
+                        <option *ngFor="let type of this.placesOrigin" [value]="type">{{ type }}</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <div *ngIf="formGroup?.get('locationPickup')?.invalid && formGroup?.get('locationPickup')?.touched">
+                        <small class="text-danger"
+                            *ngIf="formGroup?.get('locationPickup')?.hasError('required')">Required</small>
+                    </div>
+                </div>
+                <div *ngIf="formGroup?.get('locationPickup')?.value == 'SCANIA SBC' || formGroup?.get('locationPickup')?.value == 'Scania SLA'"
+                    class="camposLabels">
+                    <label for="areaPickup">Area*</label>
+                    <input id="areaPickup" type="text" name="areaPickup" formControlName="areaPickup"
+                        placeholder="Ex.: P27-05">
+                    <div *ngIf="formGroup?.get('areaPickup')?.invalid && formGroup?.get('areaPickup')?.touched">
+                        <small class="text-danger"
+                            *ngIf="formGroup?.get('areaPickup')?.hasError('required')">Required</small>
+                    </div>
+                </div>
+                <div *ngIf="formGroup?.get('locationPickup')?.value == 'other'" class="camposLabels">
+                    <label for="addressPickup">Address*</label>
+                    <input id="addressPickup" type="text" name="addressPickup" formControlName="addressPickup">
+                    <div *ngIf="formGroup?.get('addressPickup')?.invalid && formGroup?.get('addressPickup')?.touched">
+                        <small class="text-danger"
+                            *ngIf="formGroup?.get('addressPickup')?.hasError('required')">Required</small>
+                    </div>
+                </div>
+                <div *ngIf="formGroup?.get('locationPickup')?.value == 'other'" class="camposLabels">
+                    <label for="cityPickup">City*</label>
+                    <input id="cityPickup" type="text" name="cityPickup" formControlName="cityPickup">
+                    <div *ngIf="formGroup?.get('cityPickup')?.invalid && formGroup?.get('cityPickup')?.touched">
+                        <small class="text-danger"
+                            *ngIf="formGroup?.get('cityPickup')?.hasError('required')">Required</small>
+                    </div>
+                </div>
+                <div *ngIf="formGroup?.get('locationPickup')?.value == 'other'" class="camposLabels">
+                    <label for="statePickup">State*</label>
+                    <input id="statePickup" type="text" name="statePickup" formControlName="statePickup">
+                    <div *ngIf="formGroup?.get('statePickup')?.invalid && formGroup?.get('statePickup')?.touched">
+                        <small class="text-danger"
+                            *ngIf="formGroup?.get('statePickup')?.hasError('required')">Required</small>
+                    </div>
+                </div>
+                <div *ngIf="formGroup?.get('locationPickup')?.value == 'other'" class="camposLabels">
+                    <label for="cepPickup">CEP*</label>
+                    <input id="cepPickup" type="text" name="cepPickup" formControlName="cepPickup">
+                    <div *ngIf="formGroup?.get('cepPickup')?.invalid && formGroup?.get('cepPickup')?.touched">
+                        <small class="text-danger"
+                            *ngIf="formGroup?.get('cepPickup')?.hasError('required')">Required</small>
+                    </div>
+                </div>
+                <div class="camposLabels">
+                    <label for="datePickup">Date*</label>
+                    <input id="datePickup" type="date" name="datePickup" formControlName="datePickup">
+                    <div *ngIf="formGroup?.get('datePickup')?.invalid && formGroup?.get('datePickup')?.touched">
+                        <small class="text-danger"
+                            *ngIf="formGroup?.get('datePickup')?.hasError('required')">Required</small>
+                    </div>
+                </div>
+                <div class="camposLabels">
+                    <label for="timePickup">Time*</label>
+                    <input id="timePickup" type="time" name="timePickup" formControlName="timePickup" format="HH:mm">
+                </div>
+            </div>
+            <div>
+                <br><br>
+                <div class="brand-subtitle">Delivery Information</div>
+                <br><br>
+            </div>
+            <div class="conteudoTable">
+                <div class="camposLabels">
+                    <label for="locationDelivery">Location*</label>
+                    <!-- <input id="locationDelivery" type="text" name="locationDelivery" formControlName="locationDelivery"> -->
+                    <select class="selectVehicle" name="locationDelivery" formControlName="locationDelivery"
+                        appendTo="body">
+                        <option value="-" disabled selected>-</option>
+                        <option *ngFor="let type of this.placesOrigin" [value]="type">{{ type }}</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <div
+                        *ngIf="formGroup?.get('locationDelivery')?.invalid && formGroup?.get('locationDelivery')?.touched">
+                        <small class="text-danger"
+                            *ngIf="formGroup?.get('locationDelivery')?.hasError('required')">Required</small>
+                    </div>
+                </div>
+                <div *ngIf="formGroup?.get('locationDelivery')?.value == 'SCANIA SBC' || formGroup?.get('locationDelivery')?.value == 'Scania SLA'"
+                    class="camposLabels">
+                    <label for="areaDelivery">Area*</label>
+                    <input id="areaDelivery" type="text" name="areaDelivery" formControlName="areaDelivery"
+                        placeholder="Ex.: P27-05">
+                    <div *ngIf="formGroup?.get('areaDelivery')?.invalid && formGroup?.get('areaDelivery')?.touched">
+                        <small class="text-danger"
+                            *ngIf="formGroup?.get('areaDelivery')?.hasError('required')">Required</small>
+                    </div>
+                </div>
+                <div *ngIf="formGroup?.get('locationDelivery')?.value == 'other'" class="camposLabels">
+                    <label for="addressDelivery">Address*</label>
+                    <input id="addressDelivery" type="text" name="addressDelivery" formControlName="addressDelivery">
+                    <div
+                        *ngIf="formGroup?.get('addressDelivery')?.invalid && formGroup?.get('addressDelivery')?.touched">
+                        <small class="text-danger"
+                            *ngIf="formGroup?.get('addressDelivery')?.hasError('required')">Required</small>
+                    </div>
+                </div>
+                <div *ngIf="formGroup?.get('locationDelivery')?.value == 'other'" class="camposLabels">
+                    <label for="cityDelivery">City*</label>
+                    <input id="cityDelivery" type="text" name="cityDelivery" formControlName="cityDelivery">
+                    <div *ngIf="formGroup?.get('cityDelivery')?.invalid && formGroup?.get('cityDelivery')?.touched">
+                        <small class="text-danger"
+                            *ngIf="formGroup?.get('cityDelivery')?.hasError('required')">Required</small>
+                    </div>
+                </div>
+                <div *ngIf="formGroup?.get('locationDelivery')?.value == 'other'" class="camposLabels">
+                    <label for="stateDelivery">State*</label>
+                    <input id="stateDelivery" type="text" name="stateDelivery" formControlName="stateDelivery">
+                    <div *ngIf="formGroup?.get('stateDelivery')?.invalid && formGroup?.get('stateDelivery')?.touched">
+                        <small class="text-danger"
+                            *ngIf="formGroup?.get('stateDelivery')?.hasError('required')">Required</small>
+                    </div>
+                </div>
+                <div *ngIf="formGroup?.get('locationDelivery')?.value == 'other'" class="camposLabels">
+                    <label for="cepDelivery">CEP*</label>
+                    <input id="cepDelivery" type="text" name="cepDelivery" formControlName="cepDelivery">
+                    <div *ngIf="formGroup?.get('cepDelivery')?.invalid && formGroup?.get('cepDelivery')?.touched">
+                        <small class="text-danger"
+                            *ngIf="formGroup?.get('cepDelivery')?.hasError('required')">Required</small>
+                    </div>
+                </div>
+                <div class="camposLabels">
+                    <label for="dateDelivery">Date*</label>
+                    <input id="dateDelivery" type="date" name="dateDelivery" formControlName="dateDelivery">
+                    <div *ngIf="formGroup?.get('dateDelivery')?.invalid && formGroup?.get('dateDelivery')?.touched">
+                        <small class="text-danger"
+                            *ngIf="formGroup.get('dateDelivery')?.hasError('required')">Required</small>
+                    </div>
+                </div>
+                <div class="camposLabels">
+                    <label for="timeDelivery">Time*</label>
+                    <input id="timeDelivery" type="time" name="timeDelivery" formControlName="timeDelivery" format="HH:mm">
+                </div>
+            </div>
+            <br>
+            <div class="camposLabels">
+                <label for="notes">Notes</label>
+                <input class="largeInput" id="notes" type="text" name="notes" formControlName="notes">
+            </div>
+            <br>
+            <div class="conteudoRadio">
+                <div class="conteudoTable">
+                    <label for="critical">Critical</label>
+                    <input type="checkbox" name="critical" formControlName="critical">
+                </div>
+                <div class="conteudoTable">
+                    <label for="dangerousProduct">Dangerous Product</label>
+                    <input type="checkbox" name="dangerousProduct" formControlName="dangerousProduct">
+                </div>
+            </div>
+            <div class="conteudoBotoes">
+                <button class="btn btn-primary" type="button" (click)="salvar()">Save</button>
+                <button class="btn btn-primary" type="button" (click)="cancel()">Cancel</button>
+            </div>
+        </table>
+    </form>
+</div>

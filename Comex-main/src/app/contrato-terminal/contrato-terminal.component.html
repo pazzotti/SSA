@@ -1,0 +1,74 @@
+<body>
+  <ul>
+    <div>
+      <button mat-button (click)="openDialog(items, urlConsulta, query)">
+        <span class="material-icons">note_add</span> Add new contract
+      </button>
+    </div>
+    <table>
+      <thead>
+        <tr class="header-row">
+          <td><label>Harbor</label></td>
+          <td><label>Container Size</label></td>
+          <td><label>First Period Time</label></td>
+          <td><label>First Period CIF</label></td>
+          <td><label>First Period Min. Value</label></td>
+          <td><label>Second Period Time</label></td>
+          <td><label>Second Period CIF</label></td>
+          <td><label>Second Period Min. Value</label></td>
+          <td><label>Third Period Time</label></td>
+          <td><label>Third Period CIF</label></td>
+          <td><label>Third Period Min. Value</label></td>
+          <td><label>Fourth Period Time</label></td>
+          <td><label>Fourth Period CIF</label></td>
+          <td><label>Fourth Period Min. Value</label></td>
+          <td><label>Fifth Period or more Time</label></td>
+          <td><label>Fifth Period CIF</label></td>
+          <td><label>Fifth Period Min. Value</label></td>
+          <td><label>Inspection</label></td>
+          <td><label>Seal Change</label></td>
+          <td><label>Clean</label></td>
+          <td><label>Action</label></td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of items; let even = even; let odd = odd" [class.even]="even" [class.odd]="odd">
+          <td>{{ item.harborname }}</td>
+          <td>{{ item.contaienrsize }} polegadas</td>
+          <td>{{ item.fsperiodTime }} dias</td>
+          <td>{{ item.fsperiodCIF }} %</td>
+          <td>{{ item.fsperiodValue | currency:'BRL' }}</td>
+
+          <td>{{ item.scperiodTime }} dias</td>
+          <td>{{ item.scperiodCIF }} %</td>
+          <td>{{ item.scperiodValue }}</td>
+
+          <td>{{ item.tdperiodTime }} dias</td>
+          <td>{{ item.tdperiodCIF }} %</td>
+          <td>{{ item.tdperiodValue }}</td>
+
+          <td>{{ item.ftperiodTime }} dias</td>
+          <td>{{ item.ftperiodCIF }} %</td>
+          <td>{{ item.ftperiodValue }}</td>
+
+          <td>{{ item.ffperiodTime }} dias</td>
+          <td>{{ item.ffperiodCIF }} %</td>
+          <td>{{ item.ffperiodValue | currency:'BRL' }}</td>
+
+          <td>{{ item.inspection | currency:'BRL' }}</td>
+          <td>{{ item.sealchange | currency:'BRL' }}</td>
+          <td>{{ item.clean | currency:'BRL' }}</td>
+
+          <td class="action-buttons">
+            <button mat-icon-button color="primary" aria-label="Editar" (click)="editDialog(item, urlConsulta, query)">
+              <span class="material-icons">edit</span>
+            </button>
+            <button mat-icon-button color="warn" aria-label="Excluir" (click)="deleteItem(item.ID, urlConsulta, query)">
+              <span class="material-icons">delete</span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ul>
+</body>

@@ -1,0 +1,205 @@
+<div class="container">
+  <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+    <div class="brand-title">Add / Change Carrier Contracts</div>
+  </nav>
+  <form [formGroup]="formGroup">
+    <table class="table table-dark">
+      <tr>
+        <td><label>Carrier Name</label></td>
+        <td><label>Flow</label></td>
+        <td><label>Type</label></td>
+      </tr>
+      <tr>
+        <td>
+          <select formControlName="placeCarrier" class="select-input">
+            <option value="">Select Carrier</option>
+            <option *ngFor="let placeCarrier of placesCarriers" [value]="placeCarrier">{{ placeCarrier }}</option>
+          </select>
+        </td>
+        <td>
+          <select formControlName="Flow" class="select-input">
+            <option value="Import">Import</option>
+            <option value="Export">Export</option>
+            <option value="Empty Return">Empty Return</option>
+          </select>
+        </td>
+        <td>
+          <select formControlName="Type" class="select-input">
+            <option value="Truck">Truck</option>
+            <option value="Train">Train</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td><label>Origin</label></td>
+        <td><label>Destiny</label></td>
+        <td><label>Container Size</label></td>
+        <td><label>Price</label></td>
+      </tr>
+      <tr>
+        <td>
+          <select formControlName="placeOrigin" class="select-input"
+            *ngIf="formGroup?.get('Flow')?.value === 'Export' ||formGroup?.get('Flow')?.value ==='Empty Return'">
+            <option value="">Select Origin</option>
+            <option *ngFor="let placeOrigin of placesOrigin" [value]="placeOrigin">{{ placeOrigin }}</option>
+          </select>
+          <select formControlName="placeDestiny" class="select-input"
+            *ngIf="formGroup?.get('Flow')?.value === 'Import'">
+            <option value="">Select Destiny</option>
+            <option *ngFor="let placeDestiny of places" [value]="placeDestiny">{{ placeDestiny }}</option>
+          </select>
+        </td>
+        <td>
+          <select formControlName="placeDestiny" class="select-input"
+            *ngIf="formGroup?.get('Flow')?.value === 'Export'||formGroup?.get('Flow')?.value ==='Empty Return'">
+            <option value="">Select Destiny</option>
+            <option *ngFor="let placeDestiny of places" [value]="placeDestiny">{{ placeDestiny }}</option>
+          </select>
+          <select formControlName="placeOrigin" class="select-input" *ngIf="formGroup?.get('Flow')?.value === 'Import'">
+            <option value="">Select Origin</option>
+            <option *ngFor="let placeOrigin of placesOrigin" [value]="placeOrigin">{{ placeOrigin }}</option>
+          </select>
+        </td>
+        <td>
+          <select formControlName="Size" class="select-input">
+            <option value="40">40</option>
+            <option value="20">20</option>
+          </select>
+        </td>
+        <td>
+          <input type="number" name="price" formControlName="price">
+          <div *ngIf="formGroup?.get('price')?.invalid && formGroup?.get('price')?.touched">
+            <small class="text-danger" *ngIf="formGroup?.get('price')?.hasError('required')">Required</small>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <tr>
+      <div class="brand-title">Fixed Cost</div>
+    </tr>
+    <table>
+
+      <div>
+        <tr>
+          <td class="fixed-width"><label>Jan</label></td>
+          <td class="fixed-width"><label>Feb</label></td>
+          <td class="fixed-width"><label>Mar</label></td>
+          <td class="fixed-width"><label>Apr</label></td>
+          <td class="fixed-width"><label>May</label></td>
+          <td class="fixed-width"><label>Jun</label></td>
+        </tr>
+        <tr>
+          <td class="fixed-width">
+            <input type="number" name="jan" formControlName="jan">
+            <div *ngIf="formGroup?.get('jan')?.invalid && formGroup?.get('jan')?.touched">
+              <small class="text-danger" *ngIf="formGroup?.get('jan')?.hasError('required')">Required</small>
+            </div>
+          </td>
+          <td class="fixed-width">
+            <input type="number" name="feb" formControlName="feb">
+            <div *ngIf="formGroup?.get('feb')?.invalid && formGroup?.get('feb')?.touched">
+              <small class="text-danger" *ngIf="formGroup?.get('feb')?.hasError('required')">Required</small>
+            </div>
+          </td>
+          <td class="fixed-width">
+            <input type="number" name="mar" formControlName="mar">
+            <div *ngIf="formGroup?.get('mar')?.invalid && formGroup?.get('mar')?.touched">
+              <small class="text-danger" *ngIf="formGroup?.get('mar')?.hasError('required')">Required</small>
+            </div>
+          </td>
+          <td class="fixed-width">
+            <input type="number" name="apr" formControlName="apr">
+            <div *ngIf="formGroup?.get('apr')?.invalid && formGroup?.get('apr')?.touched">
+              <small class="text-danger" *ngIf="formGroup?.get('apr')?.hasError('required')">Required</small>
+            </div>
+          </td>
+          <td class="fixed-width">
+            <input type="number" name="may" formControlName="may">
+            <div *ngIf="formGroup?.get('may')?.invalid && formGroup?.get('may')?.touched">
+              <small class="text-danger" *ngIf="formGroup?.get('may')?.hasError('required')">Required</small>
+            </div>
+          </td>
+          <td class="fixed-width">
+            <input type="number" name="jun" formControlName="jun">
+            <div *ngIf="formGroup?.get('jun')?.invalid && formGroup?.get('jun')?.touched">
+              <small class="text-danger" *ngIf="formGroup?.get('jun')?.hasError('required')">Required</small>
+            </div>
+          </td>
+        </tr>
+      </div>
+    </table>
+    <table>
+
+      <div>
+        <tr>
+          <td class="fixed-width"><label>Jul</label></td>
+          <td class="fixed-width"><label>Aug</label></td>
+          <td class="fixed-width"><label>Sep</label></td>
+          <td class="fixed-width"><label>Oct</label></td>
+          <td class="fixed-width"><label>Nov</label></td>
+          <td class="fixed-width"><label>Dec</label></td>
+        </tr>
+        <tr>
+          <td class="fixed-width">
+            <input type="number" name="jul" formControlName="jul">
+            <div *ngIf="formGroup?.get('jul')?.invalid && formGroup?.get('jul')?.touched">
+              <small class="text-danger" *ngIf="formGroup?.get('jul')?.hasError('required')">Required</small>
+            </div>
+          </td>
+          <td class="fixed-width">
+            <input type="number" name="aug" formControlName="aug">
+            <div *ngIf="formGroup?.get('aug')?.invalid && formGroup?.get('aug')?.touched">
+              <small class="text-danger" *ngIf="formGroup?.get('aug')?.hasError('required')">Required</small>
+            </div>
+          </td>
+          <td class="fixed-width">
+            <input type="number" name="sep" formControlName="sep">
+            <div *ngIf="formGroup?.get('sep')?.invalid && formGroup?.get('sep')?.touched">
+              <small class="text-danger" *ngIf="formGroup?.get('sep')?.hasError('required')">Required</small>
+            </div>
+          </td>
+          <td class="fixed-width">
+            <input type="number" name="oct" formControlName="oct">
+            <div *ngIf="formGroup?.get('oct')?.invalid && formGroup?.get('oct')?.touched">
+              <small class="text-danger" *ngIf="formGroup?.get('oct')?.hasError('required')">Required</small>
+            </div>
+          </td>
+          <td class="fixed-width">
+            <input type="number" name="nov" formControlName="nov">
+            <div *ngIf="formGroup?.get('nov')?.invalid && formGroup?.get('nov')?.touched">
+              <small class="text-danger" *ngIf="formGroup?.get('nov')?.hasError('required')">Required</small>
+            </div>
+          </td>
+          <td class="fixed-width">
+            <input type="number" name="dec" formControlName="dec">
+            <div *ngIf="formGroup?.get('dec')?.invalid && formGroup?.get('dec')?.touched">
+              <small class="text-danger" *ngIf="formGroup?.get('dec')?.hasError('required')">Required</small>
+            </div>
+          </td>
+        </tr>
+      </div>
+    </table>
+    <table>
+      <div>
+
+        <tr>
+          <div class="brand-title">Validity</div>
+        </tr>
+        <tr>
+          <td class="fixed-width">
+            <input type="date" name="validity" formControlName="validity">
+            <div *ngIf="formGroup?.get('validity')?.invalid && formGroup?.get('validity')?.touched">
+              <small class="text-danger" *ngIf="formGroup?.get('validity')?.hasError('required')">Required</small>
+            </div>
+          </td>
+        </tr>
+
+
+      </div>
+    </table>
+    <div>
+      <button class="btn btn-primary" type="button" (click)="salvar()">Save</button>
+      <button class="btn btn-primary" type="button" (click)="cancel()">Cancel</button>
+    </div>
+  </form>
+</div>

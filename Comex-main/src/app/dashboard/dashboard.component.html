@@ -1,0 +1,47 @@
+<body>
+  <ul>
+    <div>
+      <div>
+        <form>
+          <label for="startDate">Start Date:</label>
+          <input type="date" id="startDate" [(ngModel)]="startDate" name="startDate">
+
+          <label for="endDate">End Date:</label>
+          <input type="date" id="endDate" [(ngModel)]="endDate" name="endDate">
+
+          <button (click)="updateChart()">Create Chart</button>
+        </form>
+      </div>
+      <table>
+        <tr>
+          <th>
+            <div class="chart chart-column" id="chartQuantidade">
+              <highcharts-chart [Highcharts]="Highcharts" [options]="barQuantidadeContainers"
+                style="height: 400px;"></highcharts-chart>
+            </div>
+          </th>
+          <th>
+            <div class="chart chart-pie">
+              <highcharts-chart [Highcharts]="Highcharts" [options]="pieChartOptionsCustos"
+                style="height: 400px;"></highcharts-chart>
+            </div>
+          </th>
+        </tr>
+        <tr>
+          <th>
+            <div class="chart chart-column">
+              <highcharts-chart [Highcharts]="Highcharts" [options]="lineChartOptionsCustos"
+                style="height: 400px;"></highcharts-chart>
+            </div>
+          </th>
+          <th>
+            <div class="chart chart-pie" id="chartContainer">
+              <highcharts-chart [Highcharts]="Highcharts" [options]="chartOptionsReutiliza"
+                style="height: 400px;"></highcharts-chart>
+            </div>
+          </th>
+        </tr>
+      </table>
+    </div>
+  </ul>
+</body>

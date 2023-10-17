@@ -1,0 +1,56 @@
+<body>
+  <ul>
+    <div>
+      <div>
+
+
+
+        <div class="input-row" >
+          <label for="fileInputTXT">Selecionar Arquivo Parametros:</label>
+          <input type="file" id="fileInputTXT" (change)="onFileTXTSelected($event)"
+            [ngClass]="{ 'green-border': jsonDataParametros !== undefined }">
+        </div>
+
+        <div class="input-row" *ngIf="jsonDataParametros !== undefined ">
+          <label for="fileInputPECAS">Selecionar Arquivo PECAS:</label>
+          <input type="file" id="fileInputPECAS" (change)="onFilePECASSelected($event)"
+            [ngClass]="{ 'green-border': jsonDataPecas !== undefined }">
+        </div>
+        <div class="input-row" *ngIf="jsonDataParametros !== undefined && jsonDataPecas !== undefined ">
+          <button class="data-save-btn" (click)="salvarNoBanco()">Salvar Dados</button>
+          <div class="progress-bar-container">
+            <div class="progress-bar" [style.width]="getProgressWidth()"></div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+      <a #downloadLink style="display: none;"></a>
+      <div *ngIf="dataLoaded">
+        <p>Total lines {{ filteredData.length }}</p>
+        <table>
+          <thead>
+            <tr>
+              <th>
+                <button (click)="sortBy('ID')">Part Number</button>
+              </th>
+
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of filteredData">
+
+              <td>{{ item.ID }}</td>
+
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </ul>
+</body>

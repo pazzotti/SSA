@@ -1,0 +1,76 @@
+<body>
+  <ul>
+    <div>
+      <button mat-button (click)="openDialog(items, urlConsulta, query)">
+        <span class="material-icons">note_add</span> Add new contract
+      </button>
+    </div>
+    <table>
+      <thead>
+        <tr class="header-row">
+          <td><label>Carrier</label></td>
+          <td><label>Flow</label></td>
+          <td><label>Type</label></td>
+          <td><label>Origin</label></td>
+          <td><label>Destiny</label></td>
+          <td><label>Container Size</label></td>
+          <td><label>Price</label></td>
+          <td><label>Jan</label></td>
+          <td><label>Feb</label></td>
+          <td><label>Mar</label></td>
+          <td><label>Apr</label></td>
+          <td><label>May</label></td>
+          <td><label>Jun</label></td>
+          <td><label>Jul</label></td>
+          <td><label>Aug</label></td>
+          <td><label>Sep</label></td>
+          <td><label>Oct</label></td>
+          <td><label>Nov</label></td>
+          <td><label>Dec</label></td>
+          <td><label>Validity</label></td>
+          <td><label>Action</label></td>
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of items; let even = even; let odd = odd" [class.even]="even" [class.odd]="odd">
+          <td>{{ item.placeCarrier }}</td>
+          <td>{{ item.Flow }}</td>
+          <td>{{ item.Type }}</td>
+          <td>{{ item.placeOrigin }}</td>
+          <td>{{ item.placeDestiny}}</td>
+
+          <td>{{ item.Size }}</td>
+          <td>{{ item.price  | currency:'BRL' }}</td>
+          <td>{{ item.jan  | currency:'BRL' }}</td>
+
+          <td>{{ item.feb  | currency:'BRL' }}</td>
+          <td>{{ item.mar  | currency:'BRL' }}</td>
+          <td>{{ item.apr  | currency:'BRL' }}</td>
+
+          <td>{{ item.may  | currency:'BRL' }}</td>
+          <td>{{ item.jun  | currency:'BRL' }} </td>
+          <td>{{ item.jul  | currency:'BRL' }}</td>
+
+          <td>{{ item.aug  | currency:'BRL' }}</td>
+          <td>{{ item.sep  | currency:'BRL' }} </td>
+          <td>{{ item.oct | currency:'BRL' }}</td>
+
+          <td>{{ item.nov | currency:'BRL' }}</td>
+          <td>{{ item.dec | currency:'BRL' }}</td>
+          <td>{{ item.validity}}</td>
+
+
+          <td class="action-buttons">
+            <button mat-icon-button color="primary" aria-label="Editar" (click)="editDialog(item, urlConsulta, query)">
+              <span class="material-icons">edit</span>
+            </button>
+            <button mat-icon-button color="warn" aria-label="Excluir" (click)="deleteItem(item.ID, urlConsulta, query)">
+              <span class="material-icons">delete</span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ul>
+</body>

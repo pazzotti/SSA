@@ -1,0 +1,142 @@
+<body>
+    <div class="headerContratos">
+        <div class="align-left search">
+            <input type="text" [(ngModel)]="searchString" (keyup)="aplicarFiltro()" placeholder="Filter">
+        </div>
+        <h3 class="subtitulo">Usuarios</h3>
+        <div class="align-right">
+            <button mat-button (click)=" editDialog(items)">
+                <span class="material-icons">note_add</span> Cadastrar Usuario
+            </button>
+
+        </div>
+    </div>
+    <ul>
+        <table>
+            <thead>
+                <tr class="header-row">
+                    <td><label>ID</label></td>
+                    <td><label>Nome</label></td>
+                    <td><label>Empresa</label></td>
+                    <td><label>Fluxos</label></td>
+                    <td><label>Nivel de acesso</label></td>
+                    <td><label>Ações</label></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of usuarios">
+                    <td>{{ item.ID }}</td>
+                    <td>{{ item.nome }}</td>
+                    <td>{{ item.company}}</td>
+                    <td>{{ item.flowsAccess}}</td>
+                    <td>{{ item.role}}</td>
+                    <td class="action-buttons">
+                        <button mat-icon-button color="primary" aria-label="Editar" (click)="editDialog(item)">
+                            <span class="material-icons">edit</span>
+                        </button>
+                        <button [disabled]="usuarioLogado.role != '0' && usuarioLogado.role != '2'" mat-icon-button
+                            color="warn" aria-label="Excluir" (click)="deleteItem(item.ID, urlConsulta, queryUsers)">
+                            <span class="material-icons">delete</span>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </ul>
+</body>
+<clr-modal [(clrModalOpen)]="dialogOpen" [clrModalSize]="'sm'" class="dialog-container">
+    <h3 class="modal-title">Cadastro de Usuários</h3>
+    <div class="modal-body">
+        <form class="inputs">
+            <table class="table2000">
+                <tr>
+                    <td>
+                        <label class="modal-label">Nome</label>
+                    </td>
+                    <td class="align-left input-maior">
+                        <input type="text" name="nome" [(ngModel)]="item.nome" class="modal-input1"
+                            (blur)="onFieldTouched()">
+                        <div
+                            *ngIf="campoTocado && (item.nome == null || item.nome == undefined || item.nome == '')">
+                            <small class="text-danger">Required</small>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="modal-label">Usuário*</label>
+                    </td>
+                    <td class="align-left input-maior">
+                        <input [disabled]="!isCarrierEnabledCadastro" type="text" name="ID" [(ngModel)]="item.ID" class="modal-input1" (blur)="onFieldTouched()">
+                        <div *ngIf="campoTocado && (item.ID == null || item.ID == undefined || item.ID == '')">
+                            <small class="text-danger">Required</small>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="modal-label">Senha</label>
+                    </td>
+                    <td>
+                        <input type="password" name="senha" [(ngModel)]="item.senha" class="modal-input1" (blur)="onFieldTouched()">
+                        <div *ngIf="campoTocado && (item.senha == null || item.senha == undefined || item.senha == '')">
+                            <small class="text-danger">Required</small>
+                        </div>
+                    </td>
+                    <td>
+                        <label class="modal-label">Confirmação de senha</label>
+                    </td>
+                    <td>
+                        <input type="password" name="confirmacaoSenha" [(ngModel)]="item.confirmacaoSenha" class="modal-input1"  (blur)="onFieldTouched()">
+                        <div *ngIf="campoTocado && (item.confirmacaoSenha == null || item.confirmacaoSenha == undefined || item.confirmacaoSenha == '')">
+                            <small class="text-danger">Required</small>
+                        </div>
+                    </td>
+                    <td>
+                        <label class="modal-label">Role</label>
+                    </td>
+                    <td>
+                        <!-- <input type="text" name="flow" [(ngModel)]="item.flow" class="modal-input1"> -->
+                        <select [disabled]="!isCarrierEnabled" name="role" id="role" [(ngModel)]="item.role" class="modal-input1">
+                            <option value="0">Admin</option>
+                            <option value="1">User</option>
+                            <option value="2">Transport Coordinator</option>
+                            <option value="3">Carrier User</option>
+                            <option value="4">Supplier User</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="modal-label">Empresa</label>
+                    </td>
+                    <td>
+                        <select [disabled]="!isCarrierEnabled" id="company" name="company" [(ngModel)]="item.company" class="modal-select"
+                            (blur)="onFieldTouched()">
+                            <option *ngFor="let carrier of carriers" [value]="carrier.name">{{ carrier.name }}</option>
+                        </select>
+                    </td>
+                    <td>
+                        <label class="modal-label">Fluxos</label>
+                    </td>
+                    <td class="flex1">
+                        <!-- <input type="text" name="region" [(ngModel)]="item.region" class="modal-input1"> -->
+                        <select [disabled]="!isCarrierEnabled" multiple name="flowsAccess" id="flowsAccess" [(ngModel)]="item.flowsAccess" class="modal-input1">
+                            <option value="Import">Import</option>
+                            <option value="Export">Export</option>
+                            <option value="Empty Return">Empty Return</option>
+                            <option value="MR Great SP">MR Great SP</option>
+                            <option value="MR Sul">MR Sul</option>
+                            <option value="Interplant">Interplant</option>
+                            <option value="Latinet">Latinet</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <div class="modal-div">
+                <button class="modal-button" type="button" (click)="salvar()">Save</button>
+                <button class="modal-button" type="button" (click)="cancel()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</clr-modal>

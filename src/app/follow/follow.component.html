@@ -1,0 +1,138 @@
+<body>
+  <div>
+    <div *ngIf="dataLoaded">
+      <table class="table2">
+        <thead>
+
+          <th class="corlinha">
+            ECOS Follow-up
+          </th>
+        </thead>
+      </table>
+
+      <div>
+        <form>
+
+
+          <button (click)="mostrarItensFinalizados = !mostrarItensFinalizados">
+            {{ mostrarItensFinalizados ? 'Show Opened' : 'Show Finished' }}
+          </button>
+          <!-- Adicione botões para outros status, se necessário -->
+
+          <label>Qty itens: {{ ecos.length }}</label>
+
+
+          <ng-container *ngFor="let status of ['Accepted', 'Denied', 'Analyzing']">
+            <label>{{ status }}: {{ getStatusCount(status) }}</label>
+          </ng-container>
+
+          <label>Without Analysis: {{ getOtherStatusCount() }}</label>
+        </form>
+      </div>
+      <div>
+        <table>
+          <tr>
+            <td>
+              OverStock Cost: {{ calculateTotalCost() | currency: 'BRL' }}
+            </td>
+            <td>
+              Possible Cost Avoidance: {{ calculateTotalCostAvoid() | currency: 'BRL' }}
+            </td>
+            <td>
+              Real Cost Avoidance: {{ calculateTotalCostAvoidReal() | currency: 'BRL' }}
+            </td>
+            <td>
+              Current Scrap: {{ calculateTotalCostScrap() | currency: 'BRL' }}
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="table2">
+        <table>
+          <thead>
+            <tr>
+              <th class="auto-width">
+                Last Update
+              </th>
+              <th class="auto-width">
+                <button (click)="sortBy2('EcoN')">ECO Number</button>
+              </th>
+              <th class="auto-width">
+                Disc Part Number
+              </th>
+              <th class="auto-width">
+                <button (click)="sortBy2('MPCode')">MP Code</button>
+              </th>
+              <th class="auto-width">
+                <button (click)="sortBy2('Packaging')">Sup Type</button>
+              </th>
+              <th class="auto-width">
+                <button (click)="sortBy2('SOP')">SOP</button>
+              </th>
+              <th class="auto-width">
+                <button (click)="sortBy2('SOCOP')">SOCOP</button>
+              </th>
+              <th class="auto-width">
+                <button (click)="sortBy2('SOPDev')">SOP Dev</button>
+              </th>
+
+              <th class="auto-width">
+                <button (click)="sortBy2('SOCOPDev')">SOCOP Dev</button>
+              </th>
+
+              <th class="auto-width">
+                Stock
+              </th>
+              <th class="auto-width">
+                Calloff + Pipeline
+              </th>
+              <th class="auto-width">
+                Consumption
+              </th>
+              <th class="auto-width">
+                Line
+              </th>
+              <th class="auto-width">
+                Total Qty
+              </th>
+              <th class="auto-width">
+                Item Cost
+              </th>
+              <th>
+                <button (click)="sortBy2('TotalCost')">Total Cost</button>
+              </th>
+              <th class="auto-width">
+                Comment
+              </th>
+              <th>
+                <button (click)="sortBy2('StatusWork')">Status</button>
+              </th>
+              <th>
+                <button (click)="sortBy3('primeiro')">Trend</button>
+              </th>
+              <th class="auto-width">
+                Inicial Qty
+              </th>
+              <th class="auto-width">
+                Current Qty
+              </th>
+              <th>Current Saving</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let item of ecos; let i = index">
+
+                <tr>
+
+                  <td>{{ item.ID }}</td>
+
+                </tr>
+
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</body>

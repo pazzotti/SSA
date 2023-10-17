@@ -1,0 +1,51 @@
+<body>
+  <ul>
+    <div>
+      <div *ngIf="dataLoaded">
+        <button (click)="getItemsFromJetta()">Atualizar</button>
+        <button (click)="salvar()">Salvar</button>
+        <div class="progress-bar-container">
+          <div class="progress-bar" [style.width]="getProgressWidth()"></div>
+        </div>
+        <table>
+          <tr>
+            <th class="blue-text">
+              <a class="blue-text">Descrição da Roterização</a>
+            </th>
+            <th class="blue-text">
+              <a class="blue-text">Data da Roterização</a>
+            </th>
+          </tr>
+          <tr *ngFor="let item of items">
+            <td>{{ item.description }}</td>
+            <td>{{ item.date | date:'dd/MM/yyyy' }}</td>
+          </tr>
+          <tr>
+            <th class="blue-text">
+              <a class="blue-text">Veículo</a>
+            </th>
+            <th class="blue-text">
+              <a class="blue-text">Placa</a>
+            </th>
+          </tr>
+
+          <ng-container *ngFor="let routeArray of routes">
+            <tr *ngFor="let route of routeArray">
+              <td>
+                <ul>
+                  <li *ngFor="let transport of route.result.transports">{{ transport.descricao }}</li>
+                </ul>
+              </td>
+              <td>
+                <ul>
+                  <li *ngFor="let transport of route.result.transports">{{ transport.plate }}</li>
+                </ul>
+              </td>
+            </tr>
+          </ng-container>
+
+        </table>
+      </div>
+    </div>
+  </ul>
+</body>

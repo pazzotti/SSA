@@ -1,0 +1,136 @@
+<body>
+    <div class="headerContratos">
+        <div class="align-left search">
+            <input type="text" [(ngModel)]="searchString" (keyup)="aplicarFiltro()" placeholder="Filter">
+        </div>
+        <h3 class="subtitulo">Transportadores</h3>
+        <div class="align-right">
+            <button mat-button (click)=" editDialog(items)">
+                <span class="material-icons">note_add</span> Cadastrar Transportador
+            </button>
+
+        </div>
+    </div>
+    <ul>
+        <table>
+            <thead>
+                <tr class="header-row">
+                    <td><label>ID</label></td>
+                    <td><label>Nome</label></td>
+                    <td><label>Telefone</label></td>
+                    <td><label>Endereço</label></td>
+                    <td><label>Email</label></td>
+                    <td><label>Ações</label></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of carriers">
+                    <td>{{ item.ID }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.phone }}</td>
+                    <td>{{ item.endereco + ", " + item.number + " - " + item.bairro + " - " + item.city + " - " + item.uf + " - " + item.cep }}</td>
+                    <td>{{ item.contato}}</td>
+                    <td class="action-buttons">
+                        <button mat-icon-button color="primary" aria-label="Editar" (click)="editDialog(item)">
+                            <span class="material-icons">edit</span>
+                        </button>
+                        <button [disabled]="usuarioLogado.role != '0' && usuarioLogado.role != '2'" mat-icon-button
+                            color="warn" aria-label="Excluir" (click)="deleteItem(item.ID, urlConsulta, queryCarriers)">
+                            <span class="material-icons">delete</span>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </ul>
+</body>
+<clr-modal [(clrModalOpen)]="dialogOpen" [clrModalSize]="'sm'" class="dialog-container">
+    <h3 class="modal-title">Cadastro de Transportador</h3>
+    <div class="modal-body">
+        <form class="inputs">
+            <table class="table2000">
+                <tr>
+                    <td>
+                        <label class="modal-label">Nome do Transportador</label>
+                    </td>
+                    <td class="align-left input-maior">
+                        <input type="text" name="name" [(ngModel)]="item.name" class="modal-input1"
+                            (blur)="onFieldTouched()">
+                            <div *ngIf="campoTocado && (item.name == null || item.name == undefined || item.name == '')">
+                                <small class="text-danger">Required</small>
+                            </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="modal-label">Rua</label>
+                    </td>
+                    <td>
+                        <input type="text" name="endereco" [(ngModel)]="item.endereco" class="modal-input1">
+                    </td>
+                    <td>
+                        <label class="modal-label">Numero</label>
+                    </td>
+                    <td>
+                        <input type="text" name="number" [(ngModel)]="item.number" class="modal-input1">
+                    </td>
+                    <td>
+                        <label class="modal-label">Bairro</label>
+                    </td>
+                    <td>
+                        <input type="text" name="bairro" [(ngModel)]="item.bairro" class="modal-input1">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="modal-label">Cidade</label>
+                    </td>
+                    <td>
+                        <input type="text" name="city" [(ngModel)]="item.city" class="modal-input1">
+                    </td>
+                    <td>
+                        <label class="modal-label">UF</label>
+                    </td>
+                    <td>
+                        <input type="text" name="uf" [(ngModel)]="item.uf" class="modal-input1">
+                    </td>
+                    <td>
+                        <label class="modal-label">CEP</label>
+                    </td>
+                    <td>
+                        <input type="text" name="cep" [(ngModel)]="item.cep" class="modal-input1">
+                    </td>
+                </tr>
+                <tr>                   
+                    <td>
+                        <label class="modal-label">E-mail*</label>
+                    </td>
+                    <td class="align-left">
+                        <input type="text" name="contato" [(ngModel)]="item.contato" class="modal-input0"
+                            (blur)="onFieldTouched()">
+                        <div
+                            *ngIf="campoTocado && (item.contato == null || item.contato == undefined || item.contato == '')">
+                            <small class="text-danger">Required</small>
+                        </div>
+                    </td>
+                    <td>
+                        <label class="modal-label">Telefone*</label>
+                    </td>
+                    <td class="input-maior">
+                        <input type="text" name="phone" [(ngModel)]="item.phone" class="modal-input1"
+                            (blur)="onFieldTouched()">
+                        <div
+                            *ngIf="campoTocado && (item.phone == null || item.phone == undefined || item.phone == '')">
+                            <small class="text-danger">Required</small>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+            </table>
+            <div class="modal-div">
+                <button class="modal-button" type="button" (click)="salvar()">Save</button>
+                <button class="modal-button" type="button" (click)="cancel()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</clr-modal>

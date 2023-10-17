@@ -1,0 +1,182 @@
+<div class="container">
+  <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+    <div class="brand-title">Add / Change Harbor Contracts</div>
+  </nav>
+  <form [formGroup]="formGroup">
+    <table class="table table-dark">
+      <tr>
+        <td><label>Harbor Name</label></td>
+      </tr>
+      <tr>
+        <td>
+          <input type="text" name="harborname" formControlName="harborname">
+          <div *ngIf="formGroup?.get('harborname')?.invalid && formGroup?.get('harborname')?.touched">
+            <small class="text-danger" *ngIf="formGroup?.get('harborname')?.hasError('required')">Required</small>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td><label>Container Size</label></td>
+      </tr>
+      <tr>
+        <td>
+          <input type="number" name="contaienrsize" formControlName="contaienrsize">
+          <div *ngIf="formGroup?.get('contaienrsize')?.invalid && formGroup?.get('contaienrsize')?.touched">
+            <small class="text-danger" *ngIf="formGroup?.get('contaienrsize')?.hasError('required')">Required</small>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td><label>First Period Time</label></td>
+        <td><label>Fifth Period CIF</label></td>
+        <td><label>Fifth Period Min. Value</label></td>
+        <td><label>Second Period Time</label></td>
+        <td><label>Second Period CIF</label></td>
+        <td><label>Second Period Min. Value</label></td>
+      </tr>
+      <tr>
+        <td>
+          <input type="number" name="fsperiodTime" formControlName="fsperiodTime">
+          <div *ngIf="formGroup?.get('fsperiodTime')?.invalid && formGroup?.get('fsperiodTime')?.touched">
+            <small class="text-danger" *ngIf="formGroup?.get('fsperiodTime')?.hasError('required')">Required</small>
+          </div>
+        </td>
+        <td>
+          <input type="number" name="fsperiodCIF" formControlName="fsperiodCIF">
+          <div *ngIf="formGroup?.get('fsperiodCIF')?.invalid && formGroup?.get('fsperiodCIF')?.touched">
+            <small class="text-danger" *ngIf="formGroup?.get('fsperiodCIF')?.hasError('required')">Required</small>
+          </div>
+        </td>
+        <td>
+          <input type="number" name="fsperiodValue" formControlName="fsperiodValue">
+          <div *ngIf="formGroup?.get('fsperiodValue')?.invalid && formGroup?.get('fsperiodValue')?.touched">
+            <small class="text-danger" *ngIf="formGroup?.get('fsperiodValue')?.hasError('required')">Required</small>
+          </div>
+        </td>
+        <td>
+          <input type="number" name="scperiodTime" formControlName="scperiodTime">
+          <div *ngIf="formGroup?.get('scperiodTime')?.invalid && formGroup?.get('scperiodTime')?.touched">
+            <small class="text-danger" *ngIf="formGroup?.get('scperiodTime')?.hasError('required')">Required</small>
+          </div>
+        </td>
+        <td>
+          <input type="number" name="scperiodCIF" formControlName="scperiodCIF">
+          <div *ngIf="formGroup?.get('scperiodCIF')?.invalid && formGroup?.get('scperiodCIF')?.touched">
+            <small class="text-danger" *ngIf="formGroup?.get('scperiodCIF')?.hasError('required')">Required</small>
+          </div>
+        </td>
+        <td>
+          <input type="number" name="scperiodValue" formControlName="scperiodValue">
+          <div *ngIf="formGroup?.get('scperiodValue')?.invalid && formGroup?.get('scperiodValue')?.touched">
+            <small class="text-danger" *ngIf="formGroup?.get('scperiodValue')?.hasError('required')">Required</small>
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><label>Third Period Time</label></td>
+        <td><label>Third Period CIF</label></td>
+        <td><label>Third Period Min. Value</label></td>
+        <td><label>Fourth Period Time</label></td>
+        <td><label>Fourth Period CIF</label></td>
+        <td><label>Fourth Period Min. Value</label></td>
+      </tr>
+      <tr>
+
+
+        <td>
+          <input type="number" name="tdperiodTime" formControlName="tdperiodTime">
+          <div *ngIf="formGroup?.get('tdperiodTime')?.invalid && formGroup?.get('tdperiodTime')?.touched">
+            <small class="text-danger" *ngIf="formGroup?.get('tdperiodTime')?.hasError('required')">Required</small>
+          </div>
+        </td>
+        <td>
+          <input type="number" name="tdperiodCIF" formControlName="tdperiodCIF">
+          <div *ngIf="formGroup?.get('tdperiodCIF')?.invalid && formGroup?.get('tdperiodCIF')?.touched">
+            <small class="text-danger" *ngIf="formGroup?.get('tdperiodCIF')?.hasError('required')">Required</small>
+          </div>
+        </td>
+        <td>
+          <input type="number" name="tdperiodValue" formControlName="tdperiodValue">
+          <div *ngIf="formGroup?.get('tdperiodValue')?.invalid && formGroup?.get('tdperiodValue')?.touched">
+            <small class="text-danger" *ngIf="formGroup?.get('tdperiodValue')?.hasError('required')">Required</small>
+          </div>
+        </td>
+        <td>
+          <input type="number" name="ftperiodTime" formControlName="ftperiodTime">
+          <div *ngIf="formGroup?.get('ftperiodTime')?.invalid && formGroup?.get('ftperiodTime')?.touched">
+            <small class="text-danger" *ngIf="formGroup?.get('ftperiodTime')?.hasError('required')">Required</small>
+          </div>
+        </td>
+        <td>
+          <input type="number" name="ftperiodCIF" formControlName="ftperiodCIF">
+          <div *ngIf="formGroup?.get('ftperiodCIF')?.invalid && formGroup?.get('ftperiodCIF')?.touched">
+            <small class="text-danger" *ngIf="formGroup?.get('ftperiodCIF')?.hasError('required')">Required</small>
+          </div>
+        </td>
+        <td>
+          <input type="number" name="ftperiodValue" formControlName="ftperiodValue">
+          <div *ngIf="formGroup?.get('ftperiodValue')?.invalid && formGroup?.get('ftperiodValue')?.touched">
+            <small class="text-danger" *ngIf="formGroup?.get('ftperiodValue')?.hasError('required')">Required</small>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td><label>Fifth Period or more Time</label></td>
+        <td><label>Fifth Period CIF</label></td>
+        <td><label>Fifth Period Min. Value</label></td>
+        <td><label>Inspection Position</label></td>
+        <td><label>Seal Change</label></td>
+        <td><label>Container Clean</label></td>
+      </tr>
+      <tr>
+
+        <td>
+          <input type="number" name="ffperiodTime" formControlName="ffperiodTime">
+          <div *ngIf="formGroup?.get('ffperiodTime')?.invalid && formGroup?.get('ffperiodTime')?.touched">
+            <small class="text-danger" *ngIf="formGroup?.get('ffperiodTime')?.hasError('required')">Required</small>
+          </div>
+        </td>
+        <td>
+          <input type="number" name="ffperiodCIF" formControlName="ffperiodCIF">
+          <div *ngIf="formGroup?.get('ffperiodCIF')?.invalid && formGroup?.get('ffperiodCIF')?.touched">
+            <small class="text-danger" *ngIf="formGroup?.get('ffperiodCIF')?.hasError('required')">Required</small>
+          </div>
+        </td>
+        <td>
+          <input type="number" name="ffperiodValue" formControlName="ffperiodValue">
+          <div *ngIf="formGroup?.get('ffperiodValue')?.invalid && formGroup?.get('ffperiodValue')?.touched">
+            <small class="text-danger" *ngIf="formGroup?.get('ffperiodValue')?.hasError('required')">Required</small>
+          </div>
+        </td>
+
+
+
+
+
+        <td>
+          <input type="number" name="inspection" formControlName="inspection">
+          <div *ngIf="formGroup?.get('inspection')?.invalid && formGroup?.get('inspection')?.touched">
+            <small class="text-danger" *ngIf="formGroup?.get('inspection')?.hasError('required')">Required</small>
+          </div>
+        </td>
+        <td>
+          <input type="number" name="sealchange" formControlName="sealchange">
+          <div *ngIf="formGroup?.get('sealchange')?.invalid && formGroup?.get('sealchange')?.touched">
+            <small class="text-danger" *ngIf="formGroup?.get('sealchange')?.hasError('required')">Required</small>
+          </div>
+        </td>
+        <td>
+          <input type="number" name="clean" formControlName="clean">
+          <div *ngIf="formGroup?.get('clean')?.invalid && formGroup?.get('clean')?.touched">
+            <small class="text-danger" *ngIf="formGroup?.get('clean')?.hasError('required')">Required</small>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <div>
+      <button class="btn btn-primary" type="button" (click)="salvar()">Save</button>
+      <button class="btn btn-primary" type="button" (click)="cancel()">Cancel</button>
+    </div>
+  </form>
+</div>

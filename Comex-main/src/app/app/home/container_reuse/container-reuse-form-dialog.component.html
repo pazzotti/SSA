@@ -1,0 +1,49 @@
+<div class="container">
+  <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+    <div class="brand-title">Container {{ formReuse.get('Container')?.value }} Reuse</div>
+
+
+  </nav>
+  <form [formGroup]="formReuse">
+    <table class="table table-dark">
+
+      <tr>
+        <td><label>Carrier</label></td>
+        <td><label>Origem Place</label></td>
+        <td><label>Destiny Place</label></td>
+        <td><label>Booking Number</label></td>
+        <td><label>Date Open Gate</label></td>
+      </tr>
+      <tr>
+        <td>
+          <select formControlName="Carrier" class="select-input">
+            <option value="">Select Carrier</option>
+            <option *ngFor="let carrier of carriers" [value]="carrier">{{ carrier }}</option>
+          </select>
+        </td>
+        <td>
+          <select formControlName="placeOrigin" class="select-input">
+            <option value="">Select origin place</option>
+            <option *ngFor="let placeOrigin of placesOrigin" [value]="placeOrigin">{{ placeOrigin }}</option>
+          </select>
+        </td>
+        <td>
+          <select formControlName="place" class="select-input">
+            <option value="">Select destiny place</option>
+            <option *ngFor="let place of places" [value]="place">{{ place }}</option>
+          </select>
+        </td>
+        <td>
+          <input type="string" name="booking" formControlName="booking" [(ngModel)]="data.itemsData.booking">
+        </td>
+        <td><input type="date" name="gateOpen" formControlName="gateOpen" [(ngModel)]="data.itemsData.gateOpen"></td>
+      </tr>
+
+
+    </table>
+    <div>
+      <button class="btn btn-primary" type="button" (click)="salvar()">Save</button>
+      <button class="btn btn-primary" type="button" (click)="cancel()">Cancel</button>
+    </div>
+  </form>
+</div>

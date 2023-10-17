@@ -1,0 +1,45 @@
+
+
+<div class="container">
+<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+  <div class="brand-title">Add / Change Contract</div>
+
+
+</nav>
+
+
+
+
+<form>
+  <table class="table table-dark">
+    <tr>
+      <td><label>Place</label></td>
+      <td><label>e-mail</label></td>
+      <td><label>Address</label></td>
+
+    </tr>
+    <tr>
+      <td><input type="string" name="liner" [(ngModel)]="data.itemsData.local"></td>
+      <td><input type="string" name="tripcost" [(ngModel)]="data.itemsData.contato"></td>
+      <td><input type="string" name="freetime" [(ngModel)]="data.itemsData.endereco"></td>
+
+    </tr>
+
+
+
+  </table>
+
+
+  <div>
+    <button class="btn btn-primary" type="button" (click)="salvar()">Save</button>
+
+    <button class="btn btn-primary" type="button" (click)="cancel()">Cancel</button>
+
+  </div>
+
+
+
+
+</form>
+</div>
+

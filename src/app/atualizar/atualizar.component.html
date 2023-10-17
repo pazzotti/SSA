@@ -1,0 +1,75 @@
+<body>
+  <ul>
+    <div>
+      <input type="file" (change)="onFileSelected($event)">
+      <button class="data-save-btn" (click)="salvarNoBanco()">Data Save</button>
+
+        <div *ngIf="showProgressBar">
+          <progressbar [value]="progressValue" [max]="maxValue">{{ progressValue }} Saved lines</progressbar>
+        </div>
+
+      <a #downloadLink style="display: none;"></a>
+      <div *ngIf="dataLoaded">
+        <p>Total lines {{ jsonData.length }}</p>
+        <table>
+          <thead>
+            <tr>
+              <th>
+                <button (click)="sortBy('Process')">Descrição</button>
+              </th>
+              <th>
+                <button (click)="sortBy('Invoice')">Data Coleta</button>
+              </th>
+              <th>
+                <button (click)="sortBy('Invoice')">Paradas</button>
+              </th>
+              <th>
+                <button (click)="sortBy('Container')">Janela 1</button>
+              </th>
+              <th>
+                <button (click)="sortBy('Step')">Janela2</button>
+              </th>
+              <th>
+                <button (click)="sortBy('Transport')">Janela 3</button>
+              </th>
+              <th>
+                <button (click)="sortBy('Channel')">Janela 4</button>
+              </th>
+              <th>
+                <button (click)="sortBy('ATA')">Fornecedor 1</button>
+              </th>
+              <th>
+                <button (click)="sortBy('Dias')">Fornecedor 2</button>
+              </th>
+              <th>
+                <button (click)="sortBy('FreeTime')">Fornecedor 3</button>
+              </th>
+              <th>
+                <button (click)="sortBy('TripCost')">Fornecedor 4</button>
+              </th>
+              <th>
+                <button (click)="sortBy('Handling')">Volumes</button>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of jsonData">
+              <td>{{ item.description }}</td>
+              <td>{{ item.date }}</td>
+              <td>{{ item.Passos }}</td>
+              <td>{{ item['Janela 1'] }}</td>
+              <td>{{ item['Janela 2'] }}</td>
+              <td>{{ item['Janela 3'] }}</td>
+              <td>{{ item['Janela 4'] }}</td>
+              <td>{{ item['Fornecedor 1'] }}</td>
+              <td>{{ item['Fornecedor 2'] }}</td>
+              <td>{{ item['Fornecedor 3'] }}</td>
+              <td>{{ item['Fornecedor 4'] }}</td>
+              <td>{{ item.Volume }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </ul>
+</body>

@@ -1,0 +1,45 @@
+<body>
+  <ul>
+    <div>
+      <button mat-button (click)="openDialog()">
+        <span class="material-icons">note_add</span> Add new contract
+      </button>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Liner Names</th>
+          <th>Freight cost</th>
+          <th>Free time</th>
+          <th>Handling</th>
+          <th>Daily Cost</th>
+          <th>Term of Contract</th>
+          <th>Notes</th>
+          <th>Action</th> <!-- adicionando uma coluna para os botões de ação -->
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of items$ | async">
+        <tr [ngClass]="{ 'black-row': $even, 'grafiti-row': $odd }"> <!-- adicionando as classes de cor de fundo -->
+          <td>{{ item.liner }}</td>
+          <td> ${{ item.tripcost.toFixed(2) }}</td> <!-- adicionando o símbolo da moeda Real -->
+          <td>{{ item.freetime }}</td>
+          <td>${{ item.fsperiod.toFixed(2) }}</td>
+          <td>${{ item.scperiod.toFixed(2) }}</td>
+          <td>{{ item.tdperiod }}</td>
+          <td>{{ item.comentario }}</td>
+          <td> <!-- adicionando os botões de ação -->
+            <button mat-icon-button color="primary" aria-label="Editar" (click)="editDialog(dataSource, urlConsulta, query)">
+              <a>edit</a>
+            </button>
+            <span style="margin-left: 10px; margin-right: 10px;"> </span> <!-- espaço entre os botões -->
+            <button mat-icon-button color="warn" aria-label="Excluir" (click)="deleteItem(item.ID)">
+              <a>delete</a>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ul>
+</body>
+
+

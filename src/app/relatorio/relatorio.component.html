@@ -1,0 +1,279 @@
+<div class="table-container">
+  <ul>
+    <table class="table2">
+      <thead>
+        <th class="centro-align">
+          <!-- Input fields to select the date range -->
+          <input type="date" [(ngModel)]="startDate" format="yyyy-MM-dd" class="select-input">
+          <input type="date" [(ngModel)]="endDate" format="yyyy-MM-dd" class="select-input">
+          <!-- Button to trigger the filter -->
+          <button (click)="applyDateFilter()" class="select-input">Aplicar Filtro</button>
+          <button (click)="milkRunSPFilter()" class="select-input2" [ngClass]="{'botaoMRSP': milkRunSP}">Milk Run
+            SP</button>
+          <button (click)="milkRunSulFilter()" class="select-input" [ngClass]="{'botaoMRSP': milkRunSul}">Milk Run
+            Sul</button>
+          <button (click)="milkRunArgFilter()" class="select-input" [ngClass]="{'botaoMRSP': milkRunArg}">Milk Run
+            Arg</button>
+        </th>
+
+        <th class="centro-align">Total de viagens: {{ filteredItems.length }}</th>
+
+      </thead>
+    </table>
+
+    <div>
+      <table style="width: 100%;" class="table2">
+        <tr class="table2">
+          <td style="width: 20%;" class="table2"><strong>Filling Rate: {{ calcularMediaMaiorValor() | number: '1.2-2'
+              }}%</strong>
+          </td>
+          <td style="width: 20%;" class="table2">
+            <strong>Porcentagem de Veículos Pequenos:</strong> {{ calcularPorcentagemVeiculosPequenos() | number:
+            '1.2-2' }}%
+          </td>
+          <td style="width: 20%;" class="table2">
+            <strong>Porcentagem de Veículos Médios:</strong> {{ calcularPorcentagemVeiculosMedios() | number: '1.2-2'
+            }}%
+          </td>
+          <td style="width: 20%;" class="table2">
+            <strong>Porcentagem de Veículos Grandes:</strong> {{ calcularPorcentagemVeiculosGrandes() | number: '1.2-2'
+            }}%
+          </td>
+          <td style="width: 20%;" class="table2">
+            <strong>Custo Total:</strong> {{ calcularSomaCustoViagem() | currency:'BRL' }}
+          </td>
+
+
+        </tr>
+      </table>
+
+    </div>
+
+    <div>
+      <table style="width: 100%;" class="table2">
+        <tr class="table2">
+          <td style="width: 20%;" class="table2"><strong>Cumprimento de Janelas: {{ (somarQuantidades().valorUm / somarQuantidades().totalItensValidos * 100)
+            | number: '1.2-2' }}%</strong>
+          </td>
+          <td style="width: 20%;" class="table2">
+            <strong>Distância Total:</strong> {{ somarTotalDistance() }}Km
+          </td>
+          <td style="width: 20%;" class="table2">
+            <strong>Peso Total:</strong> {{ somarWeightLoaded() | number: '1.2-2' }}Ton
+          </td>
+          <td style="width: 20%;" class="table2">
+            <strong>Emissão CO2:</strong> {{ calcularEmissaoCO2(somarTotalDistance(), somarWeightLoaded()) | number: '1.2-2' }}KgCO2/Ton
+          </td>
+          <td style="width: 20%;" class="table2">
+            <strong>Eficiência de Transporte:</strong> {{ getPercentComentNotEmpty() | number: '1.2-2' }}%
+          </td>
+
+
+
+
+        </tr>
+      </table>
+
+    </div>
+
+    <div class="table2">
+      <table>
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Tipo de Veículo</th>
+            <th>Placa do Veículo</th>
+            <th>Fornecedores</th>
+            <th>Desvios</th>
+            <th>Qtde Itens</th>
+            <th>Cubagem</th>
+            <th>Peso Total</th>
+            <th>Filling Rate</th>
+            <th>Distância Total</th>
+            <th>Custo da Viagem</th>
+            <th>Reportar</th>
+            <th>Deletar</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let item of filteredItems">
+        <tbody *ngFor="let item of filteredItems">
+          <tr [ngClass]="{ 'black-row': $even, 'grafiti-row': $odd }">
+            <td>
+              {{ item.date | customDate }}
+            </td>
+            <td [class.background-red]="!valorExisteNoModelo(item['Transport Type'])" (click)="veiculoDialog(item)">
+              {{ item['Transport Type'] }}
+            </td>
+            <td [ngClass]="{ 'background-red': !isValorValido(item.Plate) }" (click)="editPlaca(item, 'Plate')">
+              {{ isValorValido(item.Plate) ? (item.Plate ) : '' }}
+            </td>
+            <td style="text-align: left;" (click)="editField(item, 'Fornecedor 1')">
+              {{ item['Fornecedor 1'] }}
+              <span *ngIf="isValorValido(item['Fornecedor 2'])"> + {{ item['Fornecedor 2'] }}</span>
+              <span *ngIf="isValorValido(item['Fornecedor 3'])"> + {{ item['Fornecedor 3'] }}</span>
+              <span *ngIf="isValorValido(item['Fornecedor 4'])"> + {{ item['Fornecedor 4'] }}</span>
+            </td>
+            <td>
+              <i-feather name="alert-triangle" *ngIf="hasComent(item)" title="{{ item.Coment }}" class="red-icon"></i-feather>
+            </td>
+
+            <td [ngClass]="{ 'background-red': !isValorValido(item.Volumes) }" (click)="editField(item, 'Volumes')">
+              {{ isValorValido(item.Volumes) ? (item.Volumes ) : '' }}
+            </td>
+            <td [ngClass]="{ 'background-red': !isValorValido(item.Cubage) }" (click)="editField(item, 'Cubage')">
+              {{ isValorValido(item.Cubage) ? (item.Cubage | number: '1.2-2') + ' m³' : '' }}
+            </td>
+
+            <td [ngClass]="{ 'background-red': !isValorValido(item['Weight Loaded']) }"
+              (click)="editField(item, 'Weight Loaded')">
+              {{ isValorValido(item['Weight Loaded']) ? (item['Weight Loaded'] | number: '1.2-2') + ' Kg' : '' }}
+            </td>
+
+            <ng-container *ngIf="findVeiculoByModelo(item['Transport Type']) as veiculo">
+              <td *ngIf="isValorValido(item['Weight Loaded']) || isValorValido(item.Cubage)">
+                {{ calcularMaiorValor(item, veiculo) | number: '1.2-2' }}%
+              </td>
+            </ng-container>
+
+            <td [ngClass]="{ 'background-red': !isValorValido(item['Total Distance']) }"
+              (click)="editField(item, 'Total Distance')">
+              {{ isValorValido(item['Total Distance']) ? (item['Total Distance'] | number: '1.2-2') + ' Km' : '' }}
+            </td>
+
+            <td [ngClass]="{ 'background-red': !isValorValido(item['Total Cost']) }"
+              (click)="editField(item, 'Total Cost')">
+              {{ isValorValido(item['Total Cost']) ? 'R$ ' + (item['Total Cost'] | number: '1.2-2') : '' }}
+            </td>
+            <td>
+              <i-feather name="message-circle" (click)="InsereComent(item, 'Coment')"></i-feather>
+            </td>
+
+            <td>
+
+              <i-feather name="delete" (click)="deleteItem(item, urlConsulta, query)"
+                class="button-spacing"></i-feather>
+
+
+            </td>
+          </tr>
+          <!-- ... Your other table rows ... -->
+
+
+        </tbody>
+      </table>
+    </div>
+
+  </ul>
+
+</div>
+
+<clr-modal [(clrModalOpen)]="dialogOpen" [clrModalSize]="'md'" class="dialog-container">
+  <h2 class="modal-title">Adicionar Fornecedor</h2>
+  <div class="modal-body">
+    <form class="inputs">
+      <div>
+        <label class="modal-label">Fornecedor</label>
+        <input type="string" name="fornecedor" [(ngModel)]="item.local" class="modal-input1">
+      </div>
+      <div>
+        <label class="modal-label">e-mail</label>
+        <input type="string" name="email" [(ngModel)]="item.contato" class="modal-input2">
+      </div>
+      <div>
+        <label class="modal-label">Endereço</label>
+        <input type="string" name="endereco" [(ngModel)]="item.endereco" class="modal-input3">
+      </div>
+      <div>
+        <label class="modal-label">Latitude</label>
+        <input type="string" name="latitude" [(ngModel)]="item.latitude" class="modal-input4">
+        <label class="modal-label">Longitude</label>
+        <input type="string" name="logitude" [(ngModel)]="item.longitude" class="modal-input4">
+      </div>
+
+      <div>
+        <label class="modal-label">Local de Descarga?</label>
+        <input type="checkbox" id="descarga" name="descarga" [(ngModel)]="item.descarga">
+      </div>
+
+      <div class="modal-div">
+        <button class="modal-button" type="button" (click)="salvar()">Save</button>
+        <button class="modal-button" type="button" (click)="cancel()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="dialogTiposOpen" [clrModalSize]="'md'" class="dialog-container">
+  <h2 class="modal-title">Cadastrar Tipo de Veículo</h2>
+  <div class="modal-body">
+    <form class="inputs">
+      <table class="table2000" style="width: 100%;">
+        <tr>
+          <td style="width: 20%;">
+            <label class="modal-label">Modelo</label>
+          </td>
+          <td style="width: 80%;">
+            <input type="string" name="modelo" [(ngModel)]="item.modelo" class="modal-input1">
+          </td>
+        </tr>
+      </table>
+      <table class="table2000" style="width: 100%;">
+        <tr>
+          <td style="width: 20%;">
+            <label class="modal-label">Transportadora</label>
+          </td>
+          <td style="width: 80%;">
+            <select id="transportadora" name="transportadora" [(ngModel)]="item.transportadora" class="modal-select">
+              <option *ngFor="let transportadora of carrier" [value]="transportadora.name">{{ transportadora.name }}
+              </option>
+            </select>
+          </td>
+        </tr>
+      </table>
+
+      <table class="table2000" style="width: 100%;">
+        <tr>
+          <td style="width: 20%;">
+            <label class="modal-label">Perfil</label>
+          </td>
+          <td style="width: 80%;">
+
+            <select id="perfil" name="perfil" [(ngModel)]="item.perfil" class="modal-select">
+              <option *ngFor="let perfil of perfilVehicles" [value]="perfil">{{ perfil }}
+              </option>
+            </select>
+
+
+          </td>
+        </tr>
+      </table>
+      <table class="table2000" style="width: 100%;">
+        <tr>
+          <td style="width: 15%;">
+            <label class="modal-label">Combustivel</label>
+          </td>
+          <td style="width: 35%;">
+            <select id="combustivel" name="perfil" [(ngModel)]="item.combustivel" class="modal-select1">
+              <option *ngFor="let combustivel of combustiveis" [value]="combustivel">{{ combustivel }}
+              </option>
+            </select>
+          </td>
+
+          <td style="width: 35%;">
+            <label class="modal-label">Emissões</label>
+          </td>
+          <td style="width: 15%;">
+            <input type="string" name="emissoes" [(ngModel)]="item.emissoes" class="modal-input4">
+          </td>
+        </tr>
+      </table>
+      <table class="table2000" style="width: 100%;">
+        <tr>
+          <button class="modal-button" type="button" (click)="salvarVeiculo()">Save</button>
+          <button class="modal-button" type="button" (click)="cancel()">Cancel</button>
+        </tr>
+
+      </table>
+    </form>
+  </div>
+</clr-modal>

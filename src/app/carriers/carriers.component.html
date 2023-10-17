@@ -1,0 +1,59 @@
+<body>
+  <ul>
+    <div>
+      <button mat-button (click)="editDialog('')">
+        <span class="material-icons">note_add</span> Add new contract
+      </button>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Carrier Name</th>
+          <th>e-mail</th>
+          <th>Address</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of items; let even = even; let odd = odd" [class.even]="even" [class.odd]="odd">
+          <td>{{ item.name }}</td>
+          <td>{{ item.contato }}</td>
+          <td>{{ item.endereco }}</td>
+          <td class="action-buttons">
+            <button mat-icon-button color="primary" aria-label="Editar" (click)="editDialog(item)">
+              <span class="material-icons">edit</span>
+            </button>
+            <button mat-icon-button color="warn" aria-label="Excluir" (click)="deleteItem(item.ID, urlConsulta, query)">
+              <span class="material-icons">delete</span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ul>
+</body>
+<clr-modal [(clrModalOpen)]="dialogOpen" [clrModalSize]="'md'" class="dialog-container">
+  <h2 class="modal-title">Adicionar Local</h2>
+  <div class="modal-body">
+    <form class="inputs">
+      <div>
+        <label class="modal-label">Transportadora</label>
+        <input type="string" name="modelo" [(ngModel)]="item.name" class="modal-input1">
+      </div>
+      <div>
+        <label class="modal-label">Contato</label>
+        <input type="string" name="contato" [(ngModel)]="item.contato" class="modal-input2">
+      </div>
+      <div>
+        <label class="modal-label">Endereço</label>
+        <input type="string" name="endereco" [(ngModel)]="item.endereco" class="modal-input3">
+      </div>
+      <div class="modal-div">
+        <button class="modal-button" type="button" (click)="salvar()">Save</button>
+        <button class="modal-button" type="button" (click)="cancel()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</clr-modal>
+
+

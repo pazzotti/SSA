@@ -1,0 +1,54 @@
+<!-- <div class="container">
+    <nav class="navbar navbar-light">
+        <div class="brand-title">Login</div>
+        <div class="contact">
+            <label class="align-right" for="reason">Contact: <abbr style="color: #3b82f6;">SSBUIF</abbr></label>
+        </div>
+    </nav>
+    <form [formGroup]="formGroup">
+        <table class="table">
+            <div class="camposLabels">
+                <input type="text" id="login" name="login" placeholder="user" formControlName="login">
+            </div>
+            <div class="camposLabels">
+                <input type="password" id="senha" name="senha" placeholder="password" formControlName="senha">
+            </div>
+            <button type="button" (click)="submit()">LOGIN</button>
+            <!-- <div>
+                <a href="cadastro" routerLink="/cadastro">Ainda não tem acesso? Click e faça seu cadastro!</a>
+            </div> 
+            <button type="button" (click)="cadastrar()">CADASTRAR</button>
+        </table>
+    </form>
+</div> -->
+
+<clr-modal [(clrModalOpen)]="dialogOpen" [clrModalSize]="'md'" class="dialog-container">
+    <h3 class="modal-title">LOGIN</h3>
+    <p class="modal-contact">Contato: <abbr style="color: #3b82f6;">SSBUIF</abbr></p>
+    <div class="modal-body">
+        <form class="inputs">
+            <table class="table2000">
+                <tr>
+                    <td class="flex1">
+                        <label class="modal-label">Usuário</label>
+                    </td>
+                    <td class="align-left input-maior">
+                        <input type="text" name="login" [(ngModel)]="item.login" class="modal-input0">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="flex1">
+                        <label class="modal-label">Senha</label>
+                    </td>
+                    <td class="align-left input-maior">
+                        <input type="password" name="senha" [(ngModel)]="item.senha" class="modal-input0">
+                    </td>
+                </tr>
+            </table>
+            <div class="modal-div">
+                <button class="modal-button" type="button" (click)="submit()">Login</button>
+                <button class="modal-button" type="button" (click)="cadastrar()">Cadastrar</button>
+            </div>
+        </form>
+    </div>
+</clr-modal>

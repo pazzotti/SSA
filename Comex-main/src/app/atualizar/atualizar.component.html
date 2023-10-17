@@ -1,0 +1,75 @@
+<body>
+  <ul>
+    <div>
+      <input type="file" (change)="onFileSelected($event)">
+      <button class="data-save-btn" (click)="salvarNoBanco()">Data Save</button>
+
+        <div *ngIf="showProgressBar">
+          <progressbar [value]="progressValue" [max]="maxValue">{{ progressValue }} Saved lines</progressbar>
+        </div>
+
+      <a #downloadLink style="display: none;"></a>
+      <div *ngIf="dataLoaded">
+        <p>Total lines {{ jsonData.length }}</p>
+        <table>
+          <thead>
+            <tr>
+              <th>
+                <button (click)="sortBy('Process')">Processo</button>
+              </th>
+              <th>
+                <button (click)="sortBy('Invoice')">Invoice</button>
+              </th>
+              <th>
+                <button (click)="sortBy('Container')">Container</button>
+              </th>
+              <th>
+                <button (click)="sortBy('Step')">Status</button>
+              </th>
+              <th>
+                <button (click)="sortBy('Transport')">Liner</button>
+              </th>
+              <th>
+                <button (click)="sortBy('Channel')">Canal</button>
+              </th>
+              <th>
+                <button (click)="sortBy('ATA')">ATA</button>
+              </th>
+              <th>
+                <button (click)="sortBy('Dias')">Harbor Days</button>
+              </th>
+              <th>
+                <button (click)="sortBy('FreeTime')">Freetime</button>
+              </th>
+              <th>
+                <button (click)="sortBy('TripCost')">Trip Cost</button>
+              </th>
+              <th>
+                <button (click)="sortBy('Handling')">Handling</button>
+              </th>
+              <th>
+                <button (click)="sortBy('Demurrage')">Demurrage</button>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of jsonData">
+              <td>{{ item.Process }}</td>
+              <td>{{ item.Invoice }}</td>
+              <td>{{ item.Container }}</td>
+              <td>{{ item.Step }}</td>
+              <td>{{ item.Liner }}</td>
+              <td [ngClass]="{ 'verde-value': item.Channel == 'VERDE','negative-value': item.Channel == 'VERMELHO'}">{{ item.Channel }}</td>
+              <td>{{ item.ATA }}</td>
+              <td>{{ item.Dias }}</td>
+              <td [ngClass]="{ 'negative-value': item.FreeTime < 0 , 'danger-value': item.FreeTime < 2 && item.FreeTime >= 0 }">{{ item.FreeTime }}</td>
+              <td>{{ item.TripCost | currency:'USD':'symbol':'1.2-2' }}</td>
+              <td>{{ item.Handling | currency:'USD':'symbol':'1.2-2' }}</td>
+              <td>{{ item.Demurrage | currency:'USD':'symbol':'1.2-2' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </ul>
+</body>

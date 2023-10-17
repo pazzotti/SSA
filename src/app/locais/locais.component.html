@@ -1,0 +1,70 @@
+<div class="table-container">
+  <ul>
+    <div>
+      <button mat-button (click)="editDialog('')">
+        <span class="material-icons">note_add</span> Adcionar novo Local
+      </button>
+    </div>
+    <div class="table2">
+      <table>
+        <thead>
+          <tr>
+            <th>Local</th>
+            <th>Cor</th>
+            <th>Descrição</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+            <th>Acão</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let item of items">
+          <tr [ngClass]="{ 'black-row': $even, 'grafiti-row': $odd }">
+            <td>{{ item.local }}</td>
+            <td>{{ item.cor }}</td>
+            <td>{{ item.descricao }}</td>
+            <td>{{ item.latitude }}</td>
+            <td>{{ item.longitude }}</td>
+            <td>
+              <i-feather name="edit" (click)="editDialog(item)"></i-feather>
+              <span style="margin-left: 10px; margin-right: 10px;"></span>
+              <i-feather name="delete" (click)="deleteItem(item.ID, urlConsulta, query)"
+                class="button-spacing"></i-feather>
+
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </ul>
+</div>
+<clr-modal [(clrModalOpen)]="dialogOpen" [clrModalSize]="'md'" class="dialog-container">
+  <h2 class="modal-title">Adicionar Local</h2>
+  <div class="modal-body">
+    <form class="inputs">
+      <div>
+        <label class="modal-label">Local</label>
+        <input type="string" name="fornecedor" [(ngModel)]="item.local" class="modal-input1">
+      </div>
+      <div>
+        <label class="modal-label">Cor da Viagem</label>
+        <input type="string" name="cor" [(ngModel)]="item.cor" class="modal-input2">
+      </div>
+      <div>
+        <label class="modal-label">Descrição</label>
+        <input type="string" name="descricao" [(ngModel)]="item.descricao" class="modal-input3">
+      </div>
+      <div>
+        <label class="modal-label">Latitude</label>
+        <input type="string" name="latitude" [(ngModel)]="item.latitude" class="modal-input4">
+        <label class="modal-label">Longitude</label>
+        <input type="string" name="logitude" [(ngModel)]="item.longitude" class="modal-input4">
+      </div>
+
+      <div class="modal-div">
+        <button class="modal-button" type="button" (click)="salvar()">Save</button>
+        <button class="modal-button" type="button" (click)="cancel()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</clr-modal>

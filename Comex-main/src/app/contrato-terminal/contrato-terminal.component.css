@@ -1,0 +1,147 @@
+/* Estilos para a lista */
+body {
+  background-color: #361111;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Estilos para o botão */
+button {
+  background-color: #292929;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+input {
+  background-color: #292929;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+/* Estilos para a tabela */
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  background-color: #2b2b2b;
+  color: white;
+  border-radius: 5px;
+  text-align: center; /* centraliza o conteúdo das células da tabela */
+  font-size: 18px; /* aumenta o tamanho da fonte da tabela */
+}
+
+th,
+td {
+  text-align: center;
+  padding: 10px;
+  border: 1px solid #404040;
+  border-radius: 7px;
+}
+
+th {
+  background-color: #393939;
+  border-bottom: 2px solid #404040;
+  border-radius: 7px;
+}
+p {
+  background-color: #f7f0f0;
+  border-bottom: 2px solid #404040;
+}
+
+tr:nth-child(even) {
+  background-color: #141414;
+}
+
+tr:nth-child(odd) {
+  background-color: #615a5a;
+}
+
+tr:hover {
+  background-color: #aa0d0d;
+}
+div {
+  margin-top: 2px;
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+
+  body {
+    background-color: black;
+  }
+
+  .black-row {
+    background-color: black;
+    color: white;
+  }
+
+  .grafiti-row {
+    background-color: #424242;
+    color: white;
+  }
+
+  tr.header-row {
+    background-color: rgb(13, 11, 26); /* Substitua pela cor desejada para a primeira linha */
+    color: #fff; /* Cor do texto para a primeira linha */
+  }
+
+  .action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .action-buttons button {
+    padding: 5px;
+    font-size: 20px;
+  }
+
+  .action-buttons button .material-icons {
+    font-size: 20px;
+  }
+
+

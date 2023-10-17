@@ -1,0 +1,95 @@
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #292929;
+  color: white;
+  padding: 10px;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-size: 20px;
+}
+
+nav #navbarNav {
+  display: flex;
+}
+
+nav #navbarNav a {
+  margin-left: 20px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+nav #navbarNav a:hover {
+  background-color: #aa0d0d;
+}
+
+.mat-menu-content {
+  background-color: #292929;
+  color: white;
+}
+
+.mat-menu-content a {
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  color: white;
+}
+
+.mat-menu-content a:hover {
+  background-color: #aa0d0d;
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #292929;
+  color: white;
+  padding: 10px;
+}
+
+
+.menu-items {
+  margin-top: 5px; /* ajuste o valor conforme necessário para criar espaço entre o menu e os itens do dropdown */
+  min-width: 300px; /* ajuste o valor conforme necessário para definir a largura dos itens do dropdown */
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.dropbtn {
+  background-color: #292929;
+  color: white;
+  padding: 12px;
+  font-size: 20px;
+  border: none;
+  cursor: pointer;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.dropdown-content {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  display: none;
+  position: absolute;
+  min-width: 160px;
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: white;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  background-color: black;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
