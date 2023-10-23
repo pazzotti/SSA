@@ -40,26 +40,18 @@ input {
   border-radius: 5px;
 }
 
-/* Estilos para a tabela */
-table {
-  border-collapse: separate;
-  border-spacing: 0;
-  width: 100%;
-  background-color: #2b2b2b;
-  color: white;
-  border-radius: 5px;
-  text-align: center; /* centraliza o conteúdo das células da tabela */
-  font-size: 18px; /* aumenta o tamanho da fonte da tabela */
-}
+
 
 th,
 td {
+  word-wrap: break-word;
   text-align: center;
   padding: 10px;
   border: 1px solid #404040;
 }
 
 th {
+  word-wrap: break-word;
   background-color: #393939;
   border-bottom: 2px solid #404040;
 }
@@ -149,6 +141,7 @@ div {
 
   input[type="date"],
   button {
+    width: auto;
     padding: 5px;
   }
   .ultimo-input {
@@ -188,4 +181,43 @@ div {
   .green-border {
     border: 2px solid green;
   }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centralize o conteúdo horizontalmente */
+    width: 100%;
+  }
+
+  /* Estilos para a div.table-container */
+  .table-container {
+    width: 100%;
+    overflow-x: auto; /* Adicione uma barra de rolagem horizontal se a tabela for muito larga */
+  }
+
+  /* Estilos para a tabela */
+  table {
+    width: 100%;
+    background-color: #2b2b2b;
+    color: white;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 18px;
+    table-layout: fixed; /* Impede que a tabela se expanda demais */
+  }
+  th button {
+    width: 100%; /* Ajuste a largura conforme necessário */
+    padding: 0; /* Remova o preenchimento para alinhar o texto no centro */
+    background: none; /* Remova o plano de fundo do botão */
+    border: none; /* Remova a borda do botão */
+    cursor: pointer;
+    text-align: left; /* Alinhe o texto à esquerda no botão */
+  }
+
+
+  .content-container label,
+  .content-container input {
+    text-align: left;
+  }
+
 

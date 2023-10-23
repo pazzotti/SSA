@@ -1,160 +1,151 @@
 <body>
-  <ul>
-    <div>
-      <div>
-
-
-
-        <div class="input-row">
-          <label for="fileInputTXT">Selecionar Arquivo Excel:</label>
-          <input type="file" id="fileInputTXT" (change)="onFileSelected($event)"
-            [ngClass]="{ 'green-border': jsonDataParametros !== undefined }">
-        </div>
-
-      </div>
-      <a #downloadLink style="display: none;"></a>
-      <div>
-        <p>Total lines {{ mergedData.length }}</p>
-        <table>
-          <thead>
-            <tr>
-              <th>
-                <button (click)="sortBy('Peca')">Part Number</button>
-              </th>
-              <th>
-                <button (click)="sortBy('MPCode')">MP Code</button>
-              </th>
-
-              <th>
-                <button (click)="sortBy('MPName')">MP Name</button>
-              </th>
-
-              <th>
-                <button (click)="sortBy('Supplier')">Supplier</button>
-              </th>
-
-              <th>
-                <button (click)="sortBy('SupName')">SupName</button>
-              </th>
-
-              <th>
-                <button (click)="sortBy('SupShare')">SupShare</button>
-              </th>
-
-              <th>
-                <button (click)="sortBy('Country')">Country</button>
-              </th>
-
-              <th>
-                <button (click)="sortBy('Custo')">Custo</button>
-              </th>
-
-              <th>
-                <button (click)="sortBy('TranspotTime')">TranspotTime</button>
-              </th>
-
-              <th>
-                <button (click)="sortBy('SafetyStockTime')">SafetyStockTime</button>
-              </th>
-
-              <th>
-                <button (click)="sortBy('SafetyStockQtde')">SafetyStockQtde</button>
-              </th>
-
-              <th>
-                <button (click)="sortBy('UnitySizeCentral')">UnitySizeCentral</button>
-              </th>
-
-              <th>
-                <button (click)="sortBy('UnityQtyCentral')">UnityQtyCentral</button>
-              </th>
-
-              <th>
-                <button (click)="sortBy('MCM')">MCM</button>
-              </th>
-
-              <th>
-                <button (click)="sortBy('TypeBalance')">TypeBalance</button>
-              </th>
-
-              <th>
-                <button (click)="sortBy('UsedFor')">UsedFor</button>
-              </th>
-
-              <th>
-                <button (click)="sortBy('Rate')">Rate</button>
-              </th>
-
-              <th>
-                <button (click)="sortBy('RM')">RM</button>
-              </th>
-
-              <th>
-                <button (click)="sortBy('QtdeAmox')">QtdeAmox</button>
-              </th>
-
-              <th>
-                <button (click)="sortBy('QtdeReceb')">QtdeReceb</button>
-              </th>
-
-              <th>
-                <button (click)="sortBy('Qtde3')">Qtde3</button>
-              </th>
-
-              <th>
-                <button (click)="sortBy('QtdeLm')">QtdeLm</button>
-              </th>
-
-              <th>
-                <button (click)="sortBy('Saldo')">Saldo SAEP</button>
-              </th>
-
-
-
-
-
-
-
-
-
-
-
-
-
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of mergedData">
-
-              <td>{{ item.Peca }}</td>
-              <td>{{ item.MPCode }}</td>
-              <td>{{ item.MPName}}</td>
-              <td>{{ item.Supplier}}</td>
-              <td>{{ item.SupName}}</td>
-              <td>{{ item.SupShare}}</td>
-              <td>{{ item.Country}}</td>
-              <td>{{ item.Custo}}</td>
-              <td>{{ item.TranspotTime}}</td>
-              <td>{{ item.SafetyStockTime}}</td>
-              <td>{{ item.SafetyStockQtde}}</td>
-              <td>{{ item.UnitySizeCentral}}</td>
-              <td>{{ item.UnityQtyCentral}}</td>
-              <td>{{ item.MCM}}</td>
-              <td>{{ item.TypeBalance}}</td>
-              <td>{{ item.UsedFor}}</td>
-              <td>{{ item.Rate}}</td>
-              <td>{{ item.RM}}</td>
-              <td>{{ item.QtdeAmox}}</td>
-              <td>{{ item.QtdeReceb}}</td>
-              <td>{{ item.Qtde3}}</td>
-              <td>{{ item.QtdeLm}}</td>
-              <td>{{ item.Saldo}}</td>
-
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
+  <div class="container">
+    <div class="content-container">
+      <label for="fileInputTXT">Selecionar Arquivo Excel:</label>
+      <input type="file" id="fileInputTXT" (change)="onFileSelected($event)"
+        [ngClass]="{ 'green-border': jsonDataParametros !== undefined }">
     </div>
-  </ul>
+    <p>Total lines {{ mergedData.length }}</p>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>
+              <button (click)="sortBy('Peca')">Part Number</button>
+            </th>
+            <th>
+              <button (click)="sortBy('MPCode')">MP Code</button>
+            </th>
+
+            <th>
+              <button (click)="sortBy('MPName')">MP Name</button>
+            </th>
+
+            <th>
+              <button (click)="sortBy('Supplier')">Supplier</button>
+            </th>
+
+            <th>
+              <button (click)="sortBy('SupName')">SupName</button>
+            </th>
+
+            <th>
+              <button (click)="sortBy('SupShare')">SupShare</button>
+            </th>
+
+            <th>
+              <button (click)="sortBy('Country')">Country</button>
+            </th>
+
+            <th>
+              <button (click)="sortBy('Custo')">Custo</button>
+            </th>
+
+            <th>
+              <button (click)="sortBy('TranspotTime')">TranspotTime</button>
+            </th>
+
+            <th>
+              <button (click)="sortBy('SafetyStockTime')">SafetyStockTime</button>
+            </th>
+
+            <th>
+              <button (click)="sortBy('SafetyStockQtde')">SafetyStockQtde</button>
+            </th>
+
+            <th>
+              <button (click)="sortBy('UnitySizeCentral')">UnitySizeCentral</button>
+            </th>
+
+            <th>
+              <button (click)="sortBy('UnityQtyCentral')">UnityQtyCentral</button>
+            </th>
+
+            <th>
+              <button (click)="sortBy('MCM')">MCM</button>
+            </th>
+
+            <th>
+              <button (click)="sortBy('TypeBalance')">TypeBalance</button>
+            </th>
+
+            <th>
+              <button (click)="sortBy('UsedFor')">UsedFor</button>
+            </th>
+
+            <th>
+              <button (click)="sortBy('Rate')">Rate</button>
+            </th>
+
+            <th>
+              <button (click)="sortBy('RM')">RM</button>
+            </th>
+
+            <th>
+              <button (click)="sortBy('QtdeAmox')">QtdeAmox</button>
+            </th>
+
+            <th>
+              <button (click)="sortBy('QtdeReceb')">QtdeReceb</button>
+            </th>
+
+            <th>
+              <button (click)="sortBy('Qtde3')">Qtde3</button>
+            </th>
+
+            <th>
+              <button (click)="sortBy('QtdeLm')">QtdeLm</button>
+            </th>
+
+            <th>
+              <button (click)="sortBy('Saldo')">Saldo SAEP</button>
+            </th>
+            <th>Saldo Geral</th>
+            <th>Análise Saldo Geral</th>
+            <th>Daily Rate</th>
+            <th>Resultado SAEP</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of mergedData">
+
+            <td>{{ item.Peca }}</td>
+            <td>{{ item.MPCode }}</td>
+            <td>{{ item.MPName}}</td>
+            <td>{{ item.Supplier}}</td>
+            <td>{{ item.SupName}}</td>
+            <td>{{ item.SupShare}}</td>
+            <td>{{ item.Country}}</td>
+            <td>{{ item.Custo}}</td>
+            <td>{{ item.TranspotTime}}</td>
+            <td>{{ item.SafetyStockTime}}</td>
+            <td>{{ item.SafetyStockQtde}}</td>
+            <td>{{ item.UnitySizeCentral}}</td>
+            <td>{{ item.UnityQtyCentral}}</td>
+            <td>{{ item.MCM}}</td>
+            <td>{{ item.TypeBalance}}</td>
+            <td>{{ item.UsedFor}}</td>
+            <td>{{ item.Rate}}</td>
+            <td>{{ item.RM}}</td>
+            <td>{{ item.QtdeAmox}}</td>
+            <td>{{ item.QtdeReceb}}</td>
+            <td>{{ item.Qtde3}}</td>
+            <td>{{ item.QtdeLm}}</td>
+            <td>{{ item.Saldo}}</td>
+            <td>{{ calcularSaldo(item) }}</td>
+            <td>{{ calcularSaldo(item) >= 0 ? 'Saldo OK' :""}}</td>
+            <td>{{ calcularDR(item) ? 'DR OK' : '' }}</td>
+
+
+
+
+            <td>{{ item.Saldo < 0 ? 'OK Sai' : '' }}</td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
 </body>

@@ -20,6 +20,8 @@ import { DynamoService } from '../dynamo.service';
 })
 export class AnaliseComponent {
 
+
+
   progressValue = 0; // Valor atual da barra de progresso
   maxValue = 0; // Valor máximo da barra de progresso
   showProgressBar = false;
@@ -154,8 +156,6 @@ export class AnaliseComponent {
     }
     this.mergeDataBasedOnPeca()
   }
-
-
 
 
   async onGetItems2(): Promise<void> {
@@ -356,6 +356,25 @@ export class AnaliseComponent {
       console.error('Erro ao carregar o arquivo:', error);
     }
   }
+
+  calcularSaldo(item: any): number {
+    const qtde3 = parseInt(item.Qtde3, 10);
+    const rm = parseFloat(item.RM);
+    const saldo = parseFloat(item.Saldo);
+    return qtde3 - (rm + saldo);
+  }
+
+  calcularDR(item: any): boolean {
+    const DR = parseInt(item.Rate, 10);
+    const saldo = parseFloat(item.Saldo);
+    if(saldo<DR*.1){
+      return true;
+    }else{
+      return false;
+    }
+
+  }
+
   async salvarNoBanco() {
     this.progressCounter = 0;
     this.showProgressBar = true;

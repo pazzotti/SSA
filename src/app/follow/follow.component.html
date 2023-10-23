@@ -9,19 +9,13 @@
           </th>
         </thead>
       </table>
-
       <div>
         <form>
-
-
           <button (click)="mostrarItensFinalizados = !mostrarItensFinalizados">
             {{ mostrarItensFinalizados ? 'Show Opened' : 'Show Finished' }}
           </button>
           <!-- Adicione botões para outros status, se necessário -->
-
           <label>Qty itens: {{ ecos.length }}</label>
-
-
           <ng-container *ngFor="let status of ['Accepted', 'Denied', 'Analyzing']">
             <label>{{ status }}: {{ getStatusCount(status) }}</label>
           </ng-container>
