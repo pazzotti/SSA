@@ -1,6 +1,6 @@
 import { CarregaService } from '../services/carrega_file/carrega.service';
 import { HttpClient } from '@angular/common/http';
-import { Component, ElementRef, ViewChild,ChangeDetectorRef } from '@angular/core';
+import { Component, ElementRef, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { format, parse, differenceInDays, getWeek } from 'date-fns';
 import { ApiService } from '../services/contratos/contratos.service';
 import { map, take } from 'rxjs/operators';
@@ -58,9 +58,31 @@ export class AnaliseComponent {
   jsonDataPipe!: any[];
   jsonDataBat!: any[];
   result: any[] = []; // Definir explicitamente o tipo como any[]
-  pecas: any[]=[];
+  pecas: any[] = [];
   mergedData: any[] = []; // Definir explicitamente o tipo como any[]
-
+  showPecaColumn: boolean = true;
+  showMPCodeColumn: boolean = true;
+  showMPNameColumn: boolean = true;
+  showSupplierColumn: boolean = false;
+  showSupNameColumn: boolean = false;
+  showSupShareColumn: boolean = false;
+  showCountryColumn: boolean = false;
+  showCustoColumn: boolean = false;
+  showTranspotTimeColumn: boolean = false;
+  showSafetyStockTimeColumn: boolean = false;
+  showSafetyStockQtdeColumn: boolean = false;
+  showUnitySizeCentralColumn: boolean = false;
+  showUnityQtyCentralColumn: boolean = false;
+  showMCMColumn: boolean = false;
+  showTypeBalanceColumn: boolean = false;
+  showUsedForColumn: boolean = false;
+  showRateColumn: boolean = false;
+  showRMColumn: boolean = false;
+  showQtdeAmoxColumn: boolean = false;
+  showQtdeRecebColumn: boolean = false;
+  showQtde3Column: boolean = false;
+  showQtdeLmColumn: boolean = false;
+  showSaldoColumn: boolean = false;
 
   constructor(
     private carregaService: CarregaService,
@@ -132,10 +154,10 @@ export class AnaliseComponent {
                 UsedFor: item.UsedFor.S || item.UsedFor,
                 Rate: item.Rate.N || item.Rate,
                 RM: item.RM.N || item.RM,
-                QtdeAmox:item.QtdeAmox.N || item.QtdeAmox,
-                QtdeReceb:item.QtdeReceb.N || item.QtdeReceb,
-                Qtde3:item.Qtde3.N || item.Qtde3,
-                QtdeLm:item.QtdeLm.N || item.QtdeLm,
+                QtdeAmox: item.QtdeAmox.N || item.QtdeAmox,
+                QtdeReceb: item.QtdeReceb.N || item.QtdeReceb,
+                Qtde3: item.Qtde3.N || item.Qtde3,
+                QtdeLm: item.QtdeLm.N || item.QtdeLm,
 
               }));
 
@@ -204,7 +226,7 @@ export class AnaliseComponent {
     );
   }
 
-   mergeDataBasedOnPeca() {
+  mergeDataBasedOnPeca() {
     // Crie um objeto para armazenar os dados mesclados
     this.mergedData = [];
     interface Peca {
@@ -225,10 +247,11 @@ export class AnaliseComponent {
       UsedFor: string;
       Rate: number;
       RM: number;
-      QtdeAmox:number;
-      QtdeReceb:number;
-      Qtde3:number;
-      QtdeLm:number;
+      QtdeAmox: number;
+      QtdeReceb: number;
+      Qtde3: number;
+      QtdeLm: number;
+      DailyRate: number;
       // Adicione outras propriedades necessárias aqui
     }
 
@@ -246,7 +269,7 @@ export class AnaliseComponent {
         // Se uma correspondência for encontrada, crie um novo objeto mesclado
         const mergedObject = {
           Peca: data.Peca, // A chave "Peca" dos objetos em 'result'
-          Saldo:data.Saldo,
+          Saldo: data.Saldo,
           // Adicione outras chaves de 'peca' que deseja incluir
 
 
@@ -267,10 +290,10 @@ export class AnaliseComponent {
           UsedFor: peca.UsedFor,
           Rate: peca.Rate,
           RM: peca.RM,
-          QtdeAmox:peca.QtdeAmox,
-          QtdeReceb:peca.QtdeReceb,
-          Qtde3:peca.Qtde3,
-          QtdeLm:peca.QtdeLm,
+          QtdeAmox: peca.QtdeAmox,
+          QtdeReceb: peca.QtdeReceb,
+          Qtde3: peca.Qtde3,
+          QtdeLm: peca.QtdeLm,
 
 
 
@@ -285,7 +308,11 @@ export class AnaliseComponent {
     return this.mergedData;
   }
 
-
+  async analisar() {
+    this.calcularDR();
+    this.calcularSaldo();
+    this.aprovacao();
+  }
 
 
   async onFileSelected(event: any) {
@@ -302,7 +329,8 @@ export class AnaliseComponent {
     } catch (error) {
       console.error('Erro ao processar o arquivo:', error);
     }
-    this.onGetItems()
+    this.onGetItems();
+
   }
 
   calculateTotal(item: any): number {
@@ -357,22 +385,93 @@ export class AnaliseComponent {
     }
   }
 
-  calcularSaldo(item: any): number {
-    const qtde3 = parseInt(item.Qtde3, 10);
-    const rm = parseFloat(item.RM);
-    const saldo = parseFloat(item.Saldo);
-    return qtde3 - (rm + saldo);
-  }
+  async calcularSaldo() {
+    for (let i = 0; i < this.mergedData.length; i++) {
+      const item = this.mergedData[i];
+      const qtde3 = parseInt(item.Qtde3, 10);
+      const rm = parseFloat(item.RM);
+      const saldo = parseFloat(item.Saldo);
+      const QtdeAmox = parseFloat(item.QtdeAmox);
+      if (((QtdeAmox + qtde3) - (rm + saldo)) >= 0) {
+        item.saldoTotal = true;
+      } else {
+        item.saldoTotal = false;
+      }
 
-  calcularDR(item: any): boolean {
-    const DR = parseInt(item.Rate, 10);
-    const saldo = parseFloat(item.Saldo);
-    if(saldo<DR*.1){
-      return true;
-    }else{
-      return false;
+    }
+    this.mergedData.forEach(item => {
+      item.saldoTotal = item.saldoTotal; // Adicione a propriedade 'DailyRate' a cada objeto no array
+    });
+  }
+  async calcularDR() {
+
+    for (let i = 0; i < this.mergedData.length; i++) {
+      const item = this.mergedData[i];
+      const DR = item.Rate;
+      const saldo = item.Saldo;
+      if (saldo < DR * 0.1) {
+        item.DailyRate = true;
+      } else {
+        item.DailyRate = false;
+      }
     }
 
+    // Agora, você pode adicionar a propriedade 'DailyRate' à variável mergedData
+    this.mergedData.forEach(item => {
+      item.DailyRate = item.DailyRate; // Adicione a propriedade 'DailyRate' a cada objeto no array
+    });
+
+    console.log(this.mergedData);
+
+  }
+
+  async aprovacao() {
+
+    for (let i = 0; i < this.mergedData.length; i++) {
+      const item = this.mergedData[i];
+      let saldoTotal = item.saldoTotal;
+      let DailyRate = item.DailyRate;
+      const saldo = item.Saldo;
+      let pneu = false;
+      let seq = false;
+
+      if (item.MPCode.startsWith("R81") || item.MPCode.startsWith("R91")) {
+        pneu = true;
+      }
+
+      if (!item.MPCode.startsWith("R81") && !item.MPCode.startsWith("R91") && item.MCM == "S") {
+        seq = true;
+      }
+
+
+      if (saldoTotal == true || DailyRate == true || saldo<0 || pneu == true ) {
+        item.Aprovado = true;
+      } else {
+        item.Aprovado = false;
+      }
+    }
+
+    // Agora, você pode adicionar a propriedade 'DailyRate' à variável mergedData
+    this.mergedData.forEach(item => {
+      item.DailyRate = item.DailyRate; // Adicione a propriedade 'DailyRate' a cada objeto no array
+    });
+
+    console.log(this.mergedData);
+
+  }
+
+  getCssClass(item: any): string {
+    if (item.MPCode.startsWith("R81") || item.MPCode.startsWith("R91")) {
+      return 'green-background';
+    }
+    return '';
+  }
+
+  getCssClass2(item: any): string {
+    if (!item.MPCode.startsWith("R81") && !item.MPCode.startsWith("R91") && item.MCM == "S") {
+      return 'green-background';
+    }
+    return '';
   }
 
   async salvarNoBanco() {

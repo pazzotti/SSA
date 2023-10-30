@@ -211,7 +211,7 @@ div {
     background: none; /* Remova o plano de fundo do botão */
     border: none; /* Remova a borda do botão */
     cursor: pointer;
-    text-align: left; /* Alinhe o texto à esquerda no botão */
+    text-align: center; /* Alinhe o texto à esquerda no botão */
   }
 
 
@@ -220,4 +220,15 @@ div {
     text-align: left;
   }
 
+  .fixed-column {
+    width: 400px;
+    text-align: left !important;
+}
+
+.green-background {
+  background-color: green;
+}
+.red-background {
+  background-color: rgb(206, 19, 6);
+}
 

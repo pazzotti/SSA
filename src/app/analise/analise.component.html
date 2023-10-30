@@ -1,145 +1,173 @@
 <body>
   <div class="container">
-    <div class="content-container">
-      <label for="fileInputTXT">Selecionar Arquivo Excel:</label>
-      <input type="file" id="fileInputTXT" (change)="onFileSelected($event)"
-        [ngClass]="{ 'green-border': jsonDataParametros !== undefined }">
-    </div>
-    <p>Total lines {{ mergedData.length }}</p>
+    <table>
+      <thead>
+        <tr>
+          <th>
+            <label for="fileInputTXT">Selecionar Arquivo Excel:</label>
+            <input type="file" id="fileInputTXT" (change)="onFileSelected($event)"
+              [ngClass]="{ 'green-border': jsonDataParametros !== undefined }">
+          </th>
+          <th>
+            <input type="checkbox" [(ngModel)]="showPecaColumn"> Part Number
+            <input type="checkbox" [(ngModel)]="showMPCodeColumn"> MP Code
+            <input type="checkbox" [(ngModel)]="showMPNameColumn"> MP Name
+            <input type="checkbox" [(ngModel)]="showSupplierColumn"> Supplier Code
+            <input type="checkbox" [(ngModel)]="showSupNameColumn"> Supplier Name
+            <input type="checkbox" [(ngModel)]="showSupShareColumn"> Supplier Share
+            <input type="checkbox" [(ngModel)]="showCountryColumn"> Country
+            <input type="checkbox" [(ngModel)]="showCustoColumn"> Custo
+            <input type="checkbox" [(ngModel)]="showTranspotTimeColumn"> Transpot Time
+            <input type="checkbox" [(ngModel)]="showSafetyStockTimeColumn"> Safety Stock Time
+            <input type="checkbox" [(ngModel)]="showSafetyStockQtdeColumn"> Safety Stock Qtde
+            <input type="checkbox" [(ngModel)]="showUnitySizeCentralColumn"> Unity Size Central
+            <input type="checkbox" [(ngModel)]="showUnityQtyCentralColumn"> Unity Qty Central
+            <input type="checkbox" [(ngModel)]="showMCMColumn"> MCM
+            <input type="checkbox" [(ngModel)]="showTypeBalanceColumn"> Type Balance
+            <input type="checkbox" [(ngModel)]="showUsedForColumn"> Used For
+            <input type="checkbox" [(ngModel)]="showRateColumn"> Daily Rate
+            <input type="checkbox" [(ngModel)]="showRMColumn"> Reserva Montagem
+            <input type="checkbox" [(ngModel)]="showQtdeAmoxColumn"> Almox Qtde
+            <input type="checkbox" [(ngModel)]="showQtdeRecebColumn"> Receb Qtde
+            <input type="checkbox" [(ngModel)]="showQtde3Column"> PEND3 Qtde
+            <input type="checkbox" [(ngModel)]="showQtdeLmColumn"> Saldo de Linha
+
+
+          </th>
+          <th>
+            <label>Total lines {{ mergedData.length }}</label>
+            <button (click)="analisar()">Analisar</button>
+          </th>
+        </tr>
+      </thead>
+    </table>
+
+
+
     <div class="table-container">
       <table>
         <thead>
           <tr>
-            <th>
+            <th *ngIf="showPecaColumn">
               <button (click)="sortBy('Peca')">Part Number</button>
             </th>
-            <th>
+            <th *ngIf="showMPCodeColumn">
               <button (click)="sortBy('MPCode')">MP Code</button>
             </th>
-
-            <th>
+            <th *ngIf="showMPNameColumn" class="fixed-column">
               <button (click)="sortBy('MPName')">MP Name</button>
             </th>
 
-            <th>
+            <th *ngIf="showSupplierColumn">
               <button (click)="sortBy('Supplier')">Supplier</button>
             </th>
-
-            <th>
+            <th *ngIf="showSupNameColumn">
               <button (click)="sortBy('SupName')">SupName</button>
             </th>
-
-            <th>
+            <th *ngIf="showSupShareColumn">
               <button (click)="sortBy('SupShare')">SupShare</button>
             </th>
-
-            <th>
+            <th *ngIf="showCountryColumn">
               <button (click)="sortBy('Country')">Country</button>
             </th>
-
-            <th>
+            <th *ngIf="showCustoColumn">
               <button (click)="sortBy('Custo')">Custo</button>
             </th>
-
-            <th>
+            <th *ngIf="showTranspotTimeColumn">
               <button (click)="sortBy('TranspotTime')">TranspotTime</button>
             </th>
-
-            <th>
+            <th *ngIf="showSafetyStockTimeColumn">
               <button (click)="sortBy('SafetyStockTime')">SafetyStockTime</button>
             </th>
-
-            <th>
+            <th *ngIf="showSafetyStockQtdeColumn">
               <button (click)="sortBy('SafetyStockQtde')">SafetyStockQtde</button>
             </th>
-
-            <th>
+            <th *ngIf="showUnitySizeCentralColumn">
               <button (click)="sortBy('UnitySizeCentral')">UnitySizeCentral</button>
             </th>
-
-            <th>
+            <th *ngIf="showUnityQtyCentralColumn">
               <button (click)="sortBy('UnityQtyCentral')">UnityQtyCentral</button>
             </th>
-
-            <th>
+            <th *ngIf="showMCMColumn">
               <button (click)="sortBy('MCM')">MCM</button>
             </th>
-
-            <th>
+            <th *ngIf="showTypeBalanceColumn">
               <button (click)="sortBy('TypeBalance')">TypeBalance</button>
             </th>
-
-            <th>
+            <th *ngIf="showUsedForColumn">
               <button (click)="sortBy('UsedFor')">UsedFor</button>
             </th>
-
-            <th>
+            <th *ngIf="showRateColumn">
               <button (click)="sortBy('Rate')">Rate</button>
             </th>
-
-            <th>
+            <th *ngIf="showRMColumn">
               <button (click)="sortBy('RM')">RM</button>
             </th>
-
-            <th>
+            <th *ngIf="showQtdeAmoxColumn">
               <button (click)="sortBy('QtdeAmox')">QtdeAmox</button>
             </th>
-
-            <th>
+            <th *ngIf="showQtdeRecebColumn">
               <button (click)="sortBy('QtdeReceb')">QtdeReceb</button>
             </th>
 
-            <th>
+            <th *ngIf="showQtde3Column">
               <button (click)="sortBy('Qtde3')">Qtde3</button>
             </th>
 
-            <th>
+            <th *ngIf="showQtdeLmColumn">
               <button (click)="sortBy('QtdeLm')">QtdeLm</button>
             </th>
 
             <th>
               <button (click)="sortBy('Saldo')">Saldo SAEP</button>
             </th>
-            <th>Saldo Geral</th>
+
             <th>Análise Saldo Geral</th>
             <th>Daily Rate</th>
-            <th>Resultado SAEP</th>
+            <th>Item Sai</th>
+            <th>Pneu</th>
+            <th>Sequenciado</th>
+            <th>Aprovado</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let item of mergedData">
-
-            <td>{{ item.Peca }}</td>
-            <td>{{ item.MPCode }}</td>
-            <td>{{ item.MPName}}</td>
-            <td>{{ item.Supplier}}</td>
-            <td>{{ item.SupName}}</td>
-            <td>{{ item.SupShare}}</td>
-            <td>{{ item.Country}}</td>
-            <td>{{ item.Custo}}</td>
-            <td>{{ item.TranspotTime}}</td>
-            <td>{{ item.SafetyStockTime}}</td>
-            <td>{{ item.SafetyStockQtde}}</td>
-            <td>{{ item.UnitySizeCentral}}</td>
-            <td>{{ item.UnityQtyCentral}}</td>
-            <td>{{ item.MCM}}</td>
-            <td>{{ item.TypeBalance}}</td>
-            <td>{{ item.UsedFor}}</td>
-            <td>{{ item.Rate}}</td>
-            <td>{{ item.RM}}</td>
-            <td>{{ item.QtdeAmox}}</td>
-            <td>{{ item.QtdeReceb}}</td>
-            <td>{{ item.Qtde3}}</td>
-            <td>{{ item.QtdeLm}}</td>
+            <td *ngIf="showPecaColumn">{{ item.Peca }}</td>
+            <td *ngIf="showMPCodeColumn">{{ item.MPCode }}</td>
+            <td *ngIf="showMPNameColumn" class="fixed-column">{{ item.MPName}}</td>
+            <td *ngIf="showSupplierColumn">{{ item.Supplier}}</td>
+            <td *ngIf="showSupNameColumn">{{ item.SupName}}</td>
+            <td *ngIf="showSupShareColumn">{{ item.SupShare}}</td>
+            <td *ngIf="showCountryColumn">{{ item.Country}}</td>
+            <td *ngIf="showCustoColumn">{{ item.Custo}}</td>
+            <td *ngIf="showTranspotTimeColumn">{{ item.TranspotTime}}</td>
+            <td *ngIf="showSafetyStockTimeColumn">{{ item.SafetyStockTime}}</td>
+            <td *ngIf="showSafetyStockQtdeColumn">{{ item.SafetyStockQtde}}</td>
+            <td *ngIf="showUnitySizeCentralColumn">{{ item.UnitySizeCentral}}</td>
+            <td *ngIf="showUnityQtyCentralColumn">{{ item.UnityQtyCentral}}</td>
+            <td *ngIf="showMCMColumn">{{ item.MCM}}</td>
+            <td *ngIf="showTypeBalanceColumn">{{ item.TypeBalance}}</td>
+            <td *ngIf="showUsedForColumn">{{ item.UsedFor}}</td>
+            <td *ngIf="showRateColumn">{{ item.Rate}}</td>
+            <td *ngIf="showRMColumn">{{ item.RM}}</td>
+            <td *ngIf="showQtdeAmoxColumn">{{ item.QtdeAmox}}</td>
+            <td *ngIf="showQtdeRecebColumn">{{ item.QtdeReceb}}</td>
+            <td *ngIf="showQtde3Column">{{ item.Qtde3}}</td>
+            <td *ngIf="showQtdeLmColumn">{{ item.QtdeLm}}</td>
             <td>{{ item.Saldo}}</td>
-            <td>{{ calcularSaldo(item) }}</td>
-            <td>{{ calcularSaldo(item) >= 0 ? 'Saldo OK' :""}}</td>
-            <td>{{ calcularDR(item) ? 'DR OK' : '' }}</td>
+
+
+            <td [ngClass]="{'green-background': item.saldoTotal}"> </td>
+            <td [ngClass]="{'green-background': item.DailyRate}"> </td>
+            <td [ngClass]="{'green-background': item.Saldo < 0}"> </td>
+            <td [ngClass]="getCssClass(item)"></td>
+            <td [ngClass]="getCssClass2(item)"></td>
+
+            <td [ngClass]="{'green-background': item.Aprovado, 'red-background': !item.Aprovado}"> </td>
 
 
 
 
-            <td>{{ item.Saldo < 0 ? 'OK Sai' : '' }}</td>
 
           </tr>
         </tbody>
