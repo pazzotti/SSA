@@ -147,12 +147,13 @@ export class SaepComponent {
   getExpandedItems(): any[] {
     if (this.expandedValue) {
       const expandedValueString = this.expandedValue.toString();
-      return this.itens.filter(item => item.ID.toString().slice(0, 5) === expandedValueString.slice(0, 5));
+      return this.itens.filter(item => item.ID.toString().slice(0, 8) === expandedValueString.slice(0, 8));
     }
     return [];
   }
   updateExpandedData() {
     this.expandedData = this.getExpandedItems();
+    console.log(this.expandedData)
   }
 
 
@@ -167,11 +168,11 @@ export class SaepComponent {
       return [];
     }
 
-    const filteredItems = this.itens.filter(item => item.ID.toString().slice(0, 5) === valor);
+    const filteredItems = this.itens.filter(item => item.ID.toString().slice(0, 8) === valor);
 
     // Verifique se há pelo menos um item correspondente em this.itens com "Aprovado" igual a false
     const algumAprovadoFalse = this.itens
-      .filter(item => item.ID.toString().slice(0, 5) === valor)
+      .filter(item => item.ID.toString().slice(0, 8) === valor)
       .some(item => item.Aprovado === false);
 
     // Defina a chave "Aprovado" em filteredItems com base na verificação
@@ -196,7 +197,7 @@ export class SaepComponent {
     const valoresVistos = new Set();
 
     for (const item of this.itens) {
-      const chave = item.ID.toString().slice(0, 5); // Obter os 5 primeiros caracteres
+      const chave = item.ID.toString().slice(0, 8); // Obter os 5 primeiros caracteres
 
       if (!valoresVistos.has(chave)) {
         valoresVistos.add(chave);
@@ -206,9 +207,9 @@ export class SaepComponent {
 
     // Verifique se todos os itens com a mesma chave "ID" têm "Aprovado" igual a true
     itensUnicos.forEach(itemUnico => {
-      const chave = itemUnico.ID.toString().slice(0, 5);
+      const chave = itemUnico.ID.toString().slice(0, 8);
       const todosAprovados = this.itens
-        .filter(item => item.ID.toString().slice(0, 5) === chave)
+        .filter(item => item.ID.toString().slice(0, 8) === chave)
         .every(item => item.Aprovado === true);
       itemUnico.Aprovado = todosAprovados;
     });

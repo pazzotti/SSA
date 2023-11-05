@@ -89,6 +89,7 @@ export class AnaliseComponent {
   currentPage: number = 1; // Página atual
   totalPages: number = 0; // Total de páginas
   currentItems: any[] = []; // Itens na página atual
+  progressColor: string = '#3498db'; // Exemplo de cor de fundo
 
   constructor(
     private carregaService: CarregaService,
@@ -431,6 +432,7 @@ export class AnaliseComponent {
 
     }
     this.mergedData.forEach(item => {
+      item.Saldo = parseFloat(item.Saldo) * numeroProdutos;
       item.saldoTotal = item.saldoTotal; // Adicione a propriedade 'DailyRate' a cada objeto no array
     });
   }
@@ -536,9 +538,11 @@ export class AnaliseComponent {
     }
   }
 
-  async salvarNoBanco() {
+  async salvarNoBanco2() {
     // Solicitar o número da SAEP ao usuário usando um prompt
+    this.showProgressBar = true;
     let saepNumber = prompt('Informe o número da SAEP:');
+    this.maxValue = this.mergedData.length;
 
     if (saepNumber === null) {
       alert('Operação cancelada pelo usuário.');
@@ -574,8 +578,9 @@ export class AnaliseComponent {
       // Certifique-se de que 'this.dynamodbService.salvar' retorne promessas
       const responses = await Promise.all(batches.map(batch =>
         this.dynamodbService.salvar(batch, this.query, this.urlAtualiza).toPromise()
+
       ));
-      this.progressValue = this.mergedData.length;
+      this.progressValue = this.progressValue + batches.length;
       console.log('Respostas do salvamento:', responses);
       this.progressCounter = this.mergedData.length;
     } catch (error) {
@@ -585,6 +590,72 @@ export class AnaliseComponent {
     // Ocultar a barra de progresso após o término das operações
     this.showProgressBar = false;
   }
+
+
+  salvarNoBanco() {
+
+
+
+     // Solicitar o número da SAEP ao usuário usando um prompt
+     this.showProgressBar = true;
+     let saepNumber = prompt('Informe o número da SAEP:');
+     this.maxValue = this.mergedData.length;
+
+     if (saepNumber === null) {
+       alert('Operação cancelada pelo usuário.');
+       return;
+     }
+
+     // Remover espaços em branco e garantir que o número tenha 8 caracteres
+     saepNumber = saepNumber.trim();
+     if (!/^\d{8}$/.test(saepNumber)) {
+       alert('O número de SAEP deve ter exatamente 8 caracteres numéricos.');
+       return;
+     }
+     // Atualizar os valores em this.mergedData
+     this.mergedData.forEach(item => {
+       item.ID = saepNumber?.toString() + item.Peca.toString();
+     });
+
+     // Adicionar a chave `tableName` em cada objeto para a função Lambda
+     this.mergedData.forEach(item => {
+       item.tableName = this.query;
+     });
+
+
+
+      // Resto do seu código aqui
+    this.progressCounter = 0;
+    this.showProgressBar = true;
+    console.log('Itens a serem salvos:', this.mergedData);
+    this.progressValue = 0;
+    const batchSize = 1; // Tamanho máximo para cada lote
+    const batches = this.chunkArray(this.mergedData, batchSize);
+
+
+
+
+    for (const batch of batches) {
+      // Acrescentar o campo "lastupdate" com o valor da data de hoje
+
+      this.dynamodbService.salvar(batch, this.query, this.urlAtualiza).subscribe(
+        response => {
+          this.progressValue = this.progressValue + batch.length;
+          console.log('Resposta do salvamento:', response);
+        },
+        error => {
+          console.error('Erro ao salvar:', error);
+        }
+      );
+    }
+
+    setTimeout(() => {
+      this.showProgressBar = false;
+    }, 7000); // Defina o tempo adequado conforme necessário
+  }
+
+
+
 
 
 

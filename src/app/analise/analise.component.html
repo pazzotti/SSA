@@ -45,7 +45,22 @@
 
       <button id="botaoAnalisar" (click)="analisar()">Analisar</button>
 
-      <button  (click)="salvarNoBanco()">Salvar Dados</button>
+      <button (click)="salvarNoBanco()">Salvar Dados</button>
+      <div *ngIf="showProgressBar">
+
+
+
+        <div class="progress-container">
+          <div class="progress" [style.width.%]="progressValue" [style.backgroundColor]="progressColor">{{ progressValue }} Linhas Salvas</div>
+      </div>
+
+
+
+      </div>
+
+
+
+
 
     </div>
 

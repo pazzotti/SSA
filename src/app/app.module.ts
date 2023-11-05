@@ -33,6 +33,7 @@ import { CurrencyFormatPipe } from './follow/CurrencyPipe';
 import { AnaliseComponent } from './analise/analise.component';
 import { SaepComponent } from './saep/saep.component';
 import { AprovacaoComponent } from './aprovacao/aprovacao.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 const icons = {
@@ -79,6 +80,7 @@ const icons = {
     AppRoutingModule,
     MatIconModule,
     CommonModule,
+    MatProgressSpinnerModule,
     SharedModule,
     ReactiveFormsModule,
     ClarityModule,

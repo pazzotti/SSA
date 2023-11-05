@@ -17,7 +17,7 @@
       <table>
         <thead>
           <tr>
-            <th *ngIf="showPecaColumn" style="width: 80px;">
+            <th *ngIf="showPecaColumn" style="width: 100px;">
               <button (click)="sortBy('Peca')">SAEP</button>
             </th>
             <th *ngIf="showMPCodeColumn">
@@ -32,7 +32,7 @@
               <td *ngIf="showPecaColumn">
                 <div (click)="toggleExpand(item.ID)" style="cursor: pointer;">
                   {{ expandedValue === item.ID ? '-' : '+' }}
-                  {{ item.ID.toString().slice(0, 5) }}
+                  {{ item.ID.toString().slice(0, 8) }}
                 </div>
               </td>
               <td [ngClass]="item.Aprovado ? 'green-background' : 'red-background'"></td>
@@ -49,6 +49,9 @@
                         <button (click)="sortBy2('Peca')">Ordenar por Peça</button>
                       </th>
                       <th *ngIf="showPecaColumn" >
+                        <button (click)="sortBy2('Saldo')">Qtde Solicitada</button>
+                      </th>
+                      <th *ngIf="showPecaColumn" >
                         <button (click)="sortBy2('MPName')">Ordenar por MP Responsável</button>
                       </th>
                       <th *ngIf="showPecaColumn" style="width: 80px;">
@@ -57,7 +60,9 @@
                     </tr>
                     <tr *ngFor="let subItem of expandedData">
                       <td>{{ subItem.Peca }}</td>
+                      <td>{{ subItem.Saldo }}</td>
                       <td>{{ subItem.MPName }}</td>
+                      <td>{{ subItem.Aprovado }}</td>
                       <td [ngClass]="subItem.Aprovado ? 'green-background' : 'red-background'"></td>
 
                     </tr>

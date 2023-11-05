@@ -24,6 +24,9 @@
             <th *ngIf="showPecaColumn"  style="width: 80px;">
               <button (click)="sortBy('Peca')">Peça</button>
             </th>
+            <th *ngIf="showPecaColumn"  style="width: 80px;">
+              <button (click)="sortBy('Saldo')">Qtde Solicitada</button>
+            </th>
             <th *ngIf="showPecaColumn">
               <button (click)="sortBy('MPName')">MP Responsável</button>
             </th>
@@ -39,10 +42,13 @@
             <tr>
               <td [ngClass]="item.Aprovado ? 'green-background' : 'red-background'"></td>
               <td *ngIf="showPecaColumn">
-                {{ item.ID.toString().slice(0, 5) }}
+                {{ item.ID.toString().slice(0, 8) }}
               </td>
               <td *ngIf="showPecaColumn">
                 {{ item.Peca }}
+              </td>
+              <td *ngIf="showPecaColumn">
+                {{ item.Saldo }}
               </td>
               <td *ngIf="showPecaColumn" style="text-align: left;">
                 {{ item.MPName }}
