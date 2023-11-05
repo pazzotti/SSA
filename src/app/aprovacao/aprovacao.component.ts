@@ -7,18 +7,20 @@ import { map, take } from 'rxjs/operators';
 import { formatDate } from '@angular/common';
 import { Observable } from 'rxjs';
 import { DynamoService } from '../dynamo.service';
+import {  ChevronUp, ChevronDown } from 'angular-feather/icons';
+import { FeatherModule } from 'angular-feather';
 
 
 
 @Component({
-  selector: 'app-analise',
-  templateUrl: './analise.component.html',
-  styleUrls: ['./analise.component.css'],
+  selector: 'app-aprovacao',
+  templateUrl: './aprovacao.component.html',
+  styleUrls: ['./aprovacao.component.css'],
   template: `
     <progressbar [value]="progressValue" [max]="100">{{ progressValue }}%</progressbar>
   `
 })
-export class AnaliseComponent {
+export class AprovacaoComponent {
 
 
 
@@ -26,7 +28,6 @@ export class AnaliseComponent {
   maxValue = 0; // Valor máximo da barra de progresso
   showProgressBar = false;
   @ViewChild('downloadLink') downloadLink!: ElementRef<HTMLAnchorElement>;
-  @ViewChild('tableContainer') tableContainer!: ElementRef;
   urlAtualiza: string = 'https://wo31r57k9d.execute-api.sa-east-1.amazonaws.com/Dev1';
   urlConsulta: string = 'https://4i6nb2mb07.execute-api.sa-east-1.amazonaws.com/dev13';
   query: string = 'SAEP';
@@ -62,6 +63,7 @@ export class AnaliseComponent {
   pecas: any[] = [];
   mergedData: any[] = []; // Definir explicitamente o tipo como any[]
   showPecaColumn: boolean = true;
+  showPecaColumn2: boolean = false;
   showMPCodeColumn: boolean = true;
   showMPNameColumn: boolean = true;
   showSupplierColumn: boolean = false;
@@ -84,13 +86,15 @@ export class AnaliseComponent {
   showQtde3Column: boolean = false;
   showQtdeLmColumn: boolean = false;
   showSaldoColumn: boolean = false;
-  items!: any[]; // Seus dados da tabela
-  pageSize: number = 15; // Tamanho da página
-  currentPage: number = 1; // Página atual
-  totalPages: number = 0; // Total de páginas
-  currentItems: any[] = []; // Itens na página atual
+  itens!: any[];
+  expandedItems: Set<string> = new Set();
+  expandedItem: string | null = null;
+  expandedValue: string | null = null;
+  expandedData: any[] = [];
+
 
   constructor(
+
     private carregaService: CarregaService,
     private http: HttpClient,
     private dynamodbService: ApiService,
@@ -98,79 +102,22 @@ export class AnaliseComponent {
     private cd: ChangeDetectorRef
 
 
-  ) { }
+  ) {
 
-  async onGetItems(): Promise<void> {
-    const tableName = 'SAEP_Database';
+  }
 
-    if (!this.result || this.result.length === 0) {
-      console.error('Result is empty or undefined');
-      return;
-    }
-
-    const searchIds = this.result.map(item => String(item.Peca)); // Converte as chaves para string
-    const batchSize = 5;
-
-    if (!searchIds || searchIds.length === 0) {
-      console.error('Pecas is empty or undefined');
-      return;
-    }
-
-    const searchIdBatches = [];
-
-    for (let i = 0; i < searchIds.length; i += batchSize) {
-      searchIdBatches.push(searchIds.slice(i, i + batchSize));
-    }
-
-    const requests = searchIdBatches.map(async (batch) => {
-      const response = await this.carregaService.getItems3(tableName, batch).toPromise();
-      return response;
-    });
-
-    try {
-      const responses = await Promise.all(requests);
-
-      for (const response of responses) {
-        if (response && response.statusCode === 200) {
+  async getSaep(): Promise<void> {
+    const filtroUser = 'all';
+    (await this.dynamodbService.getItems(this.query, this.urlConsulta, filtroUser)).subscribe(
+      (response: any) => {
+        if (response.statusCode === 200) {
           try {
-            const data = JSON.parse(response.body);
-            if (Array.isArray(data)) {
-              // Vamos mapear os valores das chaves "S" ou "N"
-              const items = data.map(item => ({
-
-
-                Descricao: item.Descricao.S || item.Descricao,
-                Embalagem: item.Embalagem.S || item.Embalagem,
-                ID: item.ID.S || item.ID,
-                Line: parseInt(item.Line.N || item.Line),
-                MPCode: item.MPCode.S || item.MPCode,
-                MPName: item.MPName.S || item.MPName,
-                Supplier: item.Supplier.S || item.Supplier,
-                SupName: item.SupName.S || item.SupName,
-                SupShare: item.SupShare.S || item.SupShare,
-                Country: item.Country.S || item.Country,
-                Custo: parseFloat(item.Custo.N || item.Custo),
-                TranspotTime: item.TranspotTime.S || item.TranspotTime,
-                SafetyStockTime: item.SafetyStockTime.S || item.SafetyStockTime,
-                SafetyStockQtde: item.SafetyStockQtde.S || item.SafetyStockQtde,
-                UnitySizeCentral: item.UnitySizeCentral.S || item.UnitySizeCentral,
-                UnityQtyCentral: item.UnityQtyCentral.S || item.UnityQtyCentral,
-                MCM: item.MCM.S || item.MCM,
-                TypeBalance: item.TypeBalance.S || item.TypeBalance,
-                UsedFor: item.UsedFor.S || item.UsedFor,
-                Rate: item.Rate.N || item.Rate,
-                RM: item.RM.N || item.RM,
-                QtdeAmox: item.QtdeAmox.N || item.QtdeAmox,
-                QtdeReceb: item.QtdeReceb.N || item.QtdeReceb,
-                Qtde3: item.Qtde3.N || item.Qtde3,
-                QtdeLm: item.QtdeLm.N || item.QtdeLm,
-
-              }));
-
-              this.pecas = (this.pecas || []).concat(items.map(item => ({ ...item, checked: false })));
-              console.log(this.pecas);
+            const items = JSON.parse(response.body);
+            if (Array.isArray(items)) {
+              // Filtrar apenas os itens com "Aprovacao" igual a false
+              this.itens = items.filter(item => item.Aprovado === false);
             } else {
-              console.error('Invalid items data:', data);
+              console.error('Invalid items data:', items);
             }
           } catch (error) {
             console.error('Error parsing JSON:', error);
@@ -178,11 +125,95 @@ export class AnaliseComponent {
         } else {
           console.error('Invalid response:', response);
         }
+      },
+      (error: any) => {
+        console.error(error);
       }
-    } catch (error) {
-      console.error(error);
+    );
+  }
+
+
+  toggleExpand(value: string) {
+
+    this.expandedValue = value;
+    if(this.showPecaColumn2== true){
+      this.showPecaColumn2 = false;
+    }else{
+      this.updateExpandedData();
+      this.showPecaColumn2 = true;
     }
-    this.mergeDataBasedOnPeca()
+  }
+
+  getExpandedItems(): any[] {
+    if (this.expandedValue) {
+      const expandedValueString = this.expandedValue.toString();
+      return this.itens.filter(item => item.ID.toString().slice(0, 5) === expandedValueString.slice(0, 5));
+    }
+    return [];
+  }
+  updateExpandedData() {
+    this.expandedData = this.getExpandedItems();
+  }
+
+
+
+
+  isExpanded(value: string): boolean {
+    return this.expandedItems.has(value);
+  }
+
+  filtrarItensRepetidos(valor: string | null) {
+    if (valor === null) {
+      return [];
+    }
+
+    const filteredItems = this.itens.filter(item => item.ID.toString().slice(0, 5) === valor);
+
+    // Verifique se há pelo menos um item correspondente em this.itens com "Aprovado" igual a false
+    const algumAprovadoFalse = this.itens
+      .filter(item => item.ID.toString().slice(0, 5) === valor)
+      .some(item => item.Aprovado === false);
+
+    // Defina a chave "Aprovado" em filteredItems com base na verificação
+    if (algumAprovadoFalse) {
+      filteredItems.forEach(item => {
+        item.Aprovado = false;
+      });
+    } else {
+      filteredItems.forEach(item => {
+        item.Aprovado = true;
+      });
+    }
+
+    return filteredItems;
+  }
+
+
+
+
+  filtrarItensUnicos() {
+    const itensUnicos = [];
+    const valoresVistos = new Set();
+
+    for (const item of this.itens) {
+      const chave = item.ID.toString().slice(0, 5); // Obter os 5 primeiros caracteres
+
+      if (!valoresVistos.has(chave)) {
+        valoresVistos.add(chave);
+        itensUnicos.push(item);
+      }
+    }
+
+    // Verifique se todos os itens com a mesma chave "ID" têm "Aprovado" igual a true
+    itensUnicos.forEach(itemUnico => {
+      const chave = itemUnico.ID.toString().slice(0, 5);
+      const todosAprovados = this.itens
+        .filter(item => item.ID.toString().slice(0, 5) === chave)
+        .every(item => item.Aprovado === true);
+      itemUnico.Aprovado = todosAprovados;
+    });
+
+    return itensUnicos;
   }
 
 
@@ -308,61 +339,19 @@ export class AnaliseComponent {
           // ...outras chaves de 'peca' que deseja incluir
         };
         this.mergedData.push(mergedObject);
-
       }
-
     });
-    this.totalPages = Math.ceil(this.mergedData.length / this.pageSize);
-    this.updateCurrentPage();
     console.log(this.mergedData);
     return this.mergedData;
-
   }
 
   async analisar() {
-    const numeroProdutos = this.solicitarNumeroProdutos();
-
-    if (numeroProdutos !== null) {
-      this.calcularDR(numeroProdutos);
-      this.calcularSaldo(numeroProdutos);
-      this.aprovacao(numeroProdutos);
-    }
-  }
-
-  solicitarNumeroProdutos(): number | null {
-    const input = window.prompt('Digite o número de produtos:');
-
-    if (input !== null) {
-      const numeroProdutos = parseInt(input, 10);
-      if (!isNaN(numeroProdutos)) {
-        return numeroProdutos;
-      } else {
-        alert('Por favor, insira um número válido de produtos.');
-        return this.solicitarNumeroProdutos();
-      }
-    }
-    return null; // Retorna null se o usuário cancelar a entrada
+    this.calcularDR();
+    this.calcularSaldo();
+    this.aprovacao();
   }
 
 
-
-  async onFileSelected(event: any) {
-    const file = event.target.files[0];
-
-    try {
-      const processResult = await this.servicoCerto.processFile(file);
-      if (Array.isArray(processResult)) {
-        this.result = processResult;
-        console.log('Resultado da leitura do arquivo:', this.result);
-      } else {
-        console.error('O resultado da leitura não é uma matriz válida.');
-      }
-    } catch (error) {
-      console.error('Erro ao processar o arquivo:', error);
-    }
-    this.onGetItems();
-
-  }
 
   calculateTotal(item: any): number {
     const pipeline = item.Pipeline !== undefined ? item.Pipeline : 0;
@@ -416,12 +405,12 @@ export class AnaliseComponent {
     }
   }
 
-  async calcularSaldo(numeroProdutos: number) {
+  async calcularSaldo() {
     for (let i = 0; i < this.mergedData.length; i++) {
       const item = this.mergedData[i];
       const qtde3 = parseInt(item.Qtde3, 10);
       const rm = parseFloat(item.RM);
-      const saldo = parseFloat(item.Saldo) * numeroProdutos;
+      const saldo = parseFloat(item.Saldo);
       const QtdeAmox = parseFloat(item.QtdeAmox);
       if (((QtdeAmox + qtde3) - (rm + saldo)) >= 0) {
         item.saldoTotal = true;
@@ -434,12 +423,12 @@ export class AnaliseComponent {
       item.saldoTotal = item.saldoTotal; // Adicione a propriedade 'DailyRate' a cada objeto no array
     });
   }
-  async calcularDR(numeroProdutos: number) {
+  async calcularDR() {
 
     for (let i = 0; i < this.mergedData.length; i++) {
       const item = this.mergedData[i];
       const DR = item.Rate;
-      const saldo = item.Saldo * numeroProdutos;
+      const saldo = item.Saldo;
       if (saldo < DR * 0.1) {
         item.DailyRate = true;
       } else {
@@ -456,13 +445,13 @@ export class AnaliseComponent {
 
   }
 
-  async aprovacao(numeroProdutos: number) {
+  async aprovacao() {
 
     for (let i = 0; i < this.mergedData.length; i++) {
       const item = this.mergedData[i];
       let saldoTotal = item.saldoTotal;
       let DailyRate = item.DailyRate;
-      const saldo = item.Saldo * numeroProdutos;
+      const saldo = item.Saldo;
       let pneu = false;
       let seq = false;
 
@@ -504,56 +493,19 @@ export class AnaliseComponent {
     }
     return '';
   }
-  updateCurrentPage() {
-    const startIndex = (this.currentPage - 1) * this.pageSize;
-    const endIndex = startIndex + this.pageSize;
-    this.currentItems = this.mergedData.slice(startIndex, endIndex);
-    this.updateHeaderSticky();
-  }
-
-  previousPage() {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-      this.updateCurrentPage();
-    }
-  }
-
-  nextPage() {
-    if (this.currentPage < this.totalPages) {
-      this.currentPage++;
-      this.updateCurrentPage();
-    }
-  }
-
-  updateHeaderSticky() {
-    // Implemente aqui a lógica para congelar o cabeçalho quando a tabela rolar
-    const tableContainer = this.tableContainer.nativeElement;
-
-    if (tableContainer.scrollTop > 0) {
-      tableContainer.querySelector('thead').classList.add('sticky-header');
-    } else {
-      tableContainer.querySelector('thead').classList.remove('sticky-header');
-    }
-  }
 
   async salvarNoBanco() {
     // Solicitar o número da SAEP ao usuário usando um prompt
-    let saepNumber = prompt('Informe o número da SAEP:');
+    const saepNumber = prompt('Informe o número da SAEP:');
 
-    if (saepNumber === null) {
-      alert('Operação cancelada pelo usuário.');
+    if (saepNumber === null || saepNumber.trim() === '') {
+      alert('Você precisa fornecer um número de SAEP válido.');
       return;
     }
 
-    // Remover espaços em branco e garantir que o número tenha 8 caracteres
-    saepNumber = saepNumber.trim();
-    if (!/^\d{8}$/.test(saepNumber)) {
-      alert('O número de SAEP deve ter exatamente 8 caracteres numéricos.');
-      return;
-    }
     // Atualizar os valores em this.mergedData
     this.mergedData.forEach(item => {
-      item.ID = saepNumber?.toString() + item.Peca.toString();
+      item.ID = saepNumber.toString() + item.Peca.toString();
     });
 
     // Adicionar a chave `tableName` em cada objeto para a função Lambda
@@ -605,6 +557,7 @@ export class AnaliseComponent {
   }
 
   async ngOnInit() {
+    await this.getSaep();
 
   }
 
@@ -674,7 +627,7 @@ export class AnaliseComponent {
     }
 
     // Sort the data array based on the selected column and direction
-    this.mergedData.sort((a: { [x: string]: any; }, b: { [x: string]: any; }) => {
+    this.itens.sort((a: { [x: string]: any; }, b: { [x: string]: any; }) => {
       const valueA = a[this.sortColumn];
       const valueB = b[this.sortColumn];
 
@@ -688,6 +641,7 @@ export class AnaliseComponent {
     });
   }
 
+
   sortBy2(column: string) {
     if (this.sortColumn === column) {
       // Reverse the sort direction
@@ -699,9 +653,9 @@ export class AnaliseComponent {
     }
 
     // Sort the data array based on the selected column and direction
-    this.filteredData.sort((a: { [x: string]: any; }, b: { [x: string]: any; }) => {
-      const valueA = column === 'TotalCost' ? this.calculateTotal(a) : a[column];
-      const valueB = column === 'TotalCost' ? this.calculateTotal(b) : b[column];
+    this.expandedData.sort((a: { [x: string]: any; }, b: { [x: string]: any; }) => {
+      const valueA = a[this.sortColumn];
+      const valueB = b[this.sortColumn];
 
       if (valueA < valueB) {
         return -1 * this.sortDirection;
@@ -712,6 +666,7 @@ export class AnaliseComponent {
       }
     });
   }
+
 
 
 

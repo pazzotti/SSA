@@ -34,20 +34,25 @@
 
 
           </th>
-          <th>
-            <label>Total lines {{ mergedData.length }}</label>
-            <button (click)="analisar()">Analisar</button>
-          </th>
+
+
+
         </tr>
       </thead>
     </table>
+    <div>
+      <label>Total lines {{ mergedData.length }}</label>
 
+      <button id="botaoAnalisar" (click)="analisar()">Analisar</button>
 
+      <button  (click)="salvarNoBanco()">Salvar Dados</button>
+
+    </div>
 
     <div class="table-container">
-      <table>
+      <table style="width: 100%; border-collapse: collapse;">
         <thead>
-          <tr>
+          <tr style="background-color: #393939;">
             <th *ngIf="showPecaColumn">
               <button (click)="sortBy('Peca')">Part Number</button>
             </th>
@@ -131,7 +136,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of mergedData">
+          <tr *ngFor="let item of currentItems">
             <td *ngIf="showPecaColumn">{{ item.Peca }}</td>
             <td *ngIf="showMPCodeColumn">{{ item.MPCode }}</td>
             <td *ngIf="showMPNameColumn" class="fixed-column">{{ item.MPName}}</td>
@@ -172,6 +177,12 @@
           </tr>
         </tbody>
       </table>
+    </div>
+    <div class="pagination">
+      <button (click)="previousPage()" [disabled]="currentPage === 1">Anterior</button>
+
+      <button (click)="nextPage()" [disabled]="currentPage === totalPages">Próxima</button>
+      <span class="page-info">Página {{ currentPage }} de {{ totalPages }}</span>
     </div>
 
   </div>

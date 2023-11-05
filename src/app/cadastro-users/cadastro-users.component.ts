@@ -3,7 +3,6 @@ import { ApiService } from '../services/contratos/contratos.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
 import { format } from 'date-fns';
-import { ExtraRequestComponent } from '../app/home/extra-request/extra-request.component';
 import { UsuarioLogado } from '../autenticacao/usuario-logado.type';
 import { AutenticacaoService } from '../autenticacao/autenticacao.service';
 import { NgPluralCase } from '@angular/common';
@@ -83,7 +82,7 @@ export class CadastroUsersComponent {
       this.isCarrierEnabledCadastro = true;
     }
   }
-  
+
   enableFields() {
     if (this.usuarioLogado.role === '0') {
       this.isCarrierEnabled = true;

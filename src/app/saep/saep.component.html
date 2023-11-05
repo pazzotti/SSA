@@ -1,0 +1,75 @@
+<body>
+  <div class="container">
+    <table>
+      <thead>
+        <tr>
+          <th>
+            <label for="fileInputTXT">Selecionar Arquivo Excel:</label>
+          </th>
+
+        </tr>
+      </thead>
+    </table>
+
+
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th *ngIf="showPecaColumn" style="width: 80px;">
+              <button (click)="sortBy('Peca')">SAEP</button>
+            </th>
+            <th *ngIf="showMPCodeColumn">
+              <button (click)="sortBy('MPCode')">Status SAEP</button>
+            </th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let item of filtrarItensUnicos()">
+            <tr>
+              <td *ngIf="showPecaColumn">
+                <div (click)="toggleExpand(item.ID)" style="cursor: pointer;">
+                  {{ expandedValue === item.ID ? '-' : '+' }}
+                  {{ item.ID.toString().slice(0, 5) }}
+                </div>
+              </td>
+              <td [ngClass]="item.Aprovado ? 'green-background' : 'red-background'"></td>
+
+              <!-- Outras colunas da tabela -->
+            </tr>
+            <tr *ngIf="showPecaColumn2 && expandedValue === item.ID">
+              <td></td> <!-- Coluna vazia para alinhar com a tabela pai -->
+              <td>
+                <div class="expandido">
+                  <table>
+                    <tr>
+                      <th *ngIf="showPecaColumn" style="width: 80px;">
+                        <button (click)="sortBy2('Peca')">Ordenar por Peça</button>
+                      </th>
+                      <th *ngIf="showPecaColumn" >
+                        <button (click)="sortBy2('MPName')">Ordenar por MP Responsável</button>
+                      </th>
+                      <th *ngIf="showPecaColumn" style="width: 80px;">
+                        <button (click)="sortBy2('Aprovado')">Ordenar por Status</button>
+                      </th>
+                    </tr>
+                    <tr *ngFor="let subItem of expandedData">
+                      <td>{{ subItem.Peca }}</td>
+                      <td>{{ subItem.MPName }}</td>
+                      <td [ngClass]="subItem.Aprovado ? 'green-background' : 'red-background'"></td>
+
+                    </tr>
+                  </table>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+</body>
