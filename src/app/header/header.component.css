@@ -93,3 +93,8 @@ nav #navbarNav a:hover {
 .dropdown:hover .dropdown-content {
   display: block;
 }
+.image-container {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Adiciona uma margem de 10px entre a imagem e o link */
+}

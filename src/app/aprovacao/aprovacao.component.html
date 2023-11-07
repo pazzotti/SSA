@@ -4,14 +4,12 @@
       <thead>
         <tr>
           <th>
-            <label >Análise manual dos MPs</label>
+            <label>Análise manual dos MPs</label>
           </th>
 
         </tr>
       </thead>
     </table>
-
-
 
     <div class="table-container">
       <table>
@@ -19,12 +17,12 @@
           <tr>
             <th style="width: 20px;"></th>
             <th *ngIf="showPecaColumn" style="width: 80px;">
-              <button (click)="sortBy('SAEP')">SAEP</button>
+              <button (click)="sortBy('ID')">SAEP</button>
             </th>
-            <th *ngIf="showPecaColumn"  style="width: 80px;">
+            <th *ngIf="showPecaColumn" style="width: 80px;">
               <button (click)="sortBy('Peca')">Peça</button>
             </th>
-            <th *ngIf="showPecaColumn"  style="width: 80px;">
+            <th *ngIf="showPecaColumn" style="width: 80px;">
               <button (click)="sortBy('Saldo')">Qtde Solicitada</button>
             </th>
             <th *ngIf="showPecaColumn">
@@ -39,30 +37,32 @@
         </thead>
         <tbody>
           <ng-container *ngFor="let item of itens">
-            <tr>
-              <td [ngClass]="item.Aprovado ? 'green-background' : 'red-background'"></td>
-              <td *ngIf="showPecaColumn">
-                {{ item.ID.toString().slice(0, 8) }}
-              </td>
-              <td *ngIf="showPecaColumn">
-                {{ item.Peca }}
-              </td>
-              <td *ngIf="showPecaColumn">
-                {{ item.Saldo }}
-              </td>
-              <td *ngIf="showPecaColumn" style="text-align: left;">
-                {{ item.MPName }}
-              </td>
 
-              <td>
-                <button (click)="sortBy('Analise')">Aprovar</button>
-                <button (click)="sortBy('Analise')" >Rejeitar</button>
-              </td>
+              <tr *ngIf="item.Comentario === null || item.Comentario === undefined || item.Comentario === ''">
+                <td [ngClass]="item.Aprovado ? 'green-background' : 'red-background'"></td>
+                <td *ngIf="showPecaColumn">
+                  {{ item.ID.toString().slice(0, 8) }}
+                </td>
+                <td *ngIf="showPecaColumn">
+                  {{ item.Peca }}
+                </td>
+                <td *ngIf="showPecaColumn">
+                  {{ item.Saldo }}
+                </td>
+                <td *ngIf="showPecaColumn" style="text-align: left;">
+                  {{ item.MPName }}
+                </td>
+
+                <td>
+                  <button (click)="salvarNoBanco(true,item.ID)">Aprovar</button>
+                  <button (click)="salvarNoBanco(false,item.ID)">Rejeitar</button>
+                </td>
 
 
 
-              <!-- Outras colunas da tabela -->
-            </tr>
+                <!-- Outras colunas da tabela -->
+              </tr>
+
             <tr *ngIf="showPecaColumn2 && expandedValue === item.ID">
               <td></td> <!-- Coluna vazia para alinhar com a tabela pai -->
               <td>

@@ -7,7 +7,7 @@ import { map, take } from 'rxjs/operators';
 import { formatDate } from '@angular/common';
 import { Observable } from 'rxjs';
 import { DynamoService } from '../dynamo.service';
-import {  ChevronUp, ChevronDown } from 'angular-feather/icons';
+import { ChevronUp, ChevronDown } from 'angular-feather/icons';
 import { FeatherModule } from 'angular-feather';
 
 
@@ -91,6 +91,9 @@ export class SaepComponent {
   expandedItem: string | null = null;
   expandedValue: string | null = null;
   expandedData: any[] = [];
+  itensUnicos: any[] = [];
+  listaCompleta!: any[];
+  itensReprovados: any;
 
 
   constructor(
@@ -106,163 +109,127 @@ export class SaepComponent {
     FeatherModule.pick({ ChevronUp, ChevronDown })
   }
 
-  async getSaep(): Promise<void> {
+  async getSaep2(): Promise<void> {
     const filtroUser = 'all';
-    (await this.dynamodbService.getItems(this.query, this.urlConsulta, filtroUser)).subscribe(
-      (response: any) => {
-        if (response.statusCode === 200) {
-          try {
-            const items = JSON.parse(response.body);
-            if (Array.isArray(items)) {
-              this.itens = items.map(item => ({ ...item, checked: false }));
-            } else {
-              console.error('Invalid items data:', items);
+
+    try {
+      const response: any = await this.dynamodbService.getItems(this.query, this.urlConsulta, filtroUser);
+
+      response.subscribe(
+        (response: any) => {
+          if (response.statusCode === 200) {
+            try {
+              const items = JSON.parse(response.body);
+              if (Array.isArray(items)) {
+                this.itens = items.map(item => ({ ...item, checked: false }));
+              } else {
+                console.error('Invalid items data:', items);
+              }
+            } catch (error) {
+              console.error('Error parsing JSON:', error);
             }
-          } catch (error) {
-            console.error('Error parsing JSON:', error);
+          } else {
+            console.error('Invalid response:', response);
           }
-          // console.log('this.carriers')
-          // console.log((this.carriers))
-        } else {
-          console.error('Invalid response:', response);
+          console.log("Lista Completa" , this.itens);
+          this.filtrarItensUnicos();
+        },
+        (error: any) => {
+          console.error(error);
         }
-      },
-      (error: any) => {
-        console.error(error);
-      }
-    );
+      );
+    } catch (error) {
+      console.error(error);
+    }
   }
+
+  async getSaep() {
+    try {
+      const response = await (await this.dynamodbService.getItems(this.query, this.urlConsulta, 'all')).toPromise();
+      if (response.statusCode === 200) {
+        const items = JSON.parse(response.body);
+        // Atualize sua lista com os dados recebidos
+
+        this.itens = items;
+
+      } else {
+        console.error('Erro na resposta do serviço:', response);
+      }
+      this.filtrarItensUnicos();
+    } catch (error) {
+      console.error('Erro ao chamar o serviço:', error);
+    }
+  }
+
+
+
+
 
   toggleExpand(value: string) {
-
     this.expandedValue = value;
-    if(this.showPecaColumn2== true){
+    if (this.showPecaColumn2 == true) {
       this.showPecaColumn2 = false;
-    }else{
-      this.updateExpandedData();
+    } else {
       this.showPecaColumn2 = true;
     }
-  }
 
-  getExpandedItems(): any[] {
-    if (this.expandedValue) {
-      const expandedValueString = this.expandedValue.toString();
-      return this.itens.filter(item => item.ID.toString().slice(0, 8) === expandedValueString.slice(0, 8));
-    }
-    return [];
-  }
-  updateExpandedData() {
-    this.expandedData = this.getExpandedItems();
-    console.log(this.expandedData)
+    // Filtrar a lista somente com base no valor de value
+    this.listaCompleta = this.itens.filter(item => item.ID.slice(0, 8) === value.slice(0, 8));
+
+
+    // Certifique-se de que apenas a listaCompleta seja atualizada
+    console.log(this.listaCompleta);
   }
 
 
 
 
-  isExpanded(value: string): boolean {
-    return this.expandedItems.has(value);
-  }
-
-  filtrarItensRepetidos(valor: string | null) {
-    if (valor === null) {
-      return [];
-    }
-
-    const filteredItems = this.itens.filter(item => item.ID.toString().slice(0, 8) === valor);
-
-    // Verifique se há pelo menos um item correspondente em this.itens com "Aprovado" igual a false
-    const algumAprovadoFalse = this.itens
-      .filter(item => item.ID.toString().slice(0, 8) === valor)
-      .some(item => item.Aprovado === false);
-
-    // Defina a chave "Aprovado" em filteredItems com base na verificação
-    if (algumAprovadoFalse) {
-      filteredItems.forEach(item => {
-        item.Aprovado = false;
-      });
-    } else {
-      filteredItems.forEach(item => {
-        item.Aprovado = true;
-      });
-    }
-
-    return filteredItems;
-  }
-
-
-
-
-  filtrarItensUnicos() {
-    const itensUnicos = [];
-    const valoresVistos = new Set();
-
-    for (const item of this.itens) {
-      const chave = item.ID.toString().slice(0, 8); // Obter os 5 primeiros caracteres
-
-      if (!valoresVistos.has(chave)) {
-        valoresVistos.add(chave);
-        itensUnicos.push(item);
+  async filtrarItensUnicos() {
+    try {
+      if (!Array.isArray(this.itens)) {
+        throw new Error('Dados de entrada inválidos: this.itens não é um array.');
       }
-    }
 
-    // Verifique se todos os itens com a mesma chave "ID" têm "Aprovado" igual a true
-    itensUnicos.forEach(itemUnico => {
-      const chave = itemUnico.ID.toString().slice(0, 8);
-      const todosAprovados = this.itens
-        .filter(item => item.ID.toString().slice(0, 8) === chave)
-        .every(item => item.Aprovado === true);
-      itemUnico.Aprovado = todosAprovados;
-    });
+      const valoresVistos = new Set();
 
-    return itensUnicos;
-  }
-
-
-  async onGetItems2(): Promise<void> {
-    const tableName = 'SAEP_Database'; // Substitua pelo nome correto da tabela
-    const searchId = ['2779482', '2579168', '1879996']; // Substitua pelos IDs desejados
-
-    (await this.carregaService.getItems3(tableName, searchId)).subscribe(
-      (response: any) => {
-        if (response.statusCode === 200) {
-          try {
-            const items = JSON.parse(response.body);
-            if (Array.isArray(items)) {
-              // Processa os itens e converte os valores "S" e "N" de volta
-              this.pecas = items.map(item => {
-                const convertedItem: any = {};
-                for (const key in item) {
-                  if (item.hasOwnProperty(key)) {
-                    // Verifica se o valor é do tipo "S" (string)
-                    if (item[key].hasOwnProperty('S')) {
-                      convertedItem[key] = item[key].S;
-                    }
-                    // Verifica se o valor é do tipo "N" (número)
-                    else if (item[key].hasOwnProperty('N')) {
-                      convertedItem[key] = parseFloat(item[key].N);
-                    }
-                  }
-                }
-                // Adiciona a chave 'checked' a cada item, com valor inicial como false
-                convertedItem.checked = false;
-                return convertedItem;
-              });
-              console.log(this.pecas);
-            } else {
-              console.error('Invalid items data:', items);
-            }
-          } catch (error) {
-            console.error('Error parsing JSON:', error);
-          }
-        } else {
-          console.error('Invalid response:', response);
+      for (const item of this.itens) {
+        if (!item || typeof item.ID !== 'string') {
+          console.warn('Item inválido ignorado:', item);
+          continue;
         }
-      },
-      (error: any) => {
-        console.error(error);
+
+        const chave = item.ID.toString().slice(0, 8);
+
+        if (!valoresVistos.has(chave)) {
+          valoresVistos.add(chave);
+          this.itensUnicos.push({ ...item });
+        }
       }
-    );
+
+      this.itensUnicos.forEach(itemUnico => {
+        const chave = itemUnico.ID.slice(0, 8);
+        const todosAprovados = this.itens
+          .filter(item => item.ID.slice(0, 8) === chave)
+          .every(item => item.Aprovado === true);
+        itemUnico.Aprovado = todosAprovados;
+      });
+
+      this.itensUnicos.forEach(itemUnico => {
+        const chave = itemUnico.ID.slice(0, 8);
+        const hasRedCell = this.itens.some(item =>
+          item.ID.slice(0, 8) === chave &&
+          item.Comentario !== null && item.Comentario !== undefined && item.Comentario !== '' &&
+          item.Aprovado === false
+        );
+        itemUnico.redBorder = hasRedCell; // Adicione uma propriedade "redBorder" à linha
+      });
+
+      console.log(this.itensUnicos);
+    } catch (error) {
+      console.error('Erro ao filtrar itens únicos:', error);
+    }
   }
+
 
   mergeDataBasedOnPeca() {
     // Crie um objeto para armazenar os dados mesclados
@@ -560,6 +527,10 @@ export class SaepComponent {
   async ngOnInit() {
     await this.getSaep();
 
+
+
+
+
   }
 
 
@@ -628,7 +599,7 @@ export class SaepComponent {
     }
 
     // Sort the data array based on the selected column and direction
-    this.mergedData.sort((a: { [x: string]: any; }, b: { [x: string]: any; }) => {
+    this.itensUnicos.sort((a: { [x: string]: any; }, b: { [x: string]: any; }) => {
       const valueA = a[this.sortColumn];
       const valueB = b[this.sortColumn];
 
@@ -654,9 +625,20 @@ export class SaepComponent {
     }
 
     // Sort the data array based on the selected column and direction
-    this.expandedData.sort((a: { [x: string]: any; }, b: { [x: string]: any; }) => {
+    this.listaCompleta.sort((a: { [x: string]: any; }, b: { [x: string]: any; }) => {
       const valueA = a[this.sortColumn];
       const valueB = b[this.sortColumn];
+
+      // Handle cases where the values are null, undefined, or empty strings
+      if (valueA == null) {
+        return this.sortDirection;
+      } else if (valueB == null) {
+        return -this.sortDirection;
+      } else if (typeof valueA === 'string' && valueA.trim() === '') {
+        return this.sortDirection;
+      } else if (typeof valueB === 'string' && valueB.trim() === '') {
+        return -this.sortDirection;
+      }
 
       if (valueA < valueB) {
         return -1 * this.sortDirection;
@@ -667,6 +649,7 @@ export class SaepComponent {
       }
     });
   }
+
 
 
 

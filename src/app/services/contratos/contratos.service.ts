@@ -29,7 +29,7 @@ export class ApiService {
     return this.http.post<any>(apiUrl, body, { headers: headers });
 
   }
-  
+
   enviaNotificacao(itemsData: any, apiUrl: string): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'

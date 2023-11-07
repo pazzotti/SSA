@@ -4,7 +4,7 @@
       <thead>
         <tr>
           <th>
-            <label for="fileInputTXT">Selecionar Arquivo Excel:</label>
+
           </th>
 
         </tr>
@@ -18,7 +18,7 @@
         <thead>
           <tr>
             <th *ngIf="showPecaColumn" style="width: 100px;">
-              <button (click)="sortBy('Peca')">SAEP</button>
+              <button (click)="sortBy('ID')">SAEP</button>
             </th>
             <th *ngIf="showMPCodeColumn">
               <button (click)="sortBy('MPCode')">Status SAEP</button>
@@ -27,15 +27,15 @@
           </tr>
         </thead>
         <tbody>
-          <ng-container *ngFor="let item of filtrarItensUnicos()">
-            <tr>
-              <td *ngIf="showPecaColumn">
+          <ng-container *ngFor="let item of itensUnicos">
+            <tr >
+              <td *ngIf="showPecaColumn" [class.red-border]="item.redBorder" [class.green-border]="!item.redBorder">
                 <div (click)="toggleExpand(item.ID)" style="cursor: pointer;">
                   {{ expandedValue === item.ID ? '-' : '+' }}
                   {{ item.ID.toString().slice(0, 8) }}
                 </div>
               </td>
-              <td [ngClass]="item.Aprovado ? 'green-background' : 'red-background'"></td>
+              <td [ngClass]="item.Aprovado ? 'green-background' : 'red-background'" [class.red-border]="item.redBorder" [class.green-border]="!item.redBorder"></td>
 
               <!-- Outras colunas da tabela -->
             </tr>
@@ -44,8 +44,8 @@
               <td>
                 <div class="expandido">
                   <table>
-                    <tr>
-                      <th *ngIf="showPecaColumn" style="width: 80px;">
+                    <tr >
+                      <th *ngIf="showPecaColumn" style="width: 80px;" >
                         <button (click)="sortBy2('Peca')">Ordenar por Peça</button>
                       </th>
                       <th *ngIf="showPecaColumn" >
@@ -54,15 +54,18 @@
                       <th *ngIf="showPecaColumn" >
                         <button (click)="sortBy2('MPName')">Ordenar por MP Responsável</button>
                       </th>
+                      <th *ngIf="showPecaColumn" >
+                        <button (click)="sortBy2('Comentario')">Comentário</button>
+                      </th>
                       <th *ngIf="showPecaColumn" style="width: 80px;">
                         <button (click)="sortBy2('Aprovado')">Ordenar por Status</button>
                       </th>
                     </tr>
-                    <tr *ngFor="let subItem of expandedData">
+                    <tr *ngFor="let subItem of listaCompleta">
                       <td>{{ subItem.Peca }}</td>
                       <td>{{ subItem.Saldo }}</td>
                       <td>{{ subItem.MPName }}</td>
-                      <td>{{ subItem.Aprovado }}</td>
+                      <td>{{ subItem.Comentario }}</td>
                       <td [ngClass]="subItem.Aprovado ? 'green-background' : 'red-background'"></td>
 
                     </tr>

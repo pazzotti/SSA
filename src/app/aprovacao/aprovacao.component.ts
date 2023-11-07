@@ -7,7 +7,7 @@ import { map, take } from 'rxjs/operators';
 import { formatDate } from '@angular/common';
 import { Observable } from 'rxjs';
 import { DynamoService } from '../dynamo.service';
-import {  ChevronUp, ChevronDown } from 'angular-feather/icons';
+import { ChevronUp, ChevronDown } from 'angular-feather/icons';
 import { FeatherModule } from 'angular-feather';
 
 
@@ -136,9 +136,9 @@ export class AprovacaoComponent {
   toggleExpand(value: string) {
 
     this.expandedValue = value;
-    if(this.showPecaColumn2== true){
+    if (this.showPecaColumn2 == true) {
       this.showPecaColumn2 = false;
-    }else{
+    } else {
       this.updateExpandedData();
       this.showPecaColumn2 = true;
     }
@@ -494,49 +494,40 @@ export class AprovacaoComponent {
     return '';
   }
 
-  async salvarNoBanco() {
-    // Solicitar o número da SAEP ao usuário usando um prompt
-    const saepNumber = prompt('Informe o número da SAEP:');
+  async salvarNoBanco(status: boolean, linha: string) {
 
-    if (saepNumber === null || saepNumber.trim() === '') {
-      alert('Você precisa fornecer um número de SAEP válido.');
+    const comentario = prompt('Informe o comentário da análise:');
+
+    if (comentario === null || comentario.trim() === '') {
+      alert('Você precisa fornecer um comentário válido.');
       return;
     }
 
-    // Atualizar os valores em this.mergedData
-    this.mergedData.forEach(item => {
-      item.ID = saepNumber.toString() + item.Peca.toString();
+    this.itens.forEach(item => {
+      if (item.ID === linha) {
+        if (status) {
+          item.Aprovado = true;
+          item.AprovadoManual = true;
+        } else {
+          item.Aprovado = false;
+          item.AprovadoManual = false;
+        }
+        item.Comentario = comentario
+      }
     });
 
-    // Adicionar a chave `tableName` em cada objeto para a função Lambda
-    this.mergedData.forEach(item => {
-      item.tableName = this.query;
-    });
-
-
-    // Resto do seu código aqui
-    this.progressCounter = 0;
-    this.showProgressBar = true;
-    console.log('Itens a serem salvos:', this.mergedData);
-    this.progressValue = 0;
-    const batchSize = 1; // Tamanho máximo para cada lote
-    const batches = this.chunkArray(this.mergedData, batchSize);
-
+    const itemParaSalvar = [this.itens.filter(item => item.ID === linha)];
     try {
       // Certifique-se de que 'this.dynamodbService.salvar' retorne promessas
-      const responses = await Promise.all(batches.map(batch =>
+      const responses = await Promise.all(itemParaSalvar.map(batch =>
         this.dynamodbService.salvar(batch, this.query, this.urlAtualiza).toPromise()
       ));
-      this.progressValue = this.mergedData.length;
       console.log('Respostas do salvamento:', responses);
-      this.progressCounter = this.mergedData.length;
     } catch (error) {
       console.error('Erro ao salvar em lote:', error);
     }
-
-    // Ocultar a barra de progresso após o término das operações
-    this.showProgressBar = false;
   }
+
 
 
 
